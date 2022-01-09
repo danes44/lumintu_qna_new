@@ -13,6 +13,7 @@
   $chat_object = new ChatRooms;
 
   $chat_data = $chat_object->get_all_chat_data();
+  echo $chat_data;
 ?>
 
 <!DOCTYPE html>
@@ -236,8 +237,8 @@
         } 
         // Koneksi Websocket
         $(document).ready(function(){
-
-            var conn = new WebSocket('ws://localhost:8081');
+            var port = '8082'
+            var conn = new WebSocket('ws://localhost:'+port);
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
@@ -253,9 +254,9 @@
                     url: kel1_api+'/items/customer?fields=customer_id,customer_name&filter[customer_id]='+data1.userId,  
                     type: 'GET',  
                     //Authorization Header
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', 'Bearer tokencoba');
-                    },
+                    // beforeSend: function (xhr) {
+                    //     xhr.setRequestHeader('Authorization', 'Bearer tokencoba');
+                    // },
                     dataType: 'json',  
                     success: function(data, textStatus, xhr) { 
                       var list_data = ''
@@ -282,29 +283,29 @@
       var id_tiket_session = 1;
 
       $.ajax({  
-          url: kel1_api+'/items/ticket?fields=ticket_id,ticket_type,ticket_x_session.session_id.*,ticket_x_day.day_id.*',  
-          type: 'GET',  
-          dataType: 'json',  
-          success: function(data, textStatus, xhr) { 
-              // data.data.map(item => {
-                  let nama = data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.session_desc
-                  let time_start = new Date(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.start_time)
-                  let time_finish = new Date(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.finish_time)
-                  
-                  let day = moment(time_start).format('dddd')
-                  let time_begin = moment(time_start).format('HH:mm')
-                  let time_end = moment(time_finish).format('HH:mm')
-                  let date = moment(time_start).format('LL') 
+        url: kel1_api+'/items/ticket?fields=ticket_id,ticket_type,ticket_x_session.session_id.*,ticket_x_day.day_id.*',  
+        type: 'GET',  
+        dataType: 'json',  
+        success: function(data, textStatus, xhr) { 
+            // data.data.map(item => {
+                let nama = data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.session_desc
+                let time_start = new Date(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.start_time)
+                let time_finish = new Date(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.finish_time)
+                
+                let day = moment(time_start).format('dddd')
+                let time_begin = moment(time_start).format('HH:mm')
+                let time_end = moment(time_finish).format('HH:mm')
+                let date = moment(time_start).format('LL') 
 
-                  $('#event-name').text(nama)
-                  $('#date-time').text(day+", "+date+" | "+time_begin+" - "+time_end+" WIB")
-                  // $('#time').text(time_begin+" - "+time_end)
+                $('#event-name').text(nama)
+                $('#date-time').text(day+", "+date+" | "+time_begin+" - "+time_end+" WIB")
+                // $('#time').text(time_begin+" - "+time_end)
 
-              // }) 
-          },
-          error: function(xhr, textStatus, errorThrown) {  
-              console.log('Error in Database');  
-          }
+            // }) 
+        },
+        error: function(xhr, textStatus, errorThrown) {  
+            console.log('Error in Database');  
+        }
       })
 
       //search accordion question pool
@@ -529,48 +530,51 @@
       }
         
         //button filter to sort accordion
-        // $("body").on("click", '#filter-btn', function(){
+        $("body").on("click", '#filter-btn', function(){
   
         //   console.log("length: "+arr_all.length)
         //   console.log(arr_all[arr_all.length-1])
-        //   arr_all.sort(SortByName)
+          // arr_all.sort(SortByName)
+          console.log(arr_all)
+          arr_all = []
+          console.log(arr_all)
           
-        //   if(status_sort === 0){
-        //     status_sort = 1
+          if(status_sort === 0){
+            status_sort = 1
             
-        //     for (var i = 0; i < arr_all.length; i++) {
+            for (var i = 0; i < arr_all.length; i++) {
               
-        //       let elements=`<div class="accordion-item rounded" id="accordion-item-${i+1}">
-        //                       <h3 class="accordion-header" id="heading-${i+1}">
-        //                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-${i+1}" aria-expanded="false" aria-controls="flush-${i+1}">
-        //                           <div class="align-items-center " style="width: 90%!important;">
-        //                             <span id="customer-${i+1}" class="fw-bold mb-2">${arr_all[i].name}</span>
-        //                             <div class="small text-truncate mt-2">${i+1} Earnest greater on no observe fortune norland. Hunted mrs ham wishes stairs. Continued he as so breakfast shameless. All men drew its post knew. Of talking of calling however civilly wishing resolve.</div>
-        //                           </div>
-        //                         </button>
-        //                       </h3>
-        //                       <div id="flush-${i+1}" class="accordion-collapse collapse" aria-labelledby="heading-${i+1}" data-bs-parent="#accordionFlush">
-        //                         <div class="accordion-body">
-        //                           <p>Earnest greater on ${i+1} no observe fortune norland. Hunted mrs ham wishes stairs. Continued he as so breakfast shameless. All men drew its post knew. Of talking of calling however civilly wishing resolve.</p>
-        //                           <div class="d-grid gap-2">
-        //                             <button type="button" data-array-index="${i+1}" class="btn btn-outline-primary btn-choose">Pilih</button>
-        //                           </div>
-        //                         </div>
-        //                       </div>
-        //                     </div>`
+              let elements=`<div class="accordion-item rounded" id="accordion-item-${i+1}">
+                              <h3 class="accordion-header" id="heading-${i+1}">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-${i+1}" aria-expanded="false" aria-controls="flush-${i+1}">
+                                  <div class="align-items-center " style="width: 90%!important;">
+                                    <span id="customer-${i+1}" class="fw-bold mb-2">${arr_all[i].name}</span>
+                                    <div class="small text-truncate mt-2">${i+1} Earnest greater on no observe fortune norland. Hunted mrs ham wishes stairs. Continued he as so breakfast shameless. All men drew its post knew. Of talking of calling however civilly wishing resolve.</div>
+                                  </div>
+                                </button>
+                              </h3>
+                              <div id="flush-${i+1}" class="accordion-collapse collapse" aria-labelledby="heading-${i+1}" data-bs-parent="#accordionFlush">
+                                <div class="accordion-body">
+                                  <p>Earnest greater on ${i+1} no observe fortune norland. Hunted mrs ham wishes stairs. Continued he as so breakfast shameless. All men drew its post knew. Of talking of calling however civilly wishing resolve.</p>
+                                  <div class="d-grid gap-2">
+                                    <button type="button" data-array-index="${i+1}" class="btn btn-outline-primary btn-choose">Pilih</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>`
               
         //       // console.log(arr)
         //       console.log(i + arr_all[i].name)
-        //       $("#accordionFlushExample #accordion-item-"+(i+1)).remove()
-        //       $(elements).appendTo("#accordionFlushExample");
+              $("#accordionFlushExample #accordion-item-"+(i+1)).remove()
+              $(elements).appendTo("#accordionFlushExample");
               
-        //     }
+            }
 
-        //   }   
+          }   
 
           
 
-        // })
+        })
         
       counter();
 
@@ -584,16 +588,13 @@
 
         
     </script>
+
     <script src="../chat.js"></script>
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
     <!-- moment Js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
-    <script>
-      moment.locale('id');
-      console.log(moment(Date.now()).fromNow());
-    </script>
 
   </body>
 </html>

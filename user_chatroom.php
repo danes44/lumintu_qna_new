@@ -203,7 +203,7 @@ $nama_peserta = get_nama($peserta_id[1]);
         // Koneksi Websocket
         $(document).ready(function(){
 
-            var conn = new WebSocket('ws://localhost:8082');
+            var conn = new WebSocket('ws://localhost:8082'); //dibuat dinamis
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };

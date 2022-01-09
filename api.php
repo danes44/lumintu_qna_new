@@ -1,4 +1,4 @@
 <?php
-    $kel1_api = "http://192.168.18.67:8001";
-    $kel2_api = "http://192.168.18.67:8002";
+    $kel1_api = "https://api-ticket.arisukarno.xyz";
+    $kel2_api = "https://checkin.nvia.xyz";
 ?>

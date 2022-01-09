@@ -16,7 +16,7 @@ if (!isset($_SESSION['is_login'])) {
 
     <script src="../api.js"></script>
     <!-- Bootstrap CSS -->
-    <link
+    <link 
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
@@ -27,16 +27,16 @@ if (!isset($_SESSION['is_login'])) {
     <!-- Custom styles for this template -->
     <link href="style.css" rel="stylesheet" />
   </head>
-  <body>
+  <body style="background-color: #38435f;">
     <!--<div class="container"></div>-->
     <div
-      class="container shadow-lg"
+      class="container "
       style="
         height: auto;
         width: auto;
         margin-bottom: 30px;
         margin-top: 30px;
-        background-color: #38435f;
+        
         position: relative;
         padding-bottom: 20px;
       "
@@ -94,7 +94,7 @@ if (!isset($_SESSION['is_login'])) {
                         let eventbenar = new Date(time_start - jam)
                         // jika waktu mulai masih blm lewat : beda sejam 
                         // 25/10/2021 16:11 <= 01/12/2021 09:00
-                        if( new Date('2021-12-01T09:00:00') >= eventbenar ){
+                        if( new Date('2021-12-05T09:00:00') >= eventbenar ){
                             button_chat += "Segera dalam 1 Jam"
                         } else { // 
                             
@@ -110,7 +110,7 @@ if (!isset($_SESSION['is_login'])) {
                         }
 
                         html_data += '<div class="mb-4 col-lg-3 col-md-6 col-sm-12 card-group">' + 
-                                        '<div class="card border-0" style="background-color:#ffffff;">' +
+                                        '<div class="card border-0 shadow-lg" style="background-color:#ffffff;">' +
                                             '<img src="../assets/event1.jpg" class="card-img-top" alt="..." style="height: 140px; width=30px">' +
                                             '<div class="card-body text-center">' +
                                                 '<h6 class="card-title fw-bold">' + nama_event + '</h6>' +

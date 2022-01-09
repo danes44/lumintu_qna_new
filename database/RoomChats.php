@@ -1,7 +1,8 @@
 <?php
 	include("connection.php");
+	include("../api.php");
 
-	$kel1_api = "http://192.168.18.67:8001";
+	// $kel1_api = "http://192.168.18.67:8001";
 
 	$id_chat = $_GET['id_session'];
 	$id_session = $_GET['id_session'];
@@ -18,8 +19,13 @@
 
 	$jam_mulai = $hasil_sesi["data"][0]["start_time"];
 	$jam_selesai = $hasil_sesi["data"][0]["finish_time"];
+
+	$temp = new DateTime($jam_mulai);
+	// echo $temp->;
+	echo $jam_mulai;
 		
 		if ($cek > 0) { 
+			// if ( new DateTime("2021-12-01T10:00:00") >= new DateTime($jam_mulai) && new DateTime("2021-12-01T11:00:00") < new DateTime($jam_selesai) ){ // SUDAH BERJALAN
 			if ( new DateTime("2021-12-01T10:00:00") >= new DateTime($jam_mulai) && new DateTime("2021-12-01T11:00:00") < new DateTime($jam_selesai) ){ // SUDAH BERJALAN
 				echo "<script>alert('Memasuki Chatroom!');document.location.href='../admin/admin_chatroom.php?id_session=".$id_chat."';</script>";
 			} else { // SUDAH SELESAI
