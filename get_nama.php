@@ -3,8 +3,9 @@
 // $kel1_api = "http://192.168.18.67:8001";
 
 function get_nama($id_participant){
-	// echo $kel1_api;
-    $kel1_api = "http://192.168.18.67:8001";
+    require("api.php");
+//	 echo $id_participant;
+//    $kel1_api = "http://192.168.18.67:8001";
 	$url = $kel1_api."/items/customer?fields=customer_id,customer_name&filter[customer_id]=".$id_participant;
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_URL, $url);

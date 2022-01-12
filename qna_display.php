@@ -138,6 +138,7 @@ $chat_data = $chat_object->get_all_chat_data();
 </body>          
     <script>
         var id_tiket = $('#login_id_ticket').val();
+        console.log(id_tiket)
         var id_tiket_session = $('#login_id_sesi').val();
         $.ajax({  
             url: kel1_api+'/items/ticket?fields=ticket_id,ticket_type,ticket_x_session.session_id.*,ticket_x_day.day_id.*&filter[ticket_id]='+id_tiket,  

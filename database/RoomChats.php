@@ -21,12 +21,17 @@
 	$jam_selesai = $hasil_sesi["data"][0]["finish_time"];
 
 	$temp = new DateTime($jam_mulai);
-	// echo $temp->;
-	echo $jam_mulai;
+	// echo $temp->format('Y-m-d H:i:s');
+	// echo $jam_mulai;
+	// echo $cek;
+
+	// if(new DateTime("2021-12-01T11:00:00") < new DateTime($jam_selesai)){
+	// 	echo "berhasil masuk ";
+	// }
 		
 		if ($cek > 0) { 
 			// if ( new DateTime("2021-12-01T10:00:00") >= new DateTime($jam_mulai) && new DateTime("2021-12-01T11:00:00") < new DateTime($jam_selesai) ){ // SUDAH BERJALAN
-			if ( new DateTime("2021-12-01T10:00:00") >= new DateTime($jam_mulai) && new DateTime("2021-12-01T11:00:00") < new DateTime($jam_selesai) ){ // SUDAH BERJALAN
+			if ( new DateTime("2021-12-02T10:00:00") >= new DateTime($jam_mulai) && new DateTime("2021-12-01T11:00:00") < new DateTime($jam_selesai) ){ // SUDAH BERJALAN
 				echo "<script>alert('Memasuki Chatroom!');document.location.href='../admin/admin_chatroom.php?id_session=".$id_chat."';</script>";
 			} else { // SUDAH SELESAI
 				$sql2 = mysqli_query($conn, "UPDATE chats SET status='1' WHERE id_chat=$id_chat");

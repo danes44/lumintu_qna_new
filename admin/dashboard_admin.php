@@ -90,21 +90,26 @@ if (!isset($_SESSION['is_login'])) {
                         let time_end = moment(time_finish).format('LT')
                         let date = moment(time_start).format('LL')  
                         let button_chat = ""
+                        let warna = ""
                         let jam = 60 * 60 * 1000
                         let eventbenar = new Date(time_start - jam)
                         // jika waktu mulai masih blm lewat : beda sejam 
                         // 25/10/2021 16:11 <= 01/12/2021 09:00
-                        if( new Date('2021-12-05T09:00:00') >= eventbenar ){
+                        if( new Date('2021-12-01T18:00:00') >= eventbenar ){
                             button_chat += "Segera dalam 1 Jam"
+                            warna += "primary"
                         } else { // 
                             
                             // jika waktu mulai sudah lewat tapi waktu finish belum
                             if( new Date() < time_start && new Date() < time_finish) {
                                 button_chat += "Segera";
+                                warna += "warning"
                             } else if (new Date() > time_start && new Date() < time_finish) {
                                 button_chat += "Berjalan"
+                                warna += "success"
                             } else { // jika waktu mulai dan waktu finish sudah lewat
                                 button_chat += "Selesai"
+                                warna += "secondary disabled"
                             }
                             // button_chat += "Beda"
                         }
@@ -116,10 +121,11 @@ if (!isset($_SESSION['is_login'])) {
                                                 '<h6 class="card-title fw-bold">' + nama_event + '</h6>' +
                                                 '<p class="card-text"><small>' + day + ', ' + date + '<br>' + time_begin + ' - ' + time_end + '</small></p>' +
                                                 '<div class="card-footer border-0" style="background-color:transparent"> '+
-                                                    '<a href="../database/RoomChats.php?id_session='+ id_session +'" class="btn btn-sm btn-primary bottom-0">' + button_chat + '</a>' +
+                                                    '<a href="../database/RoomChats.php?id_session='+ id_session +'" class="btn btn-sm btn-'+ warna +' bottom-0">' + button_chat + '</a>' +
                                                 '</div>' +
                                             '</div>'+
                                         '</div>' +
+
                                     '</div>';   
                     }
                 }
@@ -130,7 +136,6 @@ if (!isset($_SESSION['is_login'])) {
             }
         })
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- moment Js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>

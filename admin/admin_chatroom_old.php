@@ -292,12 +292,11 @@
       var arr_customers = []
       var arr_all = []
       var arr_sorted = []
-      var arr_temp = []
       var arr_choose = []
       var arr_answered = []
       var status_sort = 0
 
-      getDataCustomer()
+      getDataCustomer(3)
 
 
       $.ajax({
@@ -333,8 +332,9 @@
         }
       })
 
-      // get data dari API customer
-      function getDataCustomer() {
+      //get data dari API customer
+      function getDataCustomer(status_message) {
+          console.log(status_message)
           arr_customers.length = 0
           arr_all.length = 0
           $.ajax({
@@ -357,44 +357,171 @@
               }
 
           }).done(function (){
-              getMessagesDatabase()
-          })
+              //get data message dari database
+              // function getMessages(status_message) {
+              //     console.log(status_message)
+                  if(status_message == 0) {
+                      console.log(status_message)
+                      console.log(arr_all)
+                      $.ajax({
+                          url: '../get_messages.php',
+                          type: 'POST',
+                          // dataType: 'json',
+                          data: {
+                              status: '0'
+                          },
+                          success: function (data, textStatus, xhr) {
 
-      }
+                              for (var i = 0; i < data.length; i++) {
+                                  console.log(data.length)
+                                  // match data berdasarkan id pengirim/nama pengirim (ini belum)
+                                  for (var j = 0; j < arr_customers.length; j++) {
 
-      function getMessagesDatabase() {
-          console.log(arr_all)
-          $.ajax({
-              url: '../get_messages.php',
-              type: 'GET',
-              dataType: 'json',
-              success: function (data, textStatus, xhr) {
-                  console.log(data.length)
-                  for (var i = 0; i < data.length; i++) {
-                      // match data berdasarkan id pengirim/nama pengirim (ini belum)
-                      for (var j = 0; j < arr_customers.length; j++) {
+                                      if (arr_customers[j].id == data[i].id_pengirim) {
+                                          arr_all.push({
+                                              id_pesan: data[i].id_message,
+                                              id_chat: data[i].id_chat,
+                                              id_pengirim: data[i].id_pengirim,
+                                              nama: arr_customers[j].name,
+                                              pesan: data[i].pesan,
+                                              status: data[i].status,
+                                              waktu_pengiriman: data[i].waktu_pengiriman,
+                                          });
+                                          console.log("masuk sini")
+                                      }
+                                  }
+                              }
 
-                          if (arr_customers[j].id == data[i].id_pengirim) {
-                              arr_all.push({
-                                  id_pesan: data[i].id_message,
-                                  id_chat: data[i].id_chat,
-                                  id_pengirim: data[i].id_pengirim,
-                                  nama: arr_customers[j].name,
-                                  pesan: data[i].pesan,
-                                  status: data[i].status,
-                                  waktu_pengiriman: data[i].waktu_pengiriman,
-                              });
-                              console.log("masuk sini")
+                          },
+                          error: function (xhr, textStatus, errorThrown) {
+                              console.log(errorThrown + " " + xhr + " " + textStatus);
                           }
-                      }
-                  }
+                      })
+                          // .then(function (data) {
+                          // for (var i = 0; i < data.length; i++) {
+                          //     // match data berdasarkan id pengirim/nama pengirim (ini belum)
+                          //     for (var j = 0; j < arr_customers.length; j++) {
+                          //         if (arr_customers[j].id == data[i].id_pengirim) {
+                          //             arr_all.push({
+                          //                 id_pesan: data[i].id_message,
+                          //                 id_chat: data[i].id_chat,
+                          //                 id_pengirim: data[i].id_pengirim,
+                          //                 nama: arr_customers[j].name,
+                          //                 pesan: data[i].pesan,
+                          //                 status: data[i].status,
+                          //                 waktu_pengiriman: data[i].waktu_pengiriman,
+                          //             });
+                          //             console.log("masuk sini")
+                          //         }
+                          //     }
+                          // }
 
-              },
-              error: function (xhr, textStatus, errorThrown) {
-                  console.log(errorThrown + " " + xhr + " " + textStatus);
-              }
+                      // })
+                  }
+                  else if (status_message == 1){
+                      $.ajax({
+                          url: '../get_messages.php',
+                          type: 'POST',
+                          // dataType: 'json',
+                          data: {
+                              status: '1'
+                          },
+                          success: function (data, textStatus, xhr) {
+                              for (var i = 0; i < data.length; i++) {
+                                  // match data berdasarkan id pengirim/nama pengirim (ini belum)
+                                  for (var j = 0; j < arr_customers.length; j++) {
+                                      if (arr_customers[j].id == data[i].id_pengirim) {
+                                          arr_all.push({
+                                              id_pesan: data[i].id_message,
+                                              id_chat: data[i].id_chat,
+                                              id_pengirim: data[i].id_pengirim,
+                                              nama: arr_customers[j].name,
+                                              pesan: data[i].pesan,
+                                              status: data[i].status,
+                                              waktu_pengiriman: data[i].waktu_pengiriman,
+                                          });
+                                      }
+                                  }
+                              }
+                              // console.log(arr_all)
+                          },
+                          error: function (xhr, textStatus, errorThrown) {
+                              console.log(errorThrown);
+                          }
+                      })
+                  }
+                  else if (status_message == 2){
+                      $.ajax({
+                          url: '../get_messages.php',
+                          type: 'POST',
+                          // dataType: 'json',
+                          data: {
+                              status: '2'
+                          },
+                          success: function (data, textStatus, xhr) {
+                              for (var i = 0; i < data.length; i++) {
+                                  // match data berdasarkan id pengirim/nama pengirim (ini belum)
+                                  for (var j = 0; j < arr_customers.length; j++) {
+                                      if (arr_customers[j].id == data[i].id_pengirim) {
+                                          arr_all.push({
+                                              id_pesan: data[i].id_message,
+                                              id_chat: data[i].id_chat,
+                                              id_pengirim: data[i].id_pengirim,
+                                              nama: arr_customers[j].name,
+                                              pesan: data[i].pesan,
+                                              status: data[i].status,
+                                              waktu_pengiriman: data[i].waktu_pengiriman,
+                                          });
+                                      }
+                                  }
+                              }
+                              // console.log(arr_all)
+                          },
+                          error: function (xhr, textStatus, errorThrown) {
+                              console.log(errorThrown);
+                          }
+                      })
+                  }
+                  else{
+                      console.log("masuk else")
+                      $.ajax({
+                          url: '../get_messages.php',
+                          type: 'POST',
+                          // dataType: 'json',
+                          data: {
+                              status: '3'
+                          },
+                          success: function (data, textStatus, xhr) {
+                              console.log(data)
+                              for (var i = 0; i < data.length; i++) {
+                                  // match data berdasarkan id pengirim/nama pengirim (ini belum)
+                                  for (var j = 0; j < arr_customers.length; j++) {
+                                      if (arr_customers[j].id == data[i].id_pengirim) {
+                                          arr_all.push({
+                                              id_pesan: data[i].id_message,
+                                              id_chat: data[i].id_chat,
+                                              id_pengirim: data[i].id_pengirim,
+                                              nama: arr_customers[j].name,
+                                              pesan: data[i].pesan,
+                                              status: data[i].status,
+                                              waktu_pengiriman: data[i].waktu_pengiriman,
+                                          });
+                                      }
+                                  }
+                              }
+                              // console.log(arr_all)
+                          },
+                          error: function (xhr, textStatus, errorThrown) {
+                              console.log(errorThrown);
+                          }
+                      })
+                  }
+              // }
+
           })
+
       }
+
 
       //search accordion question pool
       $("#search-accordion").on("keyup", function() {
@@ -432,10 +559,7 @@
         var id_numb = id_accordion_header.split("-");
         var idm = id_numb[1]
         console.log(idm)
-          // if(status_sort == 1) {
-          //     var filtered = arr_sorted.filter(function(el) { return el.id_pesan == idm });
-          // }
-          // console.log(arr_sorted)
+
         $.ajax({
           url: "../update.php",
           type: "POST",
@@ -449,7 +573,6 @@
             if(dataResult.statusCode==200){
               console.log('Data updated successfully ! '+idm+' apa');         
             }
-              status_sort == 0
           }
         });
         var cust_name = $(this).parent().parent().parent().siblings().children().children().children('span').text()
@@ -681,78 +804,89 @@
         counter()
       })
 
+      //button filter to sort accordion
       $("body").on("click", '#filter-btn', function(){
-          status_sort = 1
+            console.log(arr_all)
+            // console.log(arr_all.sort(SortByName))
 
-          let arr_element = $('#accordionFlushExample .accordion-item')
-          console.log(arr_element)
-          for (let i = 0; i < arr_element.length; i++) {
-              console.log(arr_element[i])
-              $.ajax({
-                  url: "../get_messages_sorted.php",
-                  type: "GET",
-                  cache: false,
-                  dataType: 'json',
-                  data: {
-                      status: arr_all[i].status
-                      // nama : arr_all[i].nama
-                      // length : arr_all.length
-                  },
-                  success: function (data) {
-                      // for(var i = 0; i < data.length; i++){
-                          // console.log(data.data[i].customer_name)
-                          arr_temp.push({
-                              id_pesan: data[i].id_message,
-                              id_chat: data[i].id_chat,
-                              id_pengirim: data[i].id_pengirim,
-                              pesan: data[i].pesan,
-                              status: data[i].status,
-                              waktu_pengiriman: data[i].waktu_pengiriman,
-                          });
-                      // }
-                      console.log(arr_temp)
-                  }
-              })
+            // if(status_sort == 0){
+            //     status_sort = 1
+                arr_all.sort(SortByName)
+                console.log(arr_all)
 
-          }
+                for (let i = 0; i < arr_all.length; i++) {
+                    $.ajax({
+                        // url: kel1_api+'/items/customer?fields=customer_id,customer_name&filter[customer_id]=1',
+                        // type: 'GET',
+                        url: "../delete_messages.php",
+                        type: "POST",
+                        cache: false,
+                        data: {
+                            status: '0',
+                            id_message: arr_all[i].id_pesan,
+                        },
+                        success: function (dataResult) {
+                            // var dataResult = JSON.parse(dataResult);
+                            // if (dataResult.statusCode == 200) {
+                            //     console.log('Data updated successfully !');
+                            // }
+                            // console.log("hasdkjnqwkd")
 
-          for (var i = 0; i < arr_temp.length; i++) {
-              // match data berdasarkan id pengirim/nama pengirim
-              for (var j = 0; j < arr_customers.length; j++) {
-                  console.log(arr_customers[j].id == arr_temp[i].id_pengirim)
-                  if (arr_customers[j].id == arr_temp[i].id_pengirim) {
-                      arr_sorted.push({
-                          id_pesan: arr_temp[i].id_pesan,
-                          id_chat: arr_temp[i].id_chat,
-                          id_pengirim: arr_temp[i].id_pengirim,
-                          nama: arr_customers[j].name,
-                          pesan: arr_temp[i].pesan,
-                          status: arr_temp[i].status,
-                          waktu_pengiriman: arr_temp[i].waktu_pengiriman,
-                      });
-                  }
-              }
-          }
+                        }
+                    }).then(function () {
+                        console.log(arr_all[i])
+                        $.ajax({
+                            url: "../insert_messages.php",
+                            type: "POST",
+                            cache: false,
+                            data: {
+                                id_message: arr_all[i].id_pesan,
+                                id_chat: arr_all[i].id_chat,
+                                id_pengirim: arr_all[i].id_pengirim,
+                                pesan: arr_all[i].pesan,
+                                status: arr_all[i].status,
+                                waktu_pengiriman: arr_all[i].waktu_pengiriman,
+                            },
+                            success: function (dataResult) {
+                                // var dataResult = JSON.parse(dataResult);
+                                // if (dataResult.statusCode == 200) {
+                                //     console.log('Data updated successfully ! ');
+                                // }
+                                // arr_all.splice(i, 1);
+                                // if(arr_all[i].status == "0") {
+                                //     console.log("apa aja")
+                                //     arr_all.pop();
+                                // }
+                                console.log(arr_all)
 
-          console.log(arr_temp)
-          console.log(arr_sorted)
-          // getDataCustomer(0)
+                                // if (i == arr_all.length){
+                                    // arr_all = []
+                                    // console.log("stopped for loop")
+                                    // getDataCustomer(0)
+                                // }
+                            }
+                        })
+                    })
+
+                }
 
 
-          for (let i = 0; i < arr_sorted.length; i++) {
-              $("#accordionFlushExample #accordion-item-"+(arr_sorted[i].id_pesan)).remove()
-              let elements=`<div class="accordion-item rounded" id="accordion-item-${arr_sorted[i].id_pesan}">
-                                      <h3 class="accordion-header" id="heading-${arr_sorted[i].id_pesan}">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-${arr_sorted[i].id_pesan}" aria-expanded="false" aria-controls="flush-${arr_sorted[i].id_pesan}">
+                console.log(arr_customers)
+                getDataCustomer(0)
+
+                for (let i = 0; i < arr_all.length; i++) {
+                    let elements=`<div class="accordion-item rounded" id="accordion-item-${arr_all[i].id_pesan}">
+                                      <h3 class="accordion-header" id="heading-${arr_all[i].id_pesan}">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-${arr_all[i].id_pesan}" aria-expanded="false" aria-controls="flush-${i+1}">
                                           <div class="align-items-center " style="width: 90%!important;">
-                                            <span class="fw-bold mb-2">${arr_sorted[i].nama}</span>
-                                            <div class="small text-truncate mt-2">${arr_sorted[i].pesan}</div>
+                                            <span class="fw-bold mb-2">${arr_all[i].nama}</span>
+                                            <div class="small text-truncate mt-2">${arr_all[i].pesan}</div>
                                           </div>
                                         </button>
                                       </h3>
-                                      <div id="flush-${arr_sorted[i].id_pesan}" class="accordion-collapse collapse" aria-labelledby="heading-${arr_sorted[i].id_pesan}" data-bs-parent="#accordionFlush">
+                                      <div id="flush-${arr_all[i].id_pesan}" class="accordion-collapse collapse" aria-labelledby="heading-${arr_all[i].id_pesan}" data-bs-parent="#accordionFlush">
                                         <div class="accordion-body">
-                                          <p>${arr_sorted[i].pesan}</p>
+                                          <p>${arr_all[i].pesan}</p>
                                           <div class="d-grid gap-2">
                                             <button type="submit" class="btn btn-outline-primary btn-choose">Pilih</button>
                                           </div>
@@ -760,27 +894,26 @@
                                       </div>
                                 </div>`
 
+                    $("#accordionFlushExample #accordion-item-"+(arr_all[i].id_pesan)).remove()
+                    $(elements).appendTo("#accordionFlushExample");
 
-              $(elements).appendTo("#accordionFlushExample");
+                }
 
-          }
-
-
-          // }
+            // }
 
           counter();
-          arr_sorted.length = 0
-      })
 
+      })
+        
       counter();
 
-      // function SortByName(a, b){
-      //     var aName = a.nama.toLowerCase();
-      //     var bName = b.nama.toLowerCase();
-      //     return (
-      //         (aName < bName) ? -1 : ((aName > bName) ? 1 : 0)
-      //     );
-      // }
+      function SortByName(a, b){
+          var aName = a.nama.toLowerCase();
+          var bName = b.nama.toLowerCase();
+          return (
+              (aName < bName) ? -1 : ((aName > bName) ? 1 : 0)
+          );
+      }
       function counter() {
         $('#jumlah-pertanyaan').text("Jumlah : " + $('#accordionFlushExample .accordion-item').length)
         $('#jumlah-pertanyaan-terpilih').text("Jumlah : " +$('#accordionFlush-choose .accordion-item').length)
