@@ -16,7 +16,11 @@ if (!isset($_SESSION['is_login'])) {
 
     <script src="../api.js"></script>
     <!-- Bootstrap CSS -->
+<<<<<<< HEAD
     <link
+=======
+    <link 
+>>>>>>> ca6199b39032131972b84110ce667b32c73b834a
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
@@ -27,16 +31,27 @@ if (!isset($_SESSION['is_login'])) {
     <!-- Custom styles for this template -->
     <link href="style.css" rel="stylesheet" />
   </head>
+<<<<<<< HEAD
   <body>
     <!--<div class="container"></div>-->
     <div
       class="container shadow-lg"
+=======
+  <body style="background-color: #38435f;">
+    <!--<div class="container"></div>-->
+    <div
+      class="container "
+>>>>>>> ca6199b39032131972b84110ce667b32c73b834a
       style="
         height: auto;
         width: auto;
         margin-bottom: 30px;
         margin-top: 30px;
+<<<<<<< HEAD
         background-color: #38435f;
+=======
+        
+>>>>>>> ca6199b39032131972b84110ce667b32c73b834a
         position: relative;
         padding-bottom: 20px;
       "
@@ -71,7 +86,11 @@ if (!isset($_SESSION['is_login'])) {
         var id_tiket = 1;
         var id_tiket_session = 1;
         $.ajax({  
+<<<<<<< HEAD
             url: 'http://192.168.18.76:8001/items/ticket?fields=ticket_id,ticket_type,ticket_x_session.session_id.*&filter[ticket_id]=4',  
+=======
+            url: kel1_api+'/items/ticket?fields=ticket_id,ticket_type,ticket_x_session.session_id.*&filter[ticket_id]=4',  
+>>>>>>> ca6199b39032131972b84110ce667b32c73b834a
             type: 'GET',  
             dataType: 'json',  
             success: function(data, textStatus, xhr) { 
@@ -94,7 +113,11 @@ if (!isset($_SESSION['is_login'])) {
                         let eventbenar = new Date(time_start - jam)
                         // jika waktu mulai masih blm lewat : beda sejam 
                         // 25/10/2021 16:11 <= 01/12/2021 09:00
+<<<<<<< HEAD
                         if( new Date('2021-12-01T09:00:00') >= eventbenar ){
+=======
+                        if( new Date('2021-12-05T09:00:00') >= eventbenar ){
+>>>>>>> ca6199b39032131972b84110ce667b32c73b834a
                             button_chat += "Segera dalam 1 Jam"
                         } else { // 
                             
@@ -110,6 +133,7 @@ if (!isset($_SESSION['is_login'])) {
                         }
 
                         html_data += '<div class="mb-4 col-lg-3 col-md-6 col-sm-12 card-group">' + 
+<<<<<<< HEAD
                                         '<div class="card border-0" style="background-color:#ffffff;">' +
                                             '<img src="../assets/event1.jpg" class="card-img-top" alt="..." style="height: 140px; width=30px">' +
                                             '<div class="card-body text-center">' +
@@ -118,6 +142,16 @@ if (!isset($_SESSION['is_login'])) {
                                             '<div class="card-footer border-0" style="background-color:transparent"> '+
                                             '<a href="../database/RoomChats.php?id_session='+ id_session +'" class="btn btn-sm btn-primary">' + button_chat + '</a>' +
                                             '</div>' +
+=======
+                                        '<div class="card border-0 shadow-lg" style="background-color:#ffffff;">' +
+                                            '<img src="../assets/event1.jpg" class="card-img-top" alt="..." style="height: 140px; width=30px">' +
+                                            '<div class="card-body text-center">' +
+                                                '<h6 class="card-title fw-bold">' + nama_event + '</h6>' +
+                                                '<p class="card-text"><small>' + day + ', ' + date + '<br>' + time_begin + ' - ' + time_end + '</small></p>' +
+                                                '<div class="card-footer border-0" style="background-color:transparent"> '+
+                                                    '<a href="../database/RoomChats.php?id_session='+ id_session +'" class="btn btn-sm btn-primary bottom-0">' + button_chat + '</a>' +
+                                                '</div>' +
+>>>>>>> ca6199b39032131972b84110ce667b32c73b834a
                                             '</div>'+
                                         '</div>' +
                                     '</div>';   
@@ -131,5 +165,17 @@ if (!isset($_SESSION['is_login'])) {
         })
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<<<<<<< HEAD
   </body>
+=======
+    <!-- moment Js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
+    <script>
+        moment.locale('id');
+        console.log(moment(Date.now()).fromNow());
+    </script>
+
+    </body>
+>>>>>>> ca6199b39032131972b84110ce667b32c73b834a
 </html>

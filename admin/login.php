@@ -8,6 +8,7 @@ include '../database/connection.php';
 // Check apakah terdapat post Login
 if (isset($_POST['login'])) {
 	// username 
+<<<<<<< HEAD
 	$user = htmlspecialchars($_POST['user']);
 	// password
 	$pass = mysqli_real_escape_string($_POST['pass']);
@@ -15,6 +16,14 @@ if (isset($_POST['login'])) {
 	// sql query 
 	$id = intval($_GET['id']);
 	$sql = mysqli_query($conn, "SELECT * FROM admins WHERE username ='$user' AND password='$pass'".$id);
+=======
+	$user = $_POST['user'];
+	// password
+	$pass = $_POST['pass'];
+
+	// sql query 
+	$sql = mysqli_query($conn, "SELECT * FROM admins WHERE username ='$user' AND password='$pass'");
+>>>>>>> ca6199b39032131972b84110ce667b32c73b834a
 	$cek = mysqli_num_rows($sql);
 
 	// apakah user tersebut ada 

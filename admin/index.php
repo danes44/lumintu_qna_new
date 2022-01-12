@@ -19,6 +19,7 @@
         style="height: 600px; margin-top:30px;"
       >
         <div class="card rounded shadow mx-auto" style="background-color: #38435F; width:420px; margin-bottom:auto; margin-top:auto;">
+<<<<<<< HEAD
           <div class="card-body" style="margin-top:auto; margin-bottom:auto;">
               <div  style="text-align:right;">
                 <img src="../assets/logo_kraton.png" style="height: 30px; width: 100px;">
@@ -44,6 +45,31 @@
               <div
               class="mb-3"
               style="margin-right: 2rem; margin-left: 2rem; margin-top: 0rem">
+=======
+          <div class="card-body px-5" style="margin-top:auto; margin-bottom:auto;">
+            <div class="mt-3" style="text-align:center;">
+              <img src="../assets/logo_kraton.png" style="height: 30px; width: 100px;">
+            </div>
+            <h2 class="card-title fw-bold text-center text-white pt-3 pb-3" >Login Admin</h2>
+            <form action="login.php" method="post" class="needs-validation" novalidate>
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label username text-white"
+                  >Username
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                  name="user"
+                  placeholder="Masukan Username"
+                  required
+                />
+                <div class="invalid-feedback">
+                  Username harus terisi
+                </div>
+              </div>
+              <div class="mb-5">
+>>>>>>> ca6199b39032131972b84110ce667b32c73b834a
                 <label for="exampleFormControlInput2" class="form-label email text-white"
                 >Password
                 </label>
@@ -59,6 +85,7 @@
                   Password harus terisi
                 </div>
               </div>
+<<<<<<< HEAD
               <div class="mb-3" style="margin-right: 2rem; margin-left: 2rem; margin-top: 2rem">
               <button
                   type="submit"
@@ -70,6 +97,19 @@
                   "
                 ><b>Login </b> 
               </button>
+=======
+              <div class="mt-5 mb-3">
+                <button
+                    type="submit"
+                    class="btn text-white text-center"
+                    name="login"
+                    style="
+                      background-color: #d4af37;
+                    width:100%;
+                    "
+                  ><b>Login </b> 
+                </button>
+>>>>>>> ca6199b39032131972b84110ce667b32c73b834a
               </div>
             </form>
           </div>
