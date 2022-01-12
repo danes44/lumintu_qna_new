@@ -1,6 +1,6 @@
 <?php
 function get_nama($id_participant){
-	$url = "http://192.168.18.76:8001/items/customer?fields=customer_id,customer_name&filter[customer_id]=".$id_participant;
+	$url = "http://lumintu-tiket.tamiaindah.xyz:8055/items/customer?fields=customer_id,customer_name&filter[customer_id]=".$id_participant;
 	$curl = curl_init();
     curl_setopt($curl, CURLOPT_URL, $url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);

@@ -104,6 +104,14 @@ class ChatRooms
 		$statement->execute();
 	}
 
+	function save_port($port){
+		$query = "
+		INSERT INTO chats 
+			(port) 
+			VALUES ($port)
+		";
+	}
+
 	function get_all_chat_data()
 	{
 		$query = "
@@ -129,6 +137,7 @@ class ChatRooms
 
 		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	}
+
 }
 	
 ?>

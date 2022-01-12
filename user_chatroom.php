@@ -202,8 +202,8 @@ $nama_peserta = get_nama($peserta_id[1]);
 
         // Koneksi Websocket
         $(document).ready(function(){
-
-            var conn = new WebSocket('ws://localhost:8081');
+            require_once '..\admin\check_port.php';
+            var conn = new WebSocket('ws://23.100.16.66:'$port'');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
