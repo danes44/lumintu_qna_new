@@ -7,15 +7,15 @@ include '../database/connection.php';
 
 // Check apakah terdapat post Login
 if (isset($_POST['login'])) {
-	// username 
-	$user = $_POST['user'];
+	// username
+	$user = htmlspecialchars($_POST['user']);
 	// password
-	$pass = $_POST['pass'];
+	$pass = mysqli_real_escape_string($conn, $_POST['pass']);
 
 	// sql query 
+	// $id = intval($_GET['id']);
 	$sql = mysqli_query($conn, "SELECT * FROM admins WHERE username ='$user' AND password='$pass'");
 	$cek = mysqli_num_rows($sql);
-
 	// apakah user tersebut ada 
 	if ($cek > 0) {
 		// buat session login
@@ -26,6 +26,7 @@ if (isset($_POST['login'])) {
 	}
 	else{
 		// beri pesan dan dialihkan ke halaman login
+		echo "<script>alert('Akun tidak temukan. Coba lagi!')</script>";
 		echo "<script>document.location.href='index.php';</script>";
 	}
 }

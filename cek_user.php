@@ -37,7 +37,7 @@
     } else {
         if ( new DateTime("2021-12-02T10:00:00") >= new DateTime($jam_mulai) && new DateTime("2021-12-01T11:00:00") < new DateTime($jam_selesai) ){
             if (is_null($cek_check)){
-            echo "<script>alert('peserta belum checkpoint!');document.location.href='/lumintu_qna/error-page/error_checkpoint.html';</script>";
+                echo "<script>alert('peserta belum checkpoint!');document.location.href='/lumintu_qna/error-page/error_checkpoint.html';</script>";
             } else {
                 echo "<script>alert('peserta dengan id ".$hasil["data"][0]["id_participant"]." jam mulai :".$jam_mulai.", silahkan masuk!');document.location.href='/lumintu_qna/user_chatroom.php?".$uri_path."';</script>";
             }

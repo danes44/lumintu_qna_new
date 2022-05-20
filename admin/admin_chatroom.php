@@ -144,31 +144,31 @@
           <div class="accordion accordion-flush shadow-lg text-black rounded-top" id="accordionFlush-choose" >
             <?php
                 foreach($chat_data as $chat){
-                    $str1 = str_split($chat["waktu_pengiriman"], 10);
-                    $jam_pesan = str_split($str1[1], 6);
+                  $str1 = str_split($chat["waktu_pengiriman"], 10);
+                  $jam_pesan = str_split($str1[1], 6);
 
-                    if ($chat["id_chat"] == $_GET["id_session"] && $chat["status"]==1){
-                        $nama_peserta = get_nama($chat["id_pengirim"]);
-                        $id = $chat["id_message"];
-                        echo '<div class="accordion-item rounded" id="accordion-item-'.$chat["id_message"].'">
-                                  <h3 class="accordion-header" id="heading-'.$chat["id_message"].'">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-'.$chat["id_message"].'"" aria-expanded="false" aria-controls="flush-'.$chat["id_message"].'"">
-                                      <div class="align-items-center " style="width: 90%!important;">
-                                        <span class="fw-bold mb-2">'.$nama_peserta.'</span>
-                                        <div class="small text-truncate mt-2">'.$chat["pesan"].'</div>
-                                      </div>
-                                    </button>
-                                  </h3>
-                                  <div id="flush-'.$chat["id_message"].'" class="accordion-collapse collapse" aria-labelledby="heading-'.$chat["id_message"].'"" data-bs-parent="#accordionFlush">
-                                    <div class="accordion-body">
-                                      <p>'.$chat["pesan"].'</p>
-                                      <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-outline-danger d-block btn-delete">Hapus</button>
-                                        <button type="submit" class="btn btn-outline-success d-block btn-done">Selesai Jawab</button>
-                                      </div>
+                  if ($chat["id_chat"] == $_GET["id_session"] && $chat["status"]==1){
+                      $nama_peserta = get_nama($chat["id_pengirim"]);
+                      $id = $chat["id_message"];
+                      echo '<div class="accordion-item rounded" id="accordion-item-'.$chat["id_message"].'">
+                                <h3 class="accordion-header" id="heading-'.$chat["id_message"].'">
+                                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-'.$chat["id_message"].'"" aria-expanded="false" aria-controls="flush-'.$chat["id_message"].'"">
+                                    <div class="align-items-center " style="width: 90%!important;">
+                                      <span class="fw-bold mb-2">'.$nama_peserta.'</span>
+                                      <div class="small text-truncate mt-2">'.$chat["pesan"].'</div>
+                                    </div>
+                                  </button>
+                                </h3>
+                                <div id="flush-'.$chat["id_message"].'" class="accordion-collapse collapse" aria-labelledby="heading-'.$chat["id_message"].'"" data-bs-parent="#accordionFlush">
+                                  <div class="accordion-body">
+                                    <p>'.$chat["pesan"].'</p>
+                                    <div class="d-grid gap-2">
+                                      <button type="submit" class="btn btn-outline-danger d-block btn-delete">Hapus</button>
+                                      <button type="submit" class="btn btn-outline-success d-block btn-done">Selesai Jawab</button>
                                     </div>
                                   </div>
-                               </div>';
+                                </div>
+                              </div>';
                   }
                 }
             ?>

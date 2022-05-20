@@ -57,17 +57,17 @@
                   Password harus terisi
                 </div>
               </div>
-              <div class="mt-5 mb-3">
-                <button
-                    type="submit"
-                    class="btn text-white text-center"
-                    name="login"
-                    style="
-                      background-color: #d4af37;
-                    width:100%;
-                    "
-                  ><b>Login </b> 
-                </button>
+              <div class="mb-3" style="margin-right: 2rem; margin-left: 2rem; margin-top: 2rem">
+              <button
+                  type="submit"
+                  class="btn text-white text-center"
+                  name="login"
+                  style="
+                    background-color: #d4af37;
+                  width:100%;
+                  "
+                ><b>Login </b> 
+              </button>
               </div>
             </form>
           </div>

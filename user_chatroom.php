@@ -202,8 +202,13 @@ $nama_peserta = get_nama($peserta_id[1]);
 
         // Koneksi Websocket
         $(document).ready(function(){
+<<<<<<< HEAD
+            require_once '..\admin\check_port.php';
+            var conn = new WebSocket('ws://23.100.16.66:'$port'');
+=======
 
             var conn = new WebSocket('ws://localhost:8082'); //dibuat dinamis
+>>>>>>> ca6199b39032131972b84110ce667b32c73b834a
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
@@ -276,8 +281,8 @@ $nama_peserta = get_nama($peserta_id[1]);
         <script>
         var id_tiket = $('#login_id_ticket').val();
         var id_tiket_session = $('#login_id_sesi').val();
-        $.ajax({  
-            url: kel1_api+'/items/ticket?fields=ticket_id,ticket_type,ticket_x_session.session_id.*,ticket_x_day.day_id.*',  
+        $.ajax({
+            url: kel1_api+'/items/ticket?fields=ticket_id,ticket_type,ticket_x_session.session_id.*,ticket_x_day.day_id.*',
             type: 'GET',  
             dataType: 'json',  
             success: function(data, textStatus, xhr) { //callback - pengganti promise
