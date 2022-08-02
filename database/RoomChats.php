@@ -30,8 +30,6 @@
 	include("connection.php");
 	include("../api.php");
 
-	// $kel1_api = "http://192.168.18.67:8001";
-
 	$id_chat = $_GET['id_session'];
 	$id_session = $_GET['id_session'];
 	$sql = mysqli_query($conn, "SELECT * from chats WHERE id_chat='$id_chat' and id_session='$id_session'");
@@ -57,16 +55,16 @@
 	// 	echo "berhasil masuk ";
 	// }
 		
-		if ($cek > 0) { 
-			// if ( new DateTime("2021-12-01T10:00:00") >= new DateTime($jam_mulai) && new DateTime("2021-12-01T11:00:00") < new DateTime($jam_selesai) ){ // SUDAH BERJALAN
-			if ( new DateTime("2021-12-03T10:00:00") >= new DateTime($jam_mulai) && new DateTime("2021-12-01T11:00:00") < new DateTime($jam_selesai) ){ // SUDAH BERJALAN
-				echo "<script>alert('Memasuki Chatroom!');document.location.href='../admin/admin_chatroom.php?id_session=".$id_chat."';</script>";
-			} else { // SUDAH SELESAI
-				$sql2 = mysqli_query($conn, "UPDATE chats SET status='1' WHERE id_chat=$id_chat");
-				echo "<script>alert('Sesi sudah selesai!');document.location.href='../error-page/error_jam_sudah.html';</script>";
-			}
-		} else { // BELUM DIMULAI
-			$sql1 = mysqli_query($conn, "INSERT into chats (id_chat, id_session, status) VALUES ($id_chat, $id_session, 0)");
-			echo "<script>alert('Enter Chatroom!');document.location.href='../admin/admin_chatroom.php?id_session=".$id_chat."';</script>";
+	if ($cek > 0) { 
+		// if ( new DateTime("2021-12-01T10:00:00") >= new DateTime($jam_mulai) && new DateTime("2021-12-01T11:00:00") < new DateTime($jam_selesai) ){ // SUDAH BERJALAN
+		if ( new DateTime("2021-12-03T10:00:00") >= new DateTime($jam_mulai) && new DateTime("2021-12-01T11:00:00") < new DateTime($jam_selesai) ){ // SUDAH BERJALAN
+			echo "<script>alert('Memasuki Chatroom!');document.location.href='../admin/admin_chatroom.php?id_session=".$id_chat."';</script>";
+		} else { // SUDAH SELESAI
+			$sql2 = mysqli_query($conn, "UPDATE chats SET status='1' WHERE id_chat=$id_chat");
+			echo "<script>alert('Sesi sudah selesai!');document.location.href='../error-page/error_jam_sudah.html';</script>";
 		}
+	} else { // BELUM DIMULAI
+		$sql1 = mysqli_query($conn, "INSERT into chats (id_chat, id_session, status) VALUES ($id_chat, $id_session, 0)");
+		echo "<script>alert('Enter Chatroom!');document.location.href='../admin/admin_chatroom.php?id_session=".$id_chat."';</script>";
+	}
 ?>

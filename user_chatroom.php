@@ -1,27 +1,30 @@
 <?php
 
-require('database/ChatRooms.php');
-include("crypt.php");
-include("get_nama.php");
+    require('database/ChatRooms.php');
+    include("crypt.php");
+    include("get_nama.php");
 
-$chat_object = new ChatRooms;
+    $chat_object = new ChatRooms;
 
-$chat_data = $chat_object->get_all_chat_data();
+    $chat_data = $chat_object->get_all_chat_data();
 
-$uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-// $uri_segments = explode('/', $uri_path);
-$hasilHash = mycrypt("decrypt", $uri_path);
-$arrayHasil = explode("&", $hasilHash);
-$peserta_id = explode("=",$arrayHasil[0]);
-$ticket_id = explode("=",$arrayHasil[1]);
-$sesi_id = explode("=",$arrayHasil[2]);
+    $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+    // $uri_segments = explode('/', $uri_path);
+    $hasilHash = mycrypt("decrypt", $uri_path);
+    $arrayHasil = explode("&", $hasilHash);
+    $peserta_id = explode("=",$arrayHasil[0]);
+    $ticket_id = explode("=",$arrayHasil[1]);
+    $sesi_id = explode("=",$arrayHasil[2]);
 
-$nama_peserta = get_nama($peserta_id[1]);
+    $nama_peserta = get_nama($peserta_id[1]);
+    $i_x_waktu = array();
 
-?> 
+//    echo $date->format('Y-m-d H:i:s');
+?>
 
-<!doctype html>
+<!Doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
@@ -29,213 +32,373 @@ $nama_peserta = get_nama($peserta_id[1]);
     <title>User QnA</title>
 
     <script src="api.js"></script>
+
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-
-    
-    <script src="vendor-front/jquery/jquery.min.js"></script>
-    <script src="vendor-front/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor-front/jquery-easing/jquery.easing.min.js"></script>
-
-    <script type="text/javascript" src="vendor-front/parsley/dist/parsley.min.js"></script>
-    
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <script src="http://parsleyjs.org/dist/parsley.js"></script>
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
     <link href="css-js/qna/style.css" rel="stylesheet">
-    
+
+    <!-- Bootstrap Icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+
+<!--    <script src="vendor-front/jquery/jquery.min.js"></script>-->
+<!--    <script src="vendor-front/bootstrap/js/bootstrap.bundle.min.js"></script>-->
+
+    <!-- Core plugin JavaScript-->
+<!--    <script src="vendor-front/jquery-easing/jquery.easing.min.js"></script>-->
+<!---->
+<!--    <script type="text/javascript" src="vendor-front/parsley/dist/parsley.min.js"></script>-->
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="http://parsleyjs.org/dist/parsley.js"></script>
+
+
 </head>
+
 <body>
-    <div class="container-lg px-sm-0 px-md-4 py-md-4 pt-lg-4 pt-xl-4 pt-xxl-4">
-        <div class="card border-0 shadow-lg" style="border-radius: .75rem 0 0 .75rem; width: 100%;height: 100%;">
-            <div id="card-content-full" class="row g-0">
-                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
-                    <img src="assets/bg-group2.png" class="" alt="..." height="560px" style="border-radius: .75rem 0 0 .75rem;object-fit: fill;">
-                    <div class="card-img-overlay p-0 text-white px-5 pt-4" style="width: 34%;">
-                        <div class="d-flex justify-content-start align-items-center">
-                            <img src="assets/Logo QnA.svg" class="img-fluid text-center py-3" width="20%" alt="...">
-                            <h2 class="align-middle fw-bold mb-0 ps-3 text-white">QnA</h2>
-                        </div>
-                        <h1 class="fw-bold text-white mt-5">Hello,</h1>
-                        <?php echo '<h1 class="text-white mb-5" id="customer-name">'. $nama_peserta.'</h1>'; ?>
-                        <p id="nama_sesi" class="card-text fw-bold mb-0 mt-4" style="font-size: 1.6rem;">Webinar Pengenalan Diri</p>
-                        <p class="card-text mt-1">Lumintu Event</p>
-                        <p id="date" class="card-text fw-bold mb-0 mt-4" ></p>
-                        <p id="time" class="card-text mt-1"></p>
-                    </div>
-                </div>
+        <!-- sidebar -->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasInfo" aria-labelledby="offcanvasInfoLabel">
+            <div class="offcanvas-header justify-content-start ">
+                <button type="button" class="btn-close my-0 me-0" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body text-center">
+                <p class="align-middle fs-1 fw-bold mb-4 ">QnA</p>
+                <img src="assets/Logo QnA.svg" class="img-fluid text-center" width="35%" alt="...">
+                <p id="nama_sesi" class="nama_sesi text-truncate  fw-bold mb-0 mt-4">Webinar Pengenalan Diri </p>
+                <p class="e mt-1">Lumintu Event</p>
+                <p id="date" class="fw-bold mb-0 mt-4"></p>
+                <p id="time" class="mt-1"></p>
+            </div>
+        </div>
 
-                <!-- Chat Elements -->
-                <div class="col-8">
-                    <div class="card border-0" style="height: 560px;">
-                        
-                        <div class="card-header py-4 px-4 border-0 " style="background-color: #ffffff;">
-                            <div class="row justify-content-center">
-                                <div class="col-1 align-content-center">           
-                                    <img class="rounded-circle text-center" src="/lumintu_qna/assets/Logo Lumintu.svg" alt="" width="50px">
-                                </div>
-                                <div class="col-11">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <span class="fw-bold" style="font-size: 1.2rem;">Administrator</span>
-                                        </div>
-                                        <div class="col-12">
-                                            <span class="" style="font-size: .9rem;">Online</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="conversation" class="card-body" style="overflow-x: hidden; overflow-y: auto; background-color: #EBECEF;">
-                            <div class="row g-0" id="messages_area">
+        <!-- navbar -->
+        <div id="navbar" class="border-0 fixed-top px-3 py-2 text-dark border-bottom" style="background-color: #FFFFFF;">
+            <div class="d-flex align-items-center justify-content-between">
+                <button class="btn fs-3 p-0 me-0" data-bs-toggle="offcanvas" data-bs-target="#offcanvasInfo"
+                    aria-controls="offcanvasInfo">
+                    <i class="bi bi-list text-black"></i>
+                </button>
+                <p id="nama_sesi" class="nama_sesi small text-truncate fw-bold mb-0" style="max-width: 246px;">memuat...</p>
+                <div id="dropdownProfile" class="dropdown">
+                    <button class="small border-0 rounded-pill ms-0 text-white bg-primary fw-bold"
+                        style="width: 2rem; height:2rem;" data-bs-toggle="dropdown">
+                        <?php
+                            $huruf_depan = $nama_peserta[0];
+                            echo $huruf_depan;
+                        ?>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><span class="small dropdown-item-text fw-bold">
                                 <?php
-                                foreach($chat_data as $chat)
-                                {
-                                    $str1 = str_split($chat["waktu_pengiriman"], 10);
-                                    $jam_pesan = str_split($str1[1], 6);
-                                    // if id_participant = $chat["id_pengirim"] then 
-                                    // $abc = base64_decode($_GET["id_participant"]);
-                                    if ($chat["id_pengirim"] == $peserta_id[1] &&$chat["id_chat"] == $sesi_id[1]){
-                                        echo '
-                                        <div class="col-12 mb-3">
-                                            <span class="px-3 pt-2 pb-4 chat-bubble float-end text-white position-relative" style="background-color: #38435F; min-width: 10%; max-width: 70%; border-radius: .5rem!important;">'.$chat["pesan"].'<span class="text-white-50 position-absolute bottom-0 end-0 me-2 mb-1" style="font-size: .8rem;">
-                                                    '.$jam_pesan[0].'
-                                                </span>
-                                            </span>
-                                        </div> ';
-                                    }
-                                }
-                                ?>
-                                <!-- <div class="col-12 mb-3">
-                                    <span class="px-3 pt-2 pb-4 chat-bubble float-start position-relative" 
-                                    style="background-color: #FFFFFF ;min-width: 10%; max-width: 70%; border-radius: .5rem!important;"> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea /at. 
-                                        <span class="text-black-50 position-absolute bottom-0 end-0 me-2 mb-1" style="font-size: .8rem;">
-                                            7.30 PM
-                                        </span>
-                                    </span>
-                                </div> -->
-                            </div>
-                        </div>
-
-                        <div id="conversation-footer" class="border-0 px-3 py-3" style="border-radius: 0 0 .75rem 0; background-color: #FFFFFF;">
-                            <!-- conversation -->
-                            <form method="post" id="chat_form" data-parsley-errors-container="#validation_error">
-                                <div class="row">
-                                    <div class="col-11 pe-3">
-                                        <textarea class="chat-text-area form-control border-0 me-3" 
-                                        id="chat_message" name="chat_message"
-                                        rows="1" placeholder="Tulis pesan Anda..."
-                                        style="background-color:#FFFFFF" required></textarea>
-                                    </div>
-                                    <div class="col-1 text-center">
-                                        <div id="timer" style="display:none;"></div>
-                                        <button type="submit" name="send" id="send" class="btn btn-send p-1"  >
-                                            <img src="/lumintu_qna/assets/btnSend.svg">
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                            <?php 
-                              echo "
-                            <input type='hidden' name='login_user_id' id='login_user_id' value='".$peserta_id[1]."'/>
-                            <input type='hidden' name='login_id_sesi' id='login_id_sesi' value='".$sesi_id[1]."'/>
-                            <input type='hidden' name='login_id_ticket' id='login_id_ticket' value='".$ticket_id[1]."'/>"
+                                echo $nama_peserta;
                             ?>
+                            </span></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="small dropdown-item justify-content-between" href="#">
+                                <i class="bi bi-box-arrow-right me-3"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="offcanvasProfileContainer">
+                    <button id="buttonOffCanvas" class="small border-0 rounded-pill ms-0 text-white bg-primary fw-bold"
+                        style="width: 2.2rem; height:2.2rem;" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasProfile" aria-controls="offcanvasProfile">
+                        <?php
+                            $huruf_depan = $nama_peserta[0];
+                            echo $huruf_depan;
+                        ?>
+                    </button>
+                    <div class="offcanvas offcanvas-bottom border-0 shadow rounded-top" data-bs-backdrop="true"
+                        style="height: inherit;" tabindex="-1" id="offcanvasProfile"
+                        aria-labelledby="offcanvasProfileLabel">
+                        <div class="offcanvas-body">
+                            <span class="text-black fw-bold">
+                                <?php
+                                    echo $nama_peserta;
+                                ?>
+                            </span>
+                            <hr class="text-black">
+                            <a class="text-decoration-none text-black justify-content-between" href="#">
+                                <i class="bi bi-box-arrow-right  me-3"></i>
+                                Logout
+                            </a>
                         </div>
-
                     </div>
                 </div>
             </div>
-          </div>
-    </div>
+        </div>
+
+        <!--  list pertanyaan -->
+        <div id="conversation-container" class="container px-3 position-absolute start-50 translate-middle-x " style="max-width: 540px;">
+            <div id="conversation" class="position-absolute start-50 translate-middle-x w-100" style="overflow: overlay; ">
+                <div class="mt-3" id="messages_area" style="margin-bottom: 6.5rem !important;">
+                    <?php
+                        $i = 0;
+                        foreach($chat_data as $chat)
+                        {
+                            $str1 = str_split($chat["waktu_pengiriman"], 10);
+                            $jam_pesan = str_split($str1[1], 6);
+                            // if id_participant = $chat["id_pengirim"] then
+                            // $abc = base64_decode($_GET["id_participant"]);
+                            if ($chat["id_pengirim"] == $peserta_id[1] && $chat["id_chat"] == $sesi_id[1]){
+                                // simpan id dan waktu ke array
+                                $i_x_waktu[$i] = $chat["waktu_pengiriman"];
+                                // print element html
+                                echo
+                                '<div id="container-pesan-'.$i.'" class="mb-3 mx-3 p-3 border border-1 rounded-3">
+                                    <p class="mb-0 small ">
+                                        '.$chat["pesan"].'
+                                    </p>
+                                    <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                        <p id="jam-pesan-'.$i.'" class="text-black-50 small mb-0 ">
+                                            '.$jam_pesan[0].'
+                                        </p>
+                                        <button id="btn-delete" class="btn bg-danger bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted"  title="Hapus pertanyaan" style="width: 50px;">
+                                            <i class="bi bi-trash3 text-danger "></i>
+                                        </button>
+                                    </div>
+                                </div> ';
+                                $i++;
+                            }
+                        }
+                    ?>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="footer-container" class="fixed-bottom mx-auto" style="z-index: 1020;max-width: 540px;">
+
+            <div id="conversation-footer" class="mb-3 mx-3 bg-white border border-1 shadow rounded-3 px-3 py-2 "
+                style="">
+                <div id="container-btn" class="d-flex justify-content-between align-items-center py-2" >
+                    <p class="mb-0 small">Apa yang ingin Anda tanyakan?</p>
+
+                    <button id="btn-tanya" class="btn rounded-lg text-white px-3 py-2" title="Tanyakan sesuatu"  style="background: #FF6641 ;">
+                        <span class="small fw-bold">Tanyakan sesuatu</span>
+                    </button>
+                </div>
+
+                <form method="post" id="chat_form" data-parsley-errors-container="#validation_error" style="display: none">
+                    <div class="d-flex justify-content-between align-items-end">
+                        <div class="flex-grow-1 pe-3">
+                            <p class="fw-bold pt-2">Apa yang ingin Anda tanyakan?</p>
+                            <textarea class="chat-text-area p-0 form-control border-0 me-3 small" id="chat_message"
+                                name="chat_message" rows="1" style="overflow-y: hidden !important; font-size: 14px" placeholder="Tulis pertanyaan Anda..." maxlength="400" required></textarea>
+                        </div>
+                        <div class="text-center align-items-end">
+                            <span id="char-counter" class="small text-mute" style="font-size: 12px">400</span>
+
+                        </div>
+                    </div>
+
+                    <div id="container-btn" class="d-flex align-items-center py-2">
+                        <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                            <?php
+                                $huruf_depan = $nama_peserta[0];
+                                echo $huruf_depan;
+                            ?>
+                        </button>
+                        <p id="nama-peserta-form" class="small align-self-center ms-2 text-truncate mb-0"> <?php echo $nama_peserta; ?> </p>
+
+                        <button id="timer" class="ms-auto btn btn-send px-3 py-2 text-white fw-bold" disabled title="Harap menunggu"  style="background-color: #FF6641; display:none;">
+                            <div  class=" spinner-border spinner-border-sm border-3 small" ></div>
+                            <span class="fw-normal small ms-2"> Tunggu...</span>
+                        </button>
+                        <button type="submit" name="send" id="send" class="ms-auto btn btn-send px-3 py-2 text-white small fw-bold" title="Kirim pertanyaan"  style="background-color: #FF6641; ">
+                            <span class="small fw-bold">Kirim</span>
+                        </button>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    <?php 
+        echo "
+        <input type='hidden' name='login_user_id' id='login_user_id' value='".$peserta_id[1]."'/>
+        <input type='hidden' name='login_id_sesi' id='login_id_sesi' value='".$sesi_id[1]."'/>
+        <input type='hidden' name='login_id_ticket' id='login_id_ticket' value='".$ticket_id[1]."'/>";
+
+    ?>
+
 
     <!-- moment Js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
-    <script>
-      moment.locale('id');
-      console.log(moment(Date.now()).fromNow());
-    </script>
-    <script type="text/javascript"> 
-            $(document).ready(function(){
-                $("#send").click(function(){
-                    $("#send").hide();
-                    $("#timer").show();
-                });
-            });
-            
-            $(document).ready(function(){
-                $("#send").click(function(){
-                    var detik = 6;
-                    //var pesann = '<img src="../lumintu_qna/assets/btnSend.svg">';
-                    var pesann = 'wait';
-                    function hitung(){
-                        var to = setTimeout(hitung,1000);
-                        var peringatan ='style = "color: red"';
-                        $('#timer').html('<p align="center" '+peringatan+'>'+pesann+'</p>');
 
-                        detik--;
-                        if(detik<0){
-                            clearTimeout(to);
-                            detik = 10;
-                            $("#timer").hide();
-                            $("#send").show();
-                        }
-                    }
-                    hitung();
-                });
+    <script>
+        // $(window).load(function() {
+        //     $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+        // });
+        moment.locale('id'); //set timezone to Indonesia
+        console.log(moment(Date.now()).fromNow());
+        console.log(moment().format('LT'))
+        console.log(moment('2022-07-01 15:25:05').fromNow())
+        //console.log(<?php //echo $i; ?>//)
+        //get url from current page
+        //console.log("<?php
+        //    if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+        //        $url = "https://";
+        //    else
+        //        $url = "http://";
+        //    // Append the host(domain name, ip) to the URL.
+        //    $url.= $_SERVER['HTTP_HOST'];
+        //
+        //    // Append the requested resource location to the URL
+        //    $url.= $_SERVER['REQUEST_URI'];
+        //
+        //    echo $url;  ?>//")
+    </script>
+
+    <!--    autogrow textarea function-->
+    <script>
+        // function counter characters
+        function charCounter() {
+            var maxChar = 400
+            var count = $("#chat_message").val().length
+            var remaining = maxChar - count
+            $("#char-counter").text(remaining)
+        }
+        // function autogrow
+        $("#chat_message").on('keyup', function(e) {
+            let t = $("#chat_message");
+            if (t.val().trim() == "") {
+                t.css('height', 'calc(1.5em + 0.75rem + 2px)');
+            } else {
+                t.css('height', '0.1px');
+                t.css('height', t[0].scrollHeight);
+            }
+            charCounter()
+        });
+    </script>
+
+    <!-- function display form -->  
+    <script>
+        $("#btn-tanya").click(function(){
+            $("#chat_form").show();
+            $("#container-btn").removeClass('d-flex')
+            $("#container-btn").hide()
+            charCounter()
+        });
+        //fungsi close ketika klik luar element
+        $(document).mouseup(function(e)
+        {
+            var container = $("#chat_form");
+
+            // if the target of the click isn't the container nor a descendant of the container
+            if (!container.is(e.target) && container.has(e.target).length === 0)
+            {
+                container.hide();
+                $("#container-btn").addClass('d-flex').show()
+            }
+        });
+
+    </script>
+
+    <!-- function olah tanggal -->
+    <script>
+        setInterval(function() {
+            var jam = <?php echo json_encode($i_x_waktu); ?>;
+
+            for(let i=0; i<jam.length; i++){
+                let status_jam = moment(jam[i]).fromNow();
+                $("#jam-pesan-"+i).text(status_jam)
+
+            }
+        }, 60 * 1000);
+
+        var jam = <?php echo json_encode($i_x_waktu); ?>;
+
+        for(let i=0; i<jam.length; i++){
+            let status_jam = moment(jam[i]).fromNow();
+            $("#jam-pesan-"+i).text(status_jam)
+
+        }
+    </script>
+
+    <!-- function hitung tinggi navbar dan footer -->
+    <script>
+        var navbar = $("#navbar").outerHeight().toString()
+        var footer = $("#footer-container").outerHeight().toString()
+
+        // set value css
+        $("#conversation-container").css({
+            "top": navbar + "px",
+            "bottom": footer + "px"
+        })
+    </script>
+
+    <!-- function mencegah spamming -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#send").click(function () {
+                $("#send").hide();
+                $("#timer").show();
             });
-        </script>
-    <script > 
+        });
+
+        $(document).ready(function () {
+            $("#send").click(function () {
+                var detik = 4;
+                //var pesann = '<img src="../lumintu_qna/assets/btnSend.svg">';
+                var pesann = 'wait';
+                function hitung() {
+                    var to = setTimeout(hitung, 1000);
+                    // var peringatan ='style = "color: red"';
+                    // $('#timer').html('<p align="center" '+peringatan+'>'+pesann+'</p>');
+
+                    detik--;
+                    if (detik <0) {
+                        clearTimeout(to);
+                        detik = 10;
+                        $("#timer").hide();
+                        $("#send").show();
+                    }
+                }
+                hitung();
+            });
+        });
+    </script>
+    <script>
         function escapeHtml(text) {
-          return text
-              .replace(/&/g, "&'';")
-              .replace(/</g, "<'")
-              .replace(/>/g, ">'")
-              .replace(/"/g, "''")
-              .replace(/'/g, "'");
+            return text
+                .replace(/&/g, "&'';")
+                .replace(/</g, "<'")
+                .replace(/>/g, ">'")
+                .replace(/"/g, "''")
+                .replace(/'/g, "'");
         }
 
         // Koneksi Websocket
-        $(document).ready(function(){
-<<<<<<< HEAD
-            require_once '..\admin\check_port.php';
-            var conn = new WebSocket('ws://23.100.16.66:'$port'');
-=======
+        $(document).ready(function () {
 
             var conn = new WebSocket('ws://localhost:8082'); //dibuat dinamis
->>>>>>> ca6199b39032131972b84110ce667b32c73b834a
-            conn.onopen = function(e) {
+            // var conn = new WebSocket('ws://0.tcp.ngrok.io:14538'); //dibuat dinamis
+            conn.onopen = function (e) {
                 console.log("Connection established!");
             };
 
-            conn.onmessage = function(e) {
+            conn.onmessage = function (e) {
                 console.log(e.data);
 
                 var data = JSON.parse(e.data);
-
                 var row_class = '';
-
                 var background_class = '';
-
                 var html_data = '';
+                var msg1 = escapeHtml(data.msg);
 
-                var msg1= escapeHtml(data.msg);
-
-                if(data.from == 'Me')
-                {
-                    row_class = 'float-end text-white ';
-                    bg = ' #38435F';
-                    text= 'text-white-50';
-                    time='text-white-50'
-                    background_class = 'alert-info';
-
-                    html_data = "<div class='col-12 mb-3'><span class='px-3 pt-2 pb-4 chat-bubble "+row_class+"  position-relative' style='background-color: "+bg+" ; min-width: 10%; max-width: 70%; border-radius: .5rem!important;'>"+msg1+"<span class='"+time+" position-absolute bottom-0 end-0 me-2 mb-1' style='font-size: .8rem;'>"+moment().format('LT')+"</span> </span></div>"
-
+                if (data.from == 'Me') {
+                    html_data = "<div id='container-pesan-<?php echo $i ?>' class='mb-3 mx-3 p-3 border border-1 rounded-3'><p class='mb-0 small'>" + msg1 + "</p><div class='d-flex justify-content-between align-items-center mt-3 '><p id='jam-pesan-<?php echo $i ?>' class='text-black-50 small mb-0'>" + moment().fromNow() + "</p><button id='btn-delete' class='btn bg-danger bg-opacity-10 rounded-pill py-1 me-0 text-muted'  title='Hapus pertanyaan'><i class='bi bi-trash3 text-danger'></i></button></div></div>"
                 }
 
                 $('#messages_area').append(html_data);
@@ -244,15 +407,11 @@ $nama_peserta = get_nama($peserta_id[1]);
             };
 
             // Proses Pengiriman Pesan
-
-            $('#messages_area').scrollTop($('#messages_area')[0].scrollHeight);
-
-            $('#chat_form').on('submit', function(event){
+            $('#chat_form').on('submit', function (event) {
 
                 event.preventDefault();
 
-                if($('#chat_form').parsley().isValid())
-                {
+                if ($('#chat_form').parsley().isValid()) {
 
                     var user_id = $('#login_user_id').val();
 
@@ -263,56 +422,59 @@ $nama_peserta = get_nama($peserta_id[1]);
                     var message = $('#chat_message').val();
 
                     var data = {
-                        userId : user_id,
-                        mId : message_id,
-                        msg : message,
-                        sesiId : id_sesi
+                        userId: user_id,
+                        mId: message_id,
+                        msg: message,
+                        sesiId: id_sesi
                     };
                     conn.send(JSON.stringify(data));
 
-                    $('#messages_area').scrollTop($('#messages_area')[0].scrollHeight);
+                    $("#chat_message").css('height', 'calc(1.5em + 0.75rem + 2px)');
+                    $("#chat_form").hide();
+                    $("#container-btn").addClass('d-flex').show()
 
+                    //$("html, body").animate({ scrollTop: $("#container-pesan-<?php //$i ?>//").height() }, 1000);
                 }
             });
 
-        });
-          
-        </script>
-        <script>
+        }); 
+    </script>
+    <script>
         var id_tiket = $('#login_id_ticket').val();
         var id_tiket_session = $('#login_id_sesi').val();
         $.ajax({
-            url: kel1_api+'/items/ticket?fields=ticket_id,ticket_type,ticket_x_session.session_id.*,ticket_x_day.day_id.*',
-            type: 'GET',  
-            dataType: 'json',  
-            success: function(data, textStatus, xhr) { //callback - pengganti promise
+            url: kel1_api + '/items/ticket?fields=ticket_id,ticket_type,ticket_x_session.session_id.*,ticket_x_day.day_id.*',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data, textStatus, xhr) { //callback - pengganti promise
                 // data.data.map(item => {
-                    console.log(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.start_time)
-                    let nama = data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.session_desc
-                    let time_start = new Date(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.start_time)
-                    let time_finish = new Date(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.finish_time)
-                   
-                    let day = moment(time_start).format('dddd')
-                    let time_begin = moment(time_start).format('HH:mm')
-                    let time_end = moment(time_finish).format('HH:mm')
-                    let date = moment(time_start).format('LL') 
+                console.log(data.data[id_tiket - 1].ticket_x_session[id_tiket_session - 1].session_id.start_time)
+                let nama = data.data[id_tiket - 1].ticket_x_session[id_tiket_session - 1].session_id.session_desc
+                let time_start = new Date(data.data[id_tiket - 1].ticket_x_session[id_tiket_session - 1].session_id.start_time)
+                let time_finish = new Date(data.data[id_tiket - 1].ticket_x_session[id_tiket_session - 1].session_id.finish_time)
 
-                    // $('#24365    87').text(day+", "+date+" | "+time_begin+" - "+time_end+" WIB")
+                let day = moment(time_start).format('dddd')
+                let time_begin = moment(time_start).format('HH:mm')
+                let time_end = moment(time_finish).format('HH:mm')
+                let date = moment(time_start).format('LL')
 
-                    $('#nama_sesi').text(nama)
-                    $('#date').text(day+", "+date)
-                    $('#time').text(time_begin+" - "+time_end + " WIB")
+                // $('#24365    87').text(day+", "+date+" | "+time_begin+" - "+time_end+" WIB")
+
+                $('.nama_sesi').text(nama)
+                $('#date').text(day + ", " + date)
+                $('#time').text(time_begin + " - " + time_end + " WIB")
 
                 // }) 
             },
-            error: function(xhr, textStatus, errorThrown) {  
-                console.log('Error in Database');  
+            error: function (xhr, textStatus, errorThrown) {
+                console.log('Error in Database');
             }
         })
-        </script>
-    
+    </script>
+
     <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-    
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>-->
+
 </body>
+
 </html>

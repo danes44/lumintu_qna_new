@@ -33,7 +33,7 @@ body{
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #111111;
+    background-color: rgba(17, 17, 17, 0.3);
     scrollbar-color: #111111;
 }
 
@@ -43,7 +43,7 @@ body{
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #a7a7a7;
+    background-color: transparent;
     -webkit-box-shadow: none !important;
 }
 
@@ -59,8 +59,69 @@ body{
     background-color: #005043 !important;
 }
 
+
+.search-addon:hover{
+    background-color: #8f8f8f !important;
+}
+
+.card-header:first-child {
+    border-radius: 0;
+}
+
+.accordion-item:first-of-type .accordion-button {
+    border-top-left-radius: .35rem;
+    border-top-right-radius: .35rem;
+}
+
+.accordion-item:last-of-type .accordion-header .accordion-button.collapsed {
+    border-bottom-right-radius: .35rem;
+    border-bottom-left-radius: .53rem;
+}
+
+#btn-love i, #btn-terjawab i, #btn-kembali i, #btn-display i, .list-pertanyaan{
+    -webkit-transition: all .3s ease .15s;
+    -moz-transition: all .3s ease .15s;
+    -o-transition: all .3s ease .15s;
+    -ms-transition: all .3s ease .15s;
+    transition: all .3s ease .15s;
+}
+
+.list-pertanyaan{
+    overflow-y: hidden !important;
+}
+.list-pertanyaan:hover{
+    overflow-y: overlay !important ;
+}
+
+#btn-kembali:hover>i {
+    margin-right: .8rem !important;
+}
+
+#btn-display:hover>i {
+    margin-right: .8rem !important;
+}
+
+#btn-delete:hover{
+    color: #dc3545 !important;
+    background-color: rgba(220, 53, 69, 0.20) !important;
+}
+
+.btn-love:hover{
+   color: rgba(255, 65, 123, 0.5) !important;
+}
+
+.btn-terjawab:hover{
+    background-color: rgba(25, 135, 84, 0.8) !important;
+}
+
+#btn-accept:hover{
+    background-color: rgba(25, 135, 84, 0.2) !important;
+}
+
+.btn-revert:hover{
+    color: rgba(0, 0, 0, 0.5) !important;
+}
+
 /* .btn-send:hover{
     background-color: #005043 !important;
 } */
-
-

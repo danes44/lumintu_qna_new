@@ -33,7 +33,9 @@
     $cek_check = $hasil["data"][0]["validated_on"];
 
     if (empty($hasil["data"])){
+        echo $url;
         echo "<script>alert('peserta tidak ada!');document.location.href='/lumintu_qna/error-page/error_link_salah.html';</script>";
+        // echo "<script>alert('peserta tidak ada!')</script>";
     } else {
         if ( new DateTime("2021-12-02T10:00:00") >= new DateTime($jam_mulai) && new DateTime("2021-12-01T11:00:00") < new DateTime($jam_selesai) ){
             if (is_null($cek_check)){

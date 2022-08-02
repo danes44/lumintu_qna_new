@@ -26,7 +26,7 @@ if (isset($_POST['login'])) {
 	}
 	else{
 		// beri pesan dan dialihkan ke halaman login
-		echo "<script>alert('Akun tidak temukan. Coba lagi!')</script>";
+		echo "<script>alert('Username atau password salah. Coba lagi!')</script>";
 		echo "<script>document.location.href='index.php';</script>";
 	}
 }
