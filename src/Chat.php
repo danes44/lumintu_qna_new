@@ -30,30 +30,31 @@ class Chat implements MessageComponentInterface {
     public function onMessage(ConnectionInterface $from, $msg) {
         date_default_timezone_set("Asia/Jakarta");
         $numRecv = count($this->clients) - 1;
-        echo sprintf('Connection %d sending message "%s" to %d other connection%s on '. date("Y-m-d H:i:s") . "\n"
+        $data = json_decode($msg, true);
+
+        echo sprintf('Connection %d sending message "%s" to %d other connection%s on '. $data['date'] . "\n"
             , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
 
-            $data = json_decode($msg, true);
 
-            $chat_object = new \ChatRooms;
+        $chat_object = new \ChatRooms;
 
-            // $chat_object->setMessageId($data["mId"]);
+        // $chat_object->setMessageId($data["mId"]);
 
-            $chat_object->setChatId($data["sesiId"]); // value nya ambil dari id_chat yang di chats
+        $chat_object->setChatId($data["sesiId"]); // value nya ambil dari id_chat yang di chats
 
-            $chat_object->setPengirimId($data['userId']);
+        $chat_object->setPengirimId($data['userId']);
 
-            $chat_object->setMessage($data['msg']);
+        $chat_object->setMessage($data['msg']);
 
-            $chat_object->setStatus(0);
+        $chat_object->setStatus(0);
 
-            $chat_object->setCreatedOn(date("Y-m-d H:i:s"));
+        $chat_object->setCreatedOn($data['date']);
 
-            $chat_object->save_chat();
+        $chat_object->save_chat();
 
-            $chat_last = new \ChatRooms;
+        $chat_last = new \ChatRooms;
 
-            $last_chat = $chat_last->get_id_last_chat();
+        $last_chat = $chat_last->get_id_last_chat();
         
         foreach ($this->clients as $client) {
 

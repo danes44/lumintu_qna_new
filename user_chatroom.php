@@ -421,11 +421,14 @@
 
                     var message = $('#chat_message').val();
 
+                    var date = moment().format("YYYY-MM-DD HH:mm:ss")
+
                     var data = {
                         userId: user_id,
                         mId: message_id,
                         msg: message,
-                        sesiId: id_sesi
+                        sesiId: id_sesi,
+                        date: date
                     };
                     conn.send(JSON.stringify(data));
 
