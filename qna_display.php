@@ -193,7 +193,18 @@
 
                             if( data1.sesiId == sesi_id1 )
                             {
-                                list_data = '<div class="accordion-item rounded-top" id="accordion-item-'+data1.mId+'"><h3 class="accordion-header" id="heading-'+data1.mId+'"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-'+data1.mId+'a'+'"" aria-expanded="false" aria-controls="flush-'+data1.mId+'a'+'""><div class="align-items-center " style="width: 90%!important;"><span class="fw-bold mb-2">'+nama+'</span><div class="small text-truncate mt-2">'+escapeHtml(data1.msg)+'</div></div></button></h3><div id="flush-'+data1.mId+'a'+'" class="accordion-collapse collapse" aria-labelledby="heading-'+data1.mId+'a'+'"" data-bs-parent="#accordionFlush"><div class="accordion-body"><p>'+data1.msg+'</p><div class="d-grid gap-2"><button type="button" class="btn btn-outline-primary btn-choose">Pilih</button></div></div></div></div>'
+                                list_data =
+                                `
+                                <div class="carousel-item">
+                                    <div class="container  px-5" >
+                                        <h3 class="card-title text-dark mx-3 px-5">
+                                        '.$chat_data[$x]["pesan"].'
+                                        </h3>
+                                        <hr class=" mt-5 mx-5 ">
+                                        <h3 class=" mx-3 px-5 fw-bold">'.$nama_peserta1.'</h3S>
+                                    </div>
+                                </div>
+                                `
                             }
 
                             $('#accordionFlushExample').append(list_data);

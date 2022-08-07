@@ -183,7 +183,7 @@
                                                             <p id="jam-pesan-i'.$i.'" class="jam text-black-50 small mb-0 ">
                                                                 '.$jam_pesan[0].'
                                                             </p>
-                                                            <p class="waktu-kirim d-none" id="waktu_pengiriman_'. $i .'" >'.$chat["waktu_pengiriman"].'</p>
+                                                            <p class="waktu-kirim d-none" id="waktu_pengiriman_i_'. $i .'" >'.$chat["waktu_pengiriman"].'</p>
                                                         </div>
                                                     </div>
                                                     
@@ -290,7 +290,7 @@
                                                         '.$jam_pesan[0].'
                                                     </p>
                                                     
-                                                    <p class="waktu-kirim d-none" id="waktu_pengiriman_'. $j .'" >'.$chat["waktu_pengiriman"].'</p>
+                                                    <p class="waktu-kirim d-none" id="waktu_pengiriman_j_'. $j .'" >'.$chat["waktu_pengiriman"].'</p>
                                                     
                                                 </div>
                                             </div>
@@ -428,10 +428,11 @@
                 console.log("formatted")
             }, 60 * 500);
 
-            function setFormatJam() {
-                var jam_i = <?php echo json_encode($i_x_waktu); ?>;
-                var jam_j = <?php echo json_encode($j_x_waktu); ?>;
+            var jam_i = <?php echo json_encode($i_x_waktu); ?>;
+            var jam_j = <?php echo json_encode($j_x_waktu); ?>;
 
+            function setFormatJam() {
+                console.log(jam_j)
                 for(let i=0; i<jam_i.length; i++){
                     let status_jam_i = moment(jam_i[i]).fromNow();
                     $("#jam-pesan-i"+i).text(status_jam_i)
@@ -494,7 +495,6 @@
                     $('#container-pesan .pesan').sort(sortTerlama).appendTo('#container-pesan')
                 }
             });
-
 
             //fungsi filter terbaru (live)
             $('input:radio[name="radio-filter-live"]').change(function() {
@@ -642,7 +642,7 @@
 
                             <?php $i++; ?>
 
-                            if( data1.sesiId == sesi_id1 )
+                            if( data1.sesiId === sesi_id1 )
                             {
                               list_data =
                                 `<div id="container-pesan-${data1.mId}" class="p-3 pesan border-top border-bottom">
@@ -674,7 +674,7 @@
                                                 <div class="small align-self-center ms-2">
                                                     <p id="nama-peserta-form" class="text-truncate fw-bold mb-0">${nama}</p>
                                                     <p id="jam-pesan-i${i}" class="jam text-black-50 small mb-0 ">${moment(data1.date).fromNow()}</p>
-                                                    <p class="waktu-kirim d-none" id="waktu_pengiriman_${i}">${data1.date}</p>
+                                                    <p class="waktu-kirim d-none" id="waktu_pengiriman_i_${i}">${data1.date}</p>
                                                 </div>
                                             </div>
                                             <div>
@@ -695,6 +695,7 @@
                             console.log(<?php echo $i ?>)
                         },
                         complete: function (data) {
+                            jam_i[jam_i.length] = data1.date
                             counter()
                             if( $('#radio-terbaru').is(':checked') ){
                                 $('#container-pesan .pesan').sort(sortTerbaru).appendTo('#container-pesan')
@@ -861,22 +862,25 @@
                 //         }
                 //     }
                 // });
-
-                let i= <?php echo $i; ?>;
+                // let i,j =0;
+                // let id_waktu_kirim= $('#nama-peserta-form-'+idm).siblings('.waktu-kirim').attr('id');
+                // let i_split = id_waktu_kirim.split('_')
+                // let i = i_split[3];
                 let j= <?php echo $j; ?>;
                 <?php $j++; ?>
 
                 // get nama user dan message
-                var cust_name = $('#nama-peserta-form-'+idm).text()
-                let cust_nama_depan = Array.from(cust_name)[0]
-                let cust_message = escapeHtml($('#pesan-'+idm).text())
+                var cust_name = $('#nama-peserta-form-'+idm).text();
+                let cust_nama_depan = Array.from(cust_name)[0];
+                let cust_message = escapeHtml($('#pesan-'+idm).text());
                 // get jam pesan
-                let jam_pesan = $('#nama-peserta-form-'+idm).siblings('.jam').text()
+                let jam_pesan = $('#nama-peserta-form-'+idm).siblings('.jam').text();
+                let jam_pesan_hidden = $('#nama-peserta-form-'+idm).siblings('.waktu-kirim').text();
 
-                console.log(cust_nama_depan)
+                console.log($('#nama-peserta-form-'+idm).siblings('.waktu-kirim').text())
 
                 let elements=
-                    `<div id="container-pesan-${idm}" class="p-3 pesan border-top border-bottom ">
+                    `<div id="container-pesan-${idm}" class="p-3 pesan-terpilih border-top border-bottom ">
                         <div class="d-flex">
                             <p id="pesan-${idm}" class="mb-0 small isi-pesan flex-grow-1">
                                 ${cust_message}
@@ -894,7 +898,7 @@
                                         <p id="jam-pesan-j${j}" class="jam text-black-50 small mb-0 ">
                                             ${jam_pesan}
                                         </p>
-                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_${j} ">${jam_pesan}</p>
+                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_j_${j} ">${jam_pesan_hidden}</p>
                                     </div>
                                 </div>
 
@@ -916,46 +920,47 @@
 
                 console.log("udah pindah")
                 $("#container-pesan-terpilih").append(elements);
-                // if( $('#radio-terbaru-live').is(':checked') ){
-                //     $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerbaru).appendTo('#container-pesan-terpilih')
-                //     console.log("terbaru")
-                // }
-                // else if ($('#radio-terlama-live').is(':checked')){
-                //     $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerlama).appendTo('#container-pesan-terpilih')
-                //     console.log("terlama")
-                // }
+                jam_j[jam_j.length] = jam_pesan_hidden
+                if( $('#radio-terbaru-live').is(':checked') ){
+                    $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerbaru).appendTo('#container-pesan-terpilih')
+                    console.log("terbaru")
+                }
+                else if ($('#radio-terlama-live').is(':checked')){
+                    $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerlama).appendTo('#container-pesan-terpilih')
+                    console.log("terlama")
+                }
                 parent_element.remove()
                 setTimeout(function() {
                     setFormatJam()
                     counter()
-                    console.log($('#container-pesan .pesan').length)
+                    console.log($('#container-pesan-terpilih .pesan-terpilih').length)
                 }, 500);
 
 
-                // Proses Pengiriman Pesan
-                // $('#messages_area').scrollTop($('#messages_area').height());
-                // $('#chat_form').on('submit', function (event) {
-                //
-                //     event.preventDefault();
-                //
-                //     if ($('#chat_form').parsley().isValid()) {
-                //         var user_id = $('#login_user_id').val();
-                //         var message_id = ''
-                //         var id_sesi = $('#login_id_sesi').val();
-                //         var message = $('#chat_message').val();
-                //         var data = {
-                //             userId: user_id,
-                //             mId: message_id,
-                //             msg: message,
-                //             sesiId: id_sesi
-                //         };
-                //         conn.send(JSON.stringify(data));
-                //
-                //         $("#chat_message").css('height', 'calc(1.5em + 0.75rem + 2px)');
-                //         $("#chat_form").hide();
-                //         $("#container-btn").addClass('d-flex').show()
-                //     }
-                // });
+                Proses Pengiriman Pesan
+                $('#messages_area').scrollTop($('#messages_area').height());
+                $('#chat_form').on('submit', function (event) {
+
+                    event.preventDefault();
+
+                    if ($('#chat_form').parsley().isValid()) {
+                        var user_id = $('#login_user_id').val();
+                        var message_id = ''
+                        var id_sesi = $('#login_id_sesi').val();
+                        var message = $('#chat_message').val();
+                        var data = {
+                            userId: user_id,
+                            mId: message_id,
+                            msg: message,
+                            sesiId: id_sesi
+                        };
+                        conn.send(JSON.stringify(data));
+
+                        $("#chat_message").css('height', 'calc(1.5em + 0.75rem + 2px)');
+                        $("#chat_form").hide();
+                        $("#container-btn").addClass('d-flex').show()
+                    }
+                });
             })
 
             //fungsi pindah accordion ke section awal
