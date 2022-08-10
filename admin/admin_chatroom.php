@@ -178,8 +178,8 @@
                                                         <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
                                                             '.$huruf_depan.'
                                                         </button>
-                                                        <div class="small align-self-center ms-2">
-                                                            <p id="nama-peserta-form-'.$chat["id_message"].'" class="text-truncate fw-bold mb-0">'.$nama_peserta.' </p>
+                                                        <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
+                                                            <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0">'.$nama_peserta.' </p>
                                                             <p id="jam-pesan-i'.$i.'" class="jam text-black-50 small mb-0 ">
                                                                 '.$jam_pesan[0].'
                                                             </p>
@@ -273,9 +273,7 @@
                                 echo '
                                     <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan-terpilih border-top border-bottom ">
                                         <div class="d-flex">
-                                            <p class="mb-0 small isi-pesan flex-grow-1">
-                                                '.$chat["pesan"].'
-                                            </p>
+                                            <p class="mb-0 small isi-pesan flex-grow-1">'.$chat["pesan"].'</p>
                                         </div>
                         
                                         <div class="card-footer bg-transparent">
@@ -286,9 +284,7 @@
                                                 </button>
                                                 <div class="small align-self-center ms-2">
                                                     <p id="nama-peserta-form" class="text-truncate fw-bold mb-0"> '.$nama_peserta.' </p>
-                                                    <p id="jam-pesan-j'.$j.'" class="jam text-black-50 small mb-0 ">
-                                                        '.$jam_pesan[0].'
-                                                    </p>
+                                                    <p id="jam-pesan-j'.$j.'" class="jam text-black-50 small mb-0 ">'.$jam_pesan[0].'</p>
                                                     
                                                     <p class="waktu-kirim d-none" id="waktu_pengiriman_j_'. $j .'" >'.$chat["waktu_pengiriman"].'</p>
                                                     
@@ -611,14 +607,13 @@
                   .replace(/'/g, "'");
             }
             // Koneksi Websocket
+            var port = '8082'
+            var conn = new WebSocket('ws://localhost:'+port);
+            // var conn = new WebSocket('ws://0.tcp.ngrok.io:14538);
+            conn.onopen = function(e) {
+                console.log("Connection established!");
+            };
             $(document).ready(function(){
-                var port = '8082'
-                var conn = new WebSocket('ws://localhost:'+port);
-                // var conn = new WebSocket('ws://0.tcp.ngrok.io:14538);
-                conn.onopen = function(e) {
-                    console.log("Connection established!");
-                };
-
                 conn.onmessage = function(e) {
                     console.log("TESTETETETES" +e.data);
 
@@ -647,19 +642,19 @@
                               list_data =
                                 `<div id="container-pesan-${data1.mId}" class="p-3 pesan border-top border-bottom">
                                     <div class="d-flex">
-                                        <p class="mb-0 small isi-pesan flex-grow-1">${escapeHtml(data1.msg)}</p>
+                                        <p id="pesan-${data1.mId}" class="mb-0 small isi-pesan flex-grow-1">${escapeHtml(data1.msg)}</p>
                                         <div class="dropdown">
                                             <button id="btn-options" class="bg-transparent border-0" data-bs-toggle="dropdown" style="height: fit-content">
                                                 <i class="bi bi-three-dots text-muted"></i>
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <button id="btn-edit-'+data1.mId+'" class="dropdown-item small btn-edit" type="button">
+                                                    <button id="btn-edit-${data1.mId}" class="dropdown-item small btn-edit" type="button">
                                                         <i class="bi bi-pencil me-3 text-primary"></i>Edit
                                                     </button>
                                                 </li>
                                                 <li>
-                                                    <button id="btn-hapus-'+data1.mId+'" class="dropdown-item small btn-hapus" type="button">
+                                                    <button id="btn-hapus-${data1.mId}" class="dropdown-item small btn-hapus" type="button">
                                                         <i class="bi bi-trash3 me-3 text-danger"></i>Hapus
                                                     </button>
                                                 </li>
@@ -671,13 +666,13 @@
                                         <div class="d-flex justify-content-between align-items-center mt-3 ">
                                             <div class="d-flex align-items-center ">
                                                 <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>${nama_depan}</button>
-                                                <div class="small align-self-center ms-2">
-                                                    <p id="nama-peserta-form" class="text-truncate fw-bold mb-0">${nama}</p>
+                                                <div id="container-nama-waktu-${data1.mId}" class="small align-self-center ms-2">
+                                                    <p id="nama-peserta-form-${data1.userId}" class="text-truncate fw-bold mb-0">${nama}</p>
                                                     <p id="jam-pesan-i${i}" class="jam text-black-50 small mb-0 ">${moment(data1.date).fromNow()}</p>
                                                     <p class="waktu-kirim d-none" id="waktu_pengiriman_i_${i}">${data1.date}</p>
                                                 </div>
                                             </div>
-                                            <div>
+                                            <div id="container-btn-${data1.mId}">
                                                 <button id="btn-accept-${i}" class="btn btn-accept bg-success  bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted" title="Setujui pertanyaan"  style="width: 50px;">
                                                     <i class="bi bi-check-lg text-success "></i>
                                                 </button>
@@ -869,15 +864,21 @@
                 let j= <?php echo $j; ?>;
                 <?php $j++; ?>
 
+                // get id user
+                let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
+                let id_user_arr = id_user_element.split("-");
+                let id_user = id_user_arr[3];
+                console.log(id_user)
+
                 // get nama user dan message
-                var cust_name = $('#nama-peserta-form-'+idm).text();
+                var cust_name = $('#nama-peserta-form-'+id_user).text();
                 let cust_nama_depan = Array.from(cust_name)[0];
                 let cust_message = escapeHtml($('#pesan-'+idm).text());
-                // get jam pesan
-                let jam_pesan = $('#nama-peserta-form-'+idm).siblings('.jam').text();
-                let jam_pesan_hidden = $('#nama-peserta-form-'+idm).siblings('.waktu-kirim').text();
 
-                console.log($('#nama-peserta-form-'+idm).siblings('.waktu-kirim').text())
+                // get jam pesan
+                let jam_pesan = $('#nama-peserta-form-'+id_user).siblings('.jam').text();
+                let jam_pesan_hidden = $('#nama-peserta-form-'+id_user).siblings('.waktu-kirim').text();
+
 
                 let elements=
                     `<div id="container-pesan-${idm}" class="p-3 pesan-terpilih border-top border-bottom ">
@@ -894,7 +895,7 @@
                                         ${cust_nama_depan}
                                     </button>
                                     <div class="small align-self-center ms-2">
-                                        <p id="nama-peserta-form-${idm}" class="text-truncate fw-bold mb-0"> ${cust_name} </p>
+                                        <p id="nama-peserta-form-${id_user}" class="text-truncate fw-bold mb-0"> ${cust_name} </p>
                                         <p id="jam-pesan-j${j}" class="jam text-black-50 small mb-0 ">
                                             ${jam_pesan}
                                         </p>
@@ -920,7 +921,9 @@
 
                 console.log("udah pindah")
                 $("#container-pesan-terpilih").append(elements);
+
                 jam_j[jam_j.length] = jam_pesan_hidden
+
                 if( $('#radio-terbaru-live').is(':checked') ){
                     $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerbaru).appendTo('#container-pesan-terpilih')
                     console.log("terbaru")
@@ -933,34 +936,36 @@
                 setTimeout(function() {
                     setFormatJam()
                     counter()
-                    console.log($('#container-pesan-terpilih .pesan-terpilih').length)
                 }, 500);
+                
+                setTimeout(function () {
+                    $('#container-pesan-'+idm).css({
+                        "background-color" : 'rgb(255 102 65 / 18%)',
+                    });
+                    console.log("ganti warna")
+                },100)
 
+                setTimeout(function () {
+                    $('#container-pesan-'+idm).css({
+                        "background-color" : 'white',
+                        WebkitTransition : 'color .3s ease .15s',
+                        MozTransition    : 'color .3s ease .15s',
+                        MsTransition     : 'color .3s ease .15s',
+                        OTransition      : 'color .3s ease .15s',
+                        transition       : 'color .3s ease .15s'
+                    });
+                    console.log("ganti warna")
+                },1500)
 
-                Proses Pengiriman Pesan
-                $('#messages_area').scrollTop($('#messages_area').height());
-                $('#chat_form').on('submit', function (event) {
-
-                    event.preventDefault();
-
-                    if ($('#chat_form').parsley().isValid()) {
-                        var user_id = $('#login_user_id').val();
-                        var message_id = ''
-                        var id_sesi = $('#login_id_sesi').val();
-                        var message = $('#chat_message').val();
-                        var data = {
-                            userId: user_id,
-                            mId: message_id,
-                            msg: message,
-                            sesiId: id_sesi
-                        };
-                        conn.send(JSON.stringify(data));
-
-                        $("#chat_message").css('height', 'calc(1.5em + 0.75rem + 2px)');
-                        $("#chat_form").hide();
-                        $("#container-btn").addClass('d-flex').show()
-                    }
-                });
+                // Proses Pengiriman Pesan
+                // var id_sesi = $('#login_id_sesi').val();
+                // var data = {
+                //     userId: id_user,
+                //     mId: '',
+                //     msg: cust_message,
+                //     sesiId: id_sesi
+                // };
+                // conn.send(JSON.stringify(data));
             })
 
             //fungsi pindah accordion ke section awal

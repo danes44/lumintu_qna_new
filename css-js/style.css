@@ -122,6 +122,14 @@ body{
     color: rgba(0, 0, 0, 0.5) !important;
 }
 
+#pesan-terpilih, #pesan{
+    -webkit-transition: color .3s ease .15s;
+    -moz-transition: all .3s ease .15s;
+    -o-transition: all .3s ease .15s;
+    -ms-transition: all .3s ease .15s;
+    transition: all .3s ease .15s;
+}
+
 /* .btn-send:hover{
     background-color: #005043 !important;
 } */

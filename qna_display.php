@@ -197,17 +197,15 @@
                                 `
                                 <div class="carousel-item">
                                     <div class="container  px-5" >
-                                        <h3 class="card-title text-dark mx-3 px-5">
-                                        '.$chat_data[$x]["pesan"].'
-                                        </h3>
+                                        <h3 class="card-title text-dark mx-3 px-5">${escapeHtml(data1.msg)}</h3>
                                         <hr class=" mt-5 mx-5 ">
-                                        <h3 class=" mx-3 px-5 fw-bold">'.$nama_peserta1.'</h3S>
+                                        <h3 class=" mx-3 px-5 fw-bold">${nama}</h3S>
                                     </div>
                                 </div>
                                 `
                             }
 
-                            $('#accordionFlushExample').append(list_data);
+                            $('#qna_display').append(list_data);
                         }
                     })
                 };
