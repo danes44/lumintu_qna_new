@@ -85,7 +85,7 @@
                                         $nama_peserta1 = get_nama($chat_data[$x]["id_pengirim"]);
                                         if ($chat_data[$x]["id_chat"] == $_GET["id_session"] && $chat_data[$x]["status"]==1){
                                             echo '<div class="carousel-item">
-                                                <div class="container  px-5" >
+                                                <div class="container px-5" >
                                                     <h3 class="card-title text-dark mx-3 px-5">
                                                     '.$chat_data[$x]["pesan"].'
                                                     </h3>
@@ -113,12 +113,17 @@
                 </div>
             </div>
         </div>
+
         <?php
-          echo "
-        <input type='hidden' name='login_id_sesi' id='login_id_sesi' value='".$_GET['id_session']."'/>";
-        echo "
-        <input type='hidden' name='login_id_ticket' id='login_id_ticket' value='".$_GET['id_session']."'/>";
+            echo "<input type='hidden' name='login_id_sesi' id='login_id_sesi' value='".$_GET['id_session']."'/>";
+            echo "<input type='hidden' name='login_id_ticket' id='login_id_ticket' value='".$_GET['id_session']."'/>";
         ?>
+
+        <script>
+            moment.locale('id');
+            console.log(moment(Date.now()).fromNow());
+        </script>
+
         <script>
             var id_tiket = $('#login_id_ticket').val();
             console.log(id_tiket)
@@ -162,6 +167,7 @@
                     .replace(/"/g, "''")
                     .replace(/'/g, "'");
             }
+
             // Koneksi Websocket
             $(document).ready(function(){
                 var port = '8082'
@@ -223,9 +229,5 @@
         <!-- moment Js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
-        <script>
-          moment.locale('id');
-          console.log(moment(Date.now()).fromNow());
-        </script>
     </body>
 </html>

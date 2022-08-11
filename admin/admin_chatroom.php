@@ -921,30 +921,24 @@
                 console.log("udah pindah")
                 $("#container-pesan-terpilih").append(elements);
                 jam_j[jam_j.length] = jam_pesan_hidden
+
                 if( $('#radio-terbaru-live').is(':checked') ){
                     $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerbaru).appendTo('#container-pesan-terpilih')
-                    console.log("terbaru")
                 }
                 else if ($('#radio-terlama-live').is(':checked')){
                     $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerlama).appendTo('#container-pesan-terpilih')
-                    console.log("terlama")
                 }
+
                 parent_element.remove()
                 setTimeout(function() {
                     setFormatJam()
                     counter()
-                    console.log($('#container-pesan-terpilih .pesan-terpilih').length)
                 }, 500);
 
-
-                Proses Pengiriman Pesan
-                $('#messages_area').scrollTop($('#messages_area').height());
-                $('#chat_form').on('submit', function (event) {
-
-                    event.preventDefault();
-
+                // Proses Pengiriman Pesan
+                setTimeout(function() {
                     if ($('#chat_form').parsley().isValid()) {
-                        var user_id = $('#login_user_id').val();
+                        var user_name = cust_name;
                         var message_id = ''
                         var id_sesi = $('#login_id_sesi').val();
                         var message = $('#chat_message').val();
@@ -960,7 +954,9 @@
                         $("#chat_form").hide();
                         $("#container-btn").addClass('d-flex').show()
                     }
-                });
+                }, 1000);
+
+
             })
 
             //fungsi pindah accordion ke section awal
