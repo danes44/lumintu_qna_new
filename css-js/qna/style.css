@@ -40,8 +40,8 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #38435F;
-    scrollbar-color: #38435F;
+    background-color: rgba(17, 17, 17, 0.3);
+    scrollbar-color: #111111;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -50,9 +50,10 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #a7a7a7;
+    background-color: transparent;
     -webkit-box-shadow: none !important;
 }
+
 
 .chat-text-area{
     resize: none;

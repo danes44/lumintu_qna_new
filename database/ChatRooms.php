@@ -2,6 +2,7 @@
 	
 class ChatRooms
 {
+    private $asal;
     private $message_id;
     private $chat_id;
     private $id_pengirim;
@@ -9,6 +10,16 @@ class ChatRooms
     private $status;
     private $created_on;
     protected $connect;
+
+    public function setAsalMessage($asal)
+    {
+        $this->asal = $asal;
+    }
+
+    function getAsalMessage()
+    {
+        return $this->asal;
+    }
 
     public function setMessageId($chat_id)
     {

@@ -32,25 +32,36 @@ class Chat implements MessageComponentInterface {
         $numRecv = count($this->clients) - 1;
         $data = json_decode($msg, true);
 
-        echo sprintf('Connection %d sending message "%s" to %d other connection%s on '. $data['date'] . "\n"
+        echo sprintf('Connection %d from '. $data['asal'] .' sending message "%s" to %d other connection%s on '. $data['date'] . "\n"
             , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
-
 
         $chat_object = new \ChatRooms;
 
+        $chat_object->setAsalMessage($data['asal']);
         // $chat_object->setMessageId($data["mId"]);
 
-        $chat_object->setChatId($data["sesiId"]); // value nya ambil dari id_chat yang di chats
+        if($data['asal'] == 'user'){
+            $chat_object->setChatId($data["sesiId"]); // value nya ambil dari id_chat yang di chats
 
-        $chat_object->setPengirimId($data['userId']);
+            $chat_object->setPengirimId($data['userId']);
 
-        $chat_object->setMessage($data['msg']);
+            $chat_object->setMessage($data['msg']);
 
-        $chat_object->setStatus(0);
+            $chat_object->setStatus(0);
 
-        $chat_object->setCreatedOn($data['date']);
+            $chat_object->setCreatedOn($data['date']);
 
-        $chat_object->save_chat();
+            $chat_object->save_chat();
+        }
+        else{
+            $chat_object->setChatId($data["sesiId"]); // value nya ambil dari id_chat yang di chats
+
+            $chat_object->setPengirimId($data['userId']);
+
+            $chat_object->setMessage($data['msg']);
+
+            $chat_object->setCreatedOn($data['date']);
+        }
 
         $chat_last = new \ChatRooms;
 
@@ -67,7 +78,10 @@ class Chat implements MessageComponentInterface {
             {
                 $data['from'] = 'Other';
             }
-            $data['mId'] = $last_chat[0]["id_message"];
+
+            if($data['asal'] == 'user')
+                $data['mId'] = $last_chat[0]["id_message"];
+
 
             $client->send(json_encode($data));
         }

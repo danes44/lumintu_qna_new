@@ -50,15 +50,15 @@
 <!--    <script src="vendor-front/jquery-easing/jquery.easing.min.js"></script>-->
 <!---->
 <!--    <script type="text/javascript" src="vendor-front/parsley/dist/parsley.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script src="http://parsleyjs.org/dist/parsley.js"></script>
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <script src="http://parsleyjs.org/dist/parsley.js"></script>
-
 
 </head>
 
-<body>
+<body style="overflow-y: overlay">
         <!-- sidebar -->
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasInfo" aria-labelledby="offcanvasInfoLabel">
             <div class="offcanvas-header justify-content-start ">
@@ -381,7 +381,7 @@
 
         // Koneksi Websocket
         $(document).ready(function () {
-
+            let i = <?php echo $i ?>;
             var conn = new WebSocket('ws://localhost:8082'); //dibuat dinamis
             // var conn = new WebSocket('ws://0.tcp.ngrok.io:14538'); //dibuat dinamis
             conn.onopen = function (e) {
@@ -398,11 +398,13 @@
                 var msg1 = escapeHtml(data.msg);
 
                 if (data.from == 'Me') {
-                    html_data = "<div id='container-pesan-<?php echo $i ?>' class='mb-3 mx-3 p-3 border border-1 rounded-3'><p class='mb-0 small'>" + msg1 + "</p><div class='d-flex justify-content-between align-items-center mt-3 '><p id='jam-pesan-<?php echo $i ?>' class='text-black-50 small mb-0'>" + moment().fromNow() + "</p><button id='btn-delete' class='btn bg-danger bg-opacity-10 rounded-pill py-1 me-0 text-muted'  title='Hapus pertanyaan'><i class='bi bi-trash3 text-danger'></i></button></div></div>"
+                    html_data = "<div id='container-pesan-<?php echo $i ?>' class='mb-3 mx-3 p-3 border border-1 rounded-3'><p class='mb-0 small'>" + msg1 + "</p><div class='d-flex justify-content-between align-items-center mt-3 '><p id='jam-pesan-<?php echo $i ?>' class='text-black-50 small mb-0'>" + moment().fromNow() + "</p><button id='btn-delete-' class='btn bg-danger bg-opacity-10 rounded-pill py-1 me-0 text-muted'  title='Hapus pertanyaan'><i class='bi bi-trash3 text-danger'></i></button></div></div>"
                 }
 
                 $('#messages_area').append(html_data);
-
+                $('html, body').animate({
+                    scrollTop: $('#container-pesan-'+i).offset().top - $('html, body').offset().top + $('html, body').scrollTop()
+                }, 500);
                 $("#chat_message").val("");
             };
 
@@ -411,19 +413,15 @@
 
                 event.preventDefault();
 
-                if ($('#chat_form').parsley().isValid()) {
+                // if ($('#chat_form').parsley().isValid()) {
 
                     var user_id = $('#login_user_id').val();
-
                     var message_id = ''
-
                     var id_sesi = $('#login_id_sesi').val();
-
                     var message = $('#chat_message').val();
-
                     var date = moment().format("YYYY-MM-DD HH:mm:ss")
-
                     var data = {
+                        asal: 'user',
                         userId: user_id,
                         mId: message_id,
                         msg: message,
@@ -435,9 +433,7 @@
                     $("#chat_message").css('height', 'calc(1.5em + 0.75rem + 2px)');
                     $("#chat_form").hide();
                     $("#container-btn").addClass('d-flex').show()
-
-                    //$("html, body").animate({ scrollTop: $("#container-pesan-<?php //$i ?>//").height() }, 1000);
-                }
+                // }
             });
 
         }); 

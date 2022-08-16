@@ -15,6 +15,7 @@
     $i_x_waktu = array();
     $j_x_waktu = array();
     $k_x_waktu = array();
+    $l_x_waktu = array();
 
     $status_all = 0;
     $status_live = 1;
@@ -34,7 +35,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     <script src="http://parsleyjs.org/dist/parsley.js"></script>
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 
     <!-- moment Js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -52,20 +53,29 @@
     </head>
 
     <body>
-        <div class="container py-4">
+        <div class="container pt-4 px-0">
             <div class="d-flex justify-content-between mb-4">
-                <div class="d-flex justify-content-start align-items-center">
-                    <img src="../assets/Logo QnA.svg" class="img-fluid text-center" width="14%" alt="...">
-                    <h2 class="align-middle fw-bold mb-0 ps-3 ">Dashboard</h2>
+                <div class="d-flex justify-content-start align-items-center ">
+                    <a id="btn-kembali" class="fw-bold text-decoration-none text-black border-0 rounded my-0 p-0 bg-transparent" role="button" href="dashboard_admin.php" onclick="return confirm('Apakah anda yakin ingin keluar ?')">
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Kembali
+                    </a>
+<!--                    <img src="../assets/Logo QnA.svg" class="img-fluid text-center" width="14%" alt="...">-->
+<!--                    <h2 class="align-middle fw-bold mb-0 ps-3 ">Dashboard</h2>-->
                 </div>
-                <div class="align-items-center text-end">
-                    <p id="event-name" class="fw-bold mb-0" style="font-size: 1.6rem;"></p>
-                    <h6 class="fst-italic mt-0 mb-1">Lumintu Event</h6>
+                <div class="align-items-center text-center flex-grow-1">
+                    <p id="event-name" class="fw-bold mb-0"></p>
                     <h6 id="date-time" class="mb-0"></h6>
+                </div>
+                <div class="d-flex justify-content-start align-items-center">
+                    <a id="btn-display" class="btn fw-bold text-decoration-none text-white border-0 rounded my-0 p-2 bg-opacity-10" style="background-color: #FF6641" role="button" href="../qna_display.php?id_session=<?php echo $_GET["id_session"] ; ?>" target="_blank">
+                        <i class="bi bi-easel me-1"></i>
+                        Presentasi
+                    </a>
                 </div>
             </div>
 
-            <div class="d-flex justify-content-between mb-4">
+            <!--<div class="d-flex justify-content-between mb-4">
                 <div class="d-flex justify-content-start align-items-center">
                     <a id="btn-kembali" class="fw-bold text-decoration-none text-black border-0 rounded my-0 p-0 bg-transparent" role="button" href="dashboard_admin.php" onclick="return confirm('Apakah anda yakin ingin keluar ?')">
                         <i class="bi bi-arrow-left me-1"></i>
@@ -73,23 +83,30 @@
                     </a>
                 </div>
                 <div class="d-flex justify-content-start align-items-center">
-                    <a id="btn-display" class="fw-bold text-decoration-none text-white border-0 rounded my-0 p-2 bg-opacity-10" style="background-color: #FF6641" role="button" href="../qna_display.php?id_session=<?php echo $_GET["id_session"] ; ?>" target="_blank">
+                    <a id="btn-display" class="fw-bold text-decoration-none text-white border-0 rounded my-0 p-2 bg-opacity-10" style="background-color: #FF6641" role="button" href="../qna_display.php?id_session=<?php /*echo $_GET["id_session"] ; */?>" target="_blank">
                         <i class="bi bi-easel me-1"></i>
                         Presentasi
                     </a>
                 </div>
-            </div>
+            </div>-->
 
-            <div class="row pt-3" >
+            <div class="row pt-1" >
                 <div class="col-6">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="fw-bold">Daftar Pertanyaan</h5>
+                        <div class="d-flex">
+                            <h5 class="fw-bold me-2" title="Daftar pertanyaan yang perlu di pilih">Daftar Pertanyaan <i class="bi bi-question-circle" style="font-size: .6em"></i></h5>
+                        </div>
                         <h6 id="jumlah-pertanyaan"></h6>
+                        <h6 id="jumlah-pertanyaan-ditolak-terjawab" class="d-none"></h6>
                     </div>
                     <div class="input-group mb-3">
                         <input type="text" id="search-pertanyaan" class="form-control border border-1 border-end-0 py-2 px-3 rounded-start" placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan..." aria-describedby="search-addon" style="background-color: white;" >
                         <button class="input-group-text py-2 border border-1 border-start-0 rounded-end " disabled id="search-addon" style="background-color: white; ">
-                            <i class="bi bi-search"></i>
+                            <span id="badge-terbaru" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .6em">Terbaru
+                            </span>
+                            <span id="badge-ditolak-terjawab" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .6em">Ditolak/Terjawab
+                            </span>
+                            <i class="ms-2 bi bi-search"></i>
                         </button>
                         <div class="dropdown">
                             <button class="input-group-text py-2 border border-1 rounded ms-3" data-bs-toggle="dropdown" id="btn-filter" style="background-color: white; ">
@@ -111,7 +128,7 @@
                                   <div class="dropdown-item small">
                                       <input class="form-check-input" type="radio" name="radio-filter" id="radio-terlama" value="terlama" checked>
                                       <label class="form-check-label ms-2" for="radio-terlama">
-                                          Terlama
+                                          Terlama (Default)
                                       </label>
                                   </div>
                               </li>
@@ -120,7 +137,7 @@
                               </li>
                               <li>
                                   <div class="dropdown-item small">
-                                      <input class="form-check-input" type="checkbox" id="checkbox-terjawab">
+                                      <input class="form-check-input" type="checkbox" name="checkbox-terjawab" id="checkbox-terjawab">
                                       <label class="form-check-label ms-2" for="checkbox-terjawab">
                                           Terjawab atau Ditolak
                                       </label>
@@ -130,7 +147,8 @@
                         </div>
                     </div>
 
-                    <div class="border border-1 rounded-3 sortable list-pertanyaan" id="container-pesan" style="max-height: 560px; overflow-y: overlay;">
+                    <!-- semua pertanyaan -->
+                    <div class="border border-1 rounded-3 sortable list-pertanyaan" id="container-pesan" style="height: calc(100vh - 210px); overflow-y: overlay;">
                         <?php
                             $i = 0;
                             $last = count($chat_data);
@@ -205,17 +223,86 @@
                             }
                         ?>
                     </div>
+                    <!-- Pertanyaan terjawab dan ditolak-->
+                    <div class="border border-1 rounded-3 sortable list-pertanyaan d-none" id="container-pesan-ditolak-terjawab" style="height: calc(100vh - 210px); overflow-y: overlay;">
+                        <?php
+                        $k = 0;
+                        $last = count($chat_data);
+
+                        foreach($chat_data as $chat)
+                        {
+                            $str1 = str_split($chat["waktu_pengiriman"], 10);
+                            $jam_pesan = str_split($str1[1], 6);
+
+                            if ($chat["id_chat"] == $_GET["id_session"] && ($chat["status"]==2 || $chat["status"]==3)){
+                                $nama_peserta = get_nama($chat["id_pengirim"]);
+                                $id = $chat["id_message"];
+                                $huruf_depan = $nama_peserta[0];
+
+                                $k_x_waktu[$k] = $chat["waktu_pengiriman"];
+
+                                echo '
+                                        <div id="container-pesan-ditolak-terjawab-'.$chat["id_message"].'" class="p-3 pesan-ditolak-terjawab border-top border-bottom ">
+                                            <div class="d-flex">
+                                                <p id="pesan-ditolak-terjawab-'.$chat["id_message"].'" class="mb-0 small isi-pesan flex-grow-1">
+                                                    '.$chat["pesan"].'
+                                                </p>
+                                            </div>
+                        
+                                            <div class="card-footer bg-transparent">
+                                                <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                                    <div class="d-flex align-items-center ">
+                                                        <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                                            '.$huruf_depan.'
+                                                        </button>
+                                                        <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
+                                                            <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0">'.$nama_peserta.' </p>
+                                                            <p id="jam-pesan-k'.$k.'" class="jam text-black-50 small mb-0 ">
+                                                                '.$jam_pesan[0].'
+                                                            </p>
+                                                            <p class="waktu-kirim d-none" id="waktu_pengiriman_k_'. $k .'" >'.$chat["waktu_pengiriman"].'</p>
+                                                        </div>
+                                                        ';
+                                                        if($chat["status"]==2){
+                                                            echo '<i class="bi bi-patch-check text-success ms-2 align-self-end" title="Pertanyaan Terjawab"></i>';
+                                                        }
+                                                        else{
+                                                            echo '<i class="bi bi-file-earmark-x text-danger ms-2 align-self-end" title="Pertanyaan Ditolak"></i>';
+                                                        }
+                                                        echo '
+                                                    </div>
+                                                    
+                                                    <div id="container-btn-'.$chat["id_message"].'">
+                                                        <button id="btn-revert-'.$k.'" class="btn btn-revert bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal hapus pertanyaan">
+                                                            <i class="bi bi-arrow-counterclockwise"></i>
+                                                        </button>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>';
+                                $k++;
+                            }
+                        }
+                        ?>
+                    </div>
                 </div>
 
                 <div class="col-6">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="fw-bold">Daftar Pertanyaan Untuk Ditampilkan</h5>
+                        <h5 class="fw-bold" title="Daftar pertanyaan yang tertampil di presentasi">Daftar Pertanyaan <span class="ms-1 badge bg-danger rounded-pill text-danger bg-opacity-10" style="height: fit-content;"><i class="bi bi-circle-fill me-2"></i>Live
+                        </span><i class="ms-2 bi bi-question-circle" style="font-size: .6em"></i></h5>
+
                         <h6 id="jumlah-pertanyaan-terpilih"></h6>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="text" id="search-pertanyaan-terpilih" class="form-control border border-1 border-end-0 py-2 px-3 rounded-start" placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan..." aria-describedby="search-addon" style="background-color: white; border-radius: .5rem 0 0 .5rem;">
-                        <button class="input-group-text py-2 border border-1 border-start-0 rounded-end" disabled id="search-addon" style="background-color: white; ">
-                            <i class="bi bi-search"></i>
+                        <input type="text" id="search-pertanyaan-terpilih" class="form-control border border-1 border-end-0 py-2 px-3 rounded-start" placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan..." aria-describedby="search-addon-terpilih" style="background-color: white; border-radius: .5rem 0 0 .5rem;">
+                        <button class="input-group-text py-2 border border-1 border-start-0 rounded-end" disabled id="search-addon-terpilih" style="background-color: white; ">
+                            <span id="badge-terbaru-live" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .6em">Terbaru
+                            </span>
+                            <span id="badge-ditolak-terjawab-live" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .6em">Ditolak/Terjawab
+                            </span>
+                            <i class="ms-2 bi bi-search"></i>
                         </button>
                         <div class="dropdown">
                             <button class="input-group-text py-2 border border-1 rounded ms-3" data-bs-toggle="dropdown" id="btn-filter-live" style="background-color: white; ">
@@ -237,7 +324,7 @@
                                     <div class="dropdown-item small">
                                         <input class="form-check-input" type="radio" name="radio-filter-live" id="radio-terlama-live" value="terlama" checked>
                                         <label class="form-check-label ms-2" for="radio-terlama-live">
-                                            Terlama
+                                            Terlama (Default)
                                         </label>
                                     </div>
                                 </li>
@@ -256,7 +343,7 @@
                         </div>
                     </div>
 
-                    <div class="border border-1 rounded-3 sortable list-pertanyaan" id="container-pesan-terpilih" style="max-height: 560px; overflow-y: overlay;">
+                    <div class="border border-1 rounded-3 sortable list-pertanyaan" id="container-pesan-terpilih" style="max-height: calc(100vh - 210px); overflow-y: overlay;">
                       <?php
                         $j = 0;
                         $last = count($chat_data);
@@ -273,7 +360,7 @@
                                 echo '
                                     <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan-terpilih border-top border-bottom ">
                                         <div class="d-flex">
-                                            <p class="mb-0 small isi-pesan flex-grow-1">'.$chat["pesan"].'</p>
+                                            <p id="pesan-'.$chat["id_message"].'" class="mb-0 small isi-pesan flex-grow-1">'.$chat["pesan"].'</p>
                                         </div>
                         
                                         <div class="card-footer bg-transparent">
@@ -282,8 +369,8 @@
                                                 <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
                                                     '.$huruf_depan.'
                                                 </button>
-                                                <div class="small align-self-center ms-2">
-                                                    <p id="nama-peserta-form" class="text-truncate fw-bold mb-0"> '.$nama_peserta.' </p>
+                                                <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
+                                                    <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0"> '.$nama_peserta.' </p>
                                                     <p id="jam-pesan-j'.$j.'" class="jam text-black-50 small mb-0 ">'.$jam_pesan[0].'</p>
                                                     
                                                     <p class="waktu-kirim d-none" id="waktu_pengiriman_j_'. $j .'" >'.$chat["waktu_pengiriman"].'</p>
@@ -291,14 +378,14 @@
                                                 </div>
                                             </div>
                                             
-                                            <div class="">
-                                                <button id="btn-revert-'.$chat["id_message"]. '" class="btn btn-revert bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
+                                            <div id="container-btn-'.$chat["id_message"]. '" class="">
+                                                <button id="btn-revert-'.$j.'" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
                                                     <i class="bi bi-arrow-counterclockwise"></i>
                                                 </button>
-                                                <button id="btn-love-'.$chat["id_message"]. '" class="btn btn-love bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
+                                                <button id="btn-love-'.$j.'" class="btn btn-love bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
                                                     <i class="bi bi-heart" ></i>
                                                 </button>
-                                                <button id="btn-terjawab-' .$chat["id_message"]. '" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
+                                                <button id="btn-terjawab-'.$j.'" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
                                                     <i class="bi bi-check-lg text-white"></i>
                                                 </button>                                        
                                             </div>
@@ -328,7 +415,6 @@
                                       </div>
                                     </div>
                                 </div>';*/
-
                             }
                         }
                       ?>
@@ -336,7 +422,7 @@
                 </div>
             </div>
 
-            <div class="row pt-5">
+            <!--<div class="row pt-5">
                 <div class="col-6">
                     <div class="d-flex justify-content-between align-items-center">
                     <h5 class="fw-bold">Daftar Pertanyaan Terjawab</h5>
@@ -370,7 +456,7 @@
                                       </div>
                                   </div>
                               </div>
-                        </div>
+                        </div>-->
                         <?php
                           /*foreach($chat_data as $chat)
                           {
@@ -400,15 +486,15 @@
                             }
                           }*/
                         ?>
-                    </div>
+                    <!--</div>
                 </div>
 
-                <?php
-                  echo "<input type='hidden' name='login_id_sesi' id='login_id_sesi' value='".$_GET["id_session"]."'/>";
-                ?>
 
-              </div>
-        </div>
+            </div>
+        </div>-->
+        <?php
+          echo "<input type='hidden' name='login_id_sesi' id='login_id_sesi' value='".$_GET["id_session"]."'/>";
+        ?>
 
         <script>
             moment.locale('id'); //set timezone to Indonesia
@@ -426,6 +512,7 @@
 
             var jam_i = <?php echo json_encode($i_x_waktu); ?>;
             var jam_j = <?php echo json_encode($j_x_waktu); ?>;
+            var jam_k = <?php echo json_encode($k_x_waktu); ?>;
 
             function setFormatJam() {
                 console.log(jam_j)
@@ -436,6 +523,10 @@
                 for(let j=0; j<jam_j.length; j++){
                     let status_jam_j = moment(jam_j[j]).fromNow();
                     $("#jam-pesan-j"+j).text(status_jam_j)
+                }
+                for(let k=0; k<jam_k.length; k++){
+                    let status_jam_k = moment(jam_k[k]).fromNow();
+                    $("#jam-pesan-k"+k).text(status_jam_k)
                 }
             }
             setFormatJam()
@@ -487,8 +578,12 @@
                 console.log($(this).val())
                 if ($(this).val() === 'terbaru') {
                     $('#container-pesan .pesan').sort(sortTerbaru).appendTo('#container-pesan')
+                    // show badge
+                    $('#badge-terbaru').removeClass('d-none')
                 } else {
                     $('#container-pesan .pesan').sort(sortTerlama).appendTo('#container-pesan')
+                    // show badge
+                    $('#badge-terbaru').addClass('d-none')
                 }
             });
 
@@ -497,11 +592,891 @@
                 console.log($(this).val())
                 if ($(this).val() === 'terbaru') {
                     $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerbaru).appendTo('#container-pesan-terpilih')
+                    // show badge
+                    $('#badge-terbaru-live').removeClass('d-none')
                 } else {
                     $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerlama).appendTo('#container-pesan-terpilih')
+                    // hide badge
+                    $('#badge-terbaru-live').addClass('d-none')
                 }
             });
 
+            // fungsi filter terjawab-ditolak
+            $('input:checkbox[name="checkbox-terjawab"]').change(function() {
+                if ($(this).is(":checked") === true) {
+                    console.log('true Check')
+                    // show pertanyaan ditolak terjawab - hide pertanyaan all
+                    $('#container-pesan-ditolak-terjawab').removeClass('d-none')
+                    $('#container-pesan').addClass('d-none')
+                    // show jumlah pertanyaan ditolak terjawab - hide jumlah pertanyaan all
+                    $('#jumlah-pertanyaan-ditolak-terjawab').removeClass('d-none')
+                    $('#jumlah-pertanyaan').addClass('d-none')
+                    // show badge
+                    $('#badge-ditolak-terjawab').removeClass('d-none')
+                    // reset search
+                    $("#search-pertanyaan").val('')
+                } else {
+                    console.log('else')
+                    // show pertanyaan all - hide pertanyaan ditolak terjawab
+                    $('#container-pesan-ditolak-terjawab').addClass('d-none')
+                    $('#container-pesan').removeClass('d-none')
+                    // show jumlah pertanyaan ditolak terjawab - hide jumlah pertanyaan all
+                    $('#jumlah-pertanyaan-ditolak-terjawab').addClass('d-none')
+                    $('#jumlah-pertanyaan').removeClass('d-none')
+                    // hide badge
+                    $('#badge-ditolak-terjawab').addClass('d-none')
+                    // reset search
+                    $("#search-pertanyaan").val('')
+                }
+            });
+        </script>
+
+        <!--    counter jumlah pertanyaan-->
+        <script>
+            function counter() {
+                $('#jumlah-pertanyaan').text("Jumlah : " + $('#container-pesan .pesan').length)
+                $('#jumlah-pertanyaan-terpilih').text("Jumlah : " +$('#container-pesan-terpilih .pesan-terpilih').length)
+                $('#jumlah-pertanyaan-ditolak-terjawab').text("Jumlah : " +$('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').length)
+            }
+            counter()
+        </script>
+
+        <script>
+            function escapeHtml(text) {
+              return text
+                  .replace(/&/g, "&'';")
+                  .replace(/</g, "<'")
+                  .replace(/>/g, ">'")
+                  .replace(/"/g, "''")
+                  .replace(/'/g, "'");
+            }
+            // Koneksi Websocket
+            var port = '8082'
+            var conn = new WebSocket('ws://localhost:'+port);
+            // var conn = new WebSocket('ws://0.tcp.ngrok.io:14538);
+            conn.onopen = function(e) {
+                console.log("Connection established!");
+            };
+            let i= <?php echo $i; ?>;
+            $(document).ready(function(){
+                conn.onmessage = function(e) {
+                    console.log("websocket:" +e.data);
+
+                    var sesi_id1 = $('#login_id_sesi').val();
+                    var data1 = JSON.parse(e.data);
+
+                    if(data1.asal === 'user'){
+                        $.ajax({
+                            url: kel1_api+'/items/customer?fields=customer_id,customer_name&filter[customer_id]='+data1.userId,
+                            type: 'GET',
+                            //Authorization Header
+                            // beforeSend: function (xhr) {
+                            //     xhr.setRequestHeader('Authorization', 'Bearer tokencoba');
+                            // },
+                            dataType: 'json',
+                            success: function(data, textStatus, xhr) {
+                                var list_data = ''
+
+                                var nama = data.data[0].customer_name
+                                let nama_depan = Array.from(nama)[0]
+
+                                if( data1.sesiId === sesi_id1 )
+                                {
+                                    list_data =
+                                        `<div id="container-pesan-${data1.mId}" class="p-3 pesan border-top border-bottom">
+                                    <div class="d-flex">
+                                        <p id="pesan-${data1.mId}" class="mb-0 small isi-pesan flex-grow-1">${escapeHtml(data1.msg)}</p>
+                                        <div class="dropdown">
+                                            <button id="btn-options" class="bg-transparent border-0" data-bs-toggle="dropdown" style="height: fit-content">
+                                                <i class="bi bi-three-dots text-muted"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <button id="btn-edit-${data1.mId}" class="dropdown-item small btn-edit" type="button">
+                                                        <i class="bi bi-pencil me-3 text-primary"></i>Edit
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button id="btn-hapus-${data1.mId}" class="dropdown-item small btn-hapus" type="button">
+                                                        <i class="bi bi-trash3 me-3 text-danger"></i>Hapus
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-footer bg-transparent">
+                                        <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                            <div class="d-flex align-items-center ">
+                                                <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>${nama_depan}</button>
+                                                <div id="container-nama-waktu-${data1.mId}" class="small align-self-center ms-2">
+                                                    <p id="nama-peserta-form-${data1.userId}" class="nama text-truncate fw-bold mb-0">${nama}</p>
+                                                    <p id="jam-pesan-i${i}" class="jam text-black-50 small mb-0 ">${moment(data1.date).fromNow()}</p>
+                                                    <p class="waktu-kirim d-none" id="waktu_pengiriman_i_${i}">${data1.date}</p>
+                                                </div>
+                                            </div>
+                                            <div id="container-btn-${data1.mId}">
+                                                <button id="btn-accept-${i}" class="btn btn-accept bg-success  bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted" title="Setujui pertanyaan"  style="width: 50px;">
+                                                    <i class="bi bi-check-lg text-success "></i>
+                                                </button>
+                                                <button id="btn-decline-${i}" class="btn btn-decline bg-danger bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted"  title="Tolak pertanyaan"  style="width: 50px;">
+                                                    <i class="bi bi-x-lg text-danger "></i>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>`
+                                }
+
+                                $('#container-pesan').append(list_data);
+                                i=i+1
+                            },
+                            complete: function (data) {
+                                jam_i[jam_i.length] = data1.date
+                                counter()
+                                if( $('#radio-terbaru').is(':checked') ){
+                                    $('#container-pesan .pesan').sort(sortTerbaru).appendTo('#container-pesan')
+                                }
+                                else if ($('#radio-terlama').is(':checked')){
+                                    $('#container-pesan .pesan').sort(sortTerlama).appendTo('#container-pesan')
+                                }
+
+                            }
+                        })
+                    }
+                };
+
+            });
+
+        </script>
+
+        <!-- function search pertanyaan   -->
+        <script>
+            //search question pool
+            $("#search-pertanyaan").on("keyup", function() {
+                let value = $(this).val().toLowerCase();
+
+                if ($('#checkbox-terjawab').is(":checked") === true) {
+                    console.log('true search')
+                    $("#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab .isi-pesan").filter(function() {
+                        $(this).parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                } else {
+                    console.log('else search')
+                    $("#container-pesan .pesan .isi-pesan").filter(function() {
+                        $(this).parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                }
+                counter()
+            });
+
+            //search selected question pool
+            $("#search-pertanyaan-terpilih").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+
+                $("#container-pesan-terpilih .pesan-terpilih .isi-pesan").filter(function() {
+                    $(this).parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+                counter()
+            });
+        </script>
+
+        <script>
+            //dapet data dari url untuk dapet ID tiketnya
+            var id_tiket = 1;
+            var id_tiket_session = 1;
+            var arr_customers = []
+            var arr_all = []
+            var arr_sorted = []
+            var arr_temp = []
+            var arr_choose = []
+            var arr_answered = []
+            var status_sort = 0
+
+
+            $.ajax({
+                url: kel1_api+'/items/ticket?fields=ticket_id,ticket_type,ticket_x_session.session_id.*,ticket_x_day.day_id.*',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data, textStatus, xhr) {
+                        let nama = data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.session_desc
+                        let time_start = new Date(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.start_time)
+                        let time_finish = new Date(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.finish_time)
+
+                        let day = moment(time_start).format('dddd')
+                        let time_begin = moment(time_start).format('HH:mm')
+                        let time_end = moment(time_finish).format('HH:mm')
+                        let date = moment(time_start).format('LL')
+
+                        $('#event-name').text(nama)
+                        $('#date-time').text(day+", "+date+" | "+time_begin+" - "+time_end+" WIB")
+                        // $('#time').text(time_begin+" - "+time_end)
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    console.log('Error in Database');
+                }
+            })
+        </script>
+
+        <!-- fungsi pindah pertanyaan   -->
+        <script>
+            //fungsi button accept
+            let j= <?php echo $j; ?>;
+            $("body").on("click", '.btn-accept', function() {
+                $('#badge-baru').remove()
+
+                let id_element = $(this).parent().attr('id');
+                let id_numb = id_element.split("-");
+                let idm = id_numb[2]
+                console.log($('#container-pesan-'+idm))
+
+                let parent_element = $('#container-pesan-'+idm);
+
+                $.ajax({
+                    url: "../update.php",
+                    type: "POST",
+                    cache: false,
+                    data:{
+                        status: '1',
+                        id_message: idm,
+                    },
+                    success: function(dataResult){
+                        var dataResult = JSON.parse(dataResult);
+                        if(dataResult.statusCode==200){
+                            console.log('Data updated successfully ! '+idm+' apa');
+                        }
+                    }
+                });
+
+                // let id_waktu_kirim= $('#nama-peserta-form-'+idm).siblings('.waktu-kirim').attr('id');
+                // let i_split = id_waktu_kirim.split('_')
+                // let i = i_split[3];
+
+                // get id user
+                let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
+                let id_user_arr = id_user_element.split("-");
+                let id_user = id_user_arr[3];
+                console.log(id_user)
+
+                // get nama user dan message
+                var cust_name = $('#nama-peserta-form-'+id_user).text();
+                let cust_nama_depan = Array.from(cust_name)[0];
+                let cust_message = $('#pesan-'+idm).text();
+
+                // get jam pesan
+                let element_i = $('#container-btn-'+idm).children('.btn-accept').attr('id')
+                let id_i = element_i.split("-");
+                let jam_pesan = $('#jam-pesan-i'+id_i[2]).text();
+                let jam_pesan_hidden = $('#waktu_pengiriman_i_'+id_i[2]).text();
+
+                console.log(jam_pesan_hidden)
+
+                let elements=
+                    `<div id="container-pesan-${idm}" class="p-3 pesan-terpilih border-top border-bottom ">
+                        <div class="d-flex">
+                            <p id="pesan-${idm}" class="mb-0 small isi-pesan flex-grow-1">
+                                ${cust_message}
+                            </p>
+
+                        </div>
+
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                <div class="d-flex align-items-center ">
+                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                        ${cust_nama_depan}
+                                    </button>
+                                    <div class="small align-self-center ms-2">
+                                        <p id="nama-peserta-form-${id_user}" class="text-truncate fw-bold mb-0"> ${cust_name} </p>
+                                        <p id="jam-pesan-j${j}" class="jam text-black-50 small mb-0 ">
+                                            ${jam_pesan}
+                                        </p>
+                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_j_${j} ">${jam_pesan_hidden}</p>
+                                    </div>
+                                </div>
+
+                                <div id="container-btn-${idm}">
+                                    <button id="btn-revert-${j}" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
+                                    <button id="btn-love-${j}" class="btn btn-love bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
+                                        <i class="bi bi-heart" ></i>
+                                    </button>
+                                    <button id="btn-terjawab-${j}" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
+                                        <i class="bi bi-check-lg text-white"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>`
+
+                $("#container-pesan-terpilih").append(elements);
+                console.log("udah pindah"+$('#container-pesan-'+idm).parent().attr('id'))
+
+                jam_j[jam_j.length] = jam_pesan_hidden
+
+                if( $('#radio-terbaru-live').is(':checked') ){
+                    $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerbaru).appendTo('#container-pesan-terpilih')
+                    console.log("terbaru")
+                }
+                else if ($('#radio-terlama-live').is(':checked')){
+                    $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerlama).appendTo('#container-pesan-terpilih')
+                    console.log("terlama")
+                }
+
+                parent_element.remove()
+
+                setTimeout(function() {
+                    setFormatJam()
+                    counter()
+                    //scroll ke pesan terbaru
+                    $('#container-pesan-terpilih').animate({
+                        scrollTop: $('#container-pesan-'+idm).offset().top - $('#container-pesan-terpilih').offset().top + $('#container-pesan-terpilih').scrollTop()
+                    }, 500);
+                }, 100);
+
+                setTimeout(function () {
+                    $('#container-pesan-'+idm).css({
+                        "background-color" : 'rgba(25,135,84,0.1)',
+                    });
+                    $('#pesan-'+idm).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
+                },500)
+
+                setTimeout(function () {
+                    $('#container-pesan-'+idm).css({
+                        "background-color" : 'white',
+                    });
+                    console.log("ganti warna")
+                },1500)
+
+                j=j+1;
+                // Proses Pengiriman Pesan
+                let id_sesi = $('#login_id_sesi').val();
+                let data = {
+                    asal: 'admin',
+                    userId: id_user,
+                    mId: idm,
+                    msg: cust_message,
+                    sesiId: id_sesi,
+                    date: jam_pesan_hidden,
+                };
+                conn.send(JSON.stringify(data));
+            })
+
+            //fungsi button decline
+            let k= <?php echo $k; ?>;
+            $("body").on("click", '.btn-decline', function() {
+                $('#badge-baru').remove()
+
+                let id_element = $(this).parent().attr('id');
+                let id_numb = id_element.split("-");
+                let idm = id_numb[2]
+                console.log($('#container-pesan-ditolak-terjawab-'+idm).parent().attr('class'))
+
+                let parent_element = $('#container-pesan-'+idm);
+
+                $.ajax({
+                    url: "../update.php",
+                    type: "POST",
+                    cache: false,
+                    data:{
+                        status: '3',
+                        id_message: idm,
+                    },
+                    success: function(dataResult){
+                        var dataResult = JSON.parse(dataResult);
+                        if(dataResult.statusCode==200){
+                            console.log('Data updated successfully ! '+idm+' apa');
+                        }
+                    }
+                });
+
+                // get id user
+                let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
+                let id_user_arr = id_user_element.split("-");
+                let id_user = id_user_arr[3];
+                console.log(id_user)
+
+                // get nama user dan message
+                var cust_name = $('#nama-peserta-form-'+id_user).text();
+                let cust_nama_depan = Array.from(cust_name)[0];
+                let cust_message = $('#pesan-'+idm).text();
+
+                // get jam pesan
+                let element_k = $('#container-btn-'+idm).children('.btn-decline').attr('id')
+                let id_k = element_k.split("-");
+                let jam_pesan = $('#jam-pesan-i'+id_k[2]).text();
+                let jam_pesan_hidden = $('#waktu_pengiriman_i_'+id_k[2]).text();
+
+                console.log(id_k[2])
+
+                let elements=
+                    `<div id="container-pesan-ditolak-terjawab-${idm}" class="p-3 pesan-ditolak-terjawab border-top border-bottom ">
+                        <div class="d-flex">
+                            <p id="pesan-ditolak-terjawab-${idm}" class="mb-0 small isi-pesan flex-grow-1">
+                                ${cust_message}
+                            </p>
+
+                        </div>
+
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                <div class="d-flex align-items-center ">
+                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                        ${cust_nama_depan}
+                                    </button>
+                                    <div class="small align-self-center ms-2">
+                                        <p id="nama-peserta-form-${id_user}" class="text-truncate fw-bold mb-0"> ${cust_name} </p>
+                                        <p id="jam-pesan-k${k}" class="jam text-black-50 small mb-0 ">
+                                            ${jam_pesan}
+                                        </p>
+                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_k_${k} ">${jam_pesan_hidden}</p>
+                                    </div>
+                                    <i class="bi bi-file-earmark-x text-danger ms-2 align-self-end" title="Pertanyaan Ditolak"></i>
+                                </div>
+
+                                <div id="container-btn-${idm}">
+                                    <button id="btn-revert-${idm}" class="btn btn-revert bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>`
+
+                console.log("udah pindah")
+                $("#container-pesan-ditolak-terjawab").append(elements);
+
+                jam_k[jam_k.length] = jam_pesan_hidden
+
+                parent_element.remove()
+
+                setTimeout(function() {
+                    setFormatJam()
+                    counter()
+                    // scroll ke pesan terbaru
+                    $('#container-pesan-ditolak-terjawab').animate({
+                        scrollTop: $('#container-pesan-ditolak-terjawab-'+idm).offset().top - $('#container-pesan-ditolak-terjawab').offset().top + $('#container-pesan-ditolak-terjawab').scrollTop()
+                    }, 500);
+                    //
+                }, 100);
+
+                setTimeout(function () {
+                    $('#container-pesan-ditolak-terjawab-'+idm).css({
+                        "background-color" : 'rgba(25,135,84,0.1)',
+                    });
+                    $('#pesan-ditolak-terjawab-'+idm).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
+                },500)
+
+                setTimeout(function () {
+                    $('#container-pesan-ditolak-terjawab-'+idm).css({
+                        "background-color" : 'white',
+                    });
+                    console.log("ganti warna")
+                },1500)
+
+                k=k+1;
+            })
+
+            //fungsi button terjawab
+            $("body").on("click", ".btn-terjawab", function() {
+                $('#badge-baru').remove()
+
+                let id_element = $(this).parent().attr('id');
+                let id_numb = id_element.split("-");
+                let idm = id_numb[2]
+
+                let parent_element = $('#container-pesan-'+idm);
+
+                $.ajax({
+                    url: "../update.php",
+                    type: "POST",
+                    cache: false,
+                    data:{
+                        status: '2',
+                        id_message: idm,
+                    },
+                    success: function(dataResult){
+                        var dataResult = JSON.parse(dataResult);
+                        if(dataResult.statusCode==200){
+                            console.log('Data updated successfully ! '+idm+' apa');
+                        }
+                    }
+                });
+
+                // get id user
+                let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
+                let id_user_arr = id_user_element.split("-");
+                let id_user = id_user_arr[3];
+                console.log(id_user)
+
+                // get nama user dan message
+                var cust_name = $('#nama-peserta-form-'+id_user).text();
+                let cust_nama_depan = Array.from(cust_name)[0];
+                let cust_message = $('#pesan-'+idm).text();
+
+                // get jam pesan
+                let element_k = $('#container-btn-'+idm).children('.btn-terjawab').attr('id')
+                let id_k = element_k.split("-");
+                let jam_pesan = $('#jam-pesan-j'+id_k[2]).text();
+                let jam_pesan_hidden = $('#waktu_pengiriman_j_'+id_k[2]).text();
+
+                console.log(id_k[2])
+
+                let elements=
+                    `<div id="container-pesan-ditolak-terjawab-${idm}" class="p-3 pesan-ditolak-terjawab border-top border-bottom ">
+                        <div class="d-flex">
+                            <p id="pesan-ditolak-terjawab-${idm}" class="mb-0 small isi-pesan flex-grow-1">
+                                ${cust_message}
+                            </p>
+
+                        </div>
+
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                <div class="d-flex align-items-center ">
+                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                        ${cust_nama_depan}
+                                    </button>
+                                    <div class="small align-self-center ms-2">
+                                        <p id="nama-peserta-form-${id_user}" class="text-truncate fw-bold mb-0"> ${cust_name} </p>
+                                        <p id="jam-pesan-k${k}" class="jam text-black-50 small mb-0 ">
+                                            ${jam_pesan}
+                                        </p>
+                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_k_${k} ">${jam_pesan_hidden}</p>
+                                    </div>
+                                    <i class="bi bi-patch-check text-success ms-2 align-self-end" title="Pertanyaan Terjawab"></i>
+                                </div>
+
+                                <div id="container-btn-${idm}">
+                                    <button id="btn-revert-${idm}" class="btn btn-revert bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>`
+
+                console.log("udah pindah")
+                $("#container-pesan-ditolak-terjawab").append(elements);
+
+                jam_k[jam_k.length] = jam_pesan_hidden
+
+                parent_element.remove()
+
+                setTimeout(function() {
+                    setFormatJam()
+                    counter()
+                    // scroll ke pesan terbaru
+                    $('#container-pesan-ditolak-terjawab').animate({
+                        scrollTop: $('#container-pesan-ditolak-terjawab-'+idm).offset().top - $('#container-pesan-ditolak-terjawab').offset().top + $('#container-pesan-ditolak-terjawab').scrollTop()
+                    }, 500);
+                    //
+                }, 100);
+
+                setTimeout(function () {
+                    $('#container-pesan-ditolak-terjawab-'+idm).css({
+                        "background-color" : 'rgba(25,135,84,0.1)',
+                    });
+                    $('#pesan-ditolak-terjawab-'+idm).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
+                },500)
+
+                setTimeout(function () {
+                    $('#container-pesan-ditolak-terjawab-'+idm).css({
+                        "background-color" : 'white',
+                    });
+                    console.log("ganti warna")
+                },1500)
+
+                k=k+1;
+                // Proses Pengiriman Pesan
+                var id_sesi = $('#login_id_sesi').val();
+                var data = {
+                    asal: 'admin-terpilih',
+                    userId: id_user,
+                    mId: idm,
+                    msg: cust_message,
+                    sesiId: id_sesi,
+                    date: jam_pesan_hidden,
+                };
+                conn.send(JSON.stringify(data));
+            })
+
+            //fungsi revert pertanyaan dari terpilih ke awal
+            $("body").on("click", ".btn-revert-terpilih", function() {
+                $('#badge-baru').remove()
+
+                let id_element = $(this).parent().attr('id');
+                let id_numb = id_element.split("-");
+                let idm = id_numb[2]
+
+                let parent_element = $('#container-pesan-'+idm);
+
+                $.ajax({
+                    url: "../update.php",
+                    type: "POST",
+                    cache: false,
+                    data:{
+                        status: '0',
+                        id_message: idm,
+                    },
+                    success: function(dataResult){
+                        var dataResult = JSON.parse(dataResult);
+                        if(dataResult.statusCode==200){
+                            console.log('Data updated successfully ! '+idm+' apa');
+                        }
+                    }
+                });
+
+                // get id user
+                let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
+                let id_user_arr = id_user_element.split("-");
+                let id_user = id_user_arr[3];
+                console.log(id_user)
+
+                // get nama user dan message
+                let cust_name = $('#nama-peserta-form-'+id_user).text();
+                let cust_nama_depan = Array.from(cust_name)[0];
+                let cust_message = $('#pesan-'+idm).text();
+
+                // get jam pesan
+                let element_j = $('#container-btn-'+idm).children('.btn-revert-terpilih').attr('id')
+                let id_j = element_j.split("-");
+                let jam_pesan = $('#jam-pesan-j'+id_j[2]).text();
+                let jam_pesan_hidden = $('#waktu_pengiriman_j_'+id_j[2]).text();
+
+                console.log(id_j[2])
+
+                let elements=
+                    `<div id="container-pesan-${idm}" class="p-3 pesan border-top border-bottom">
+                        <div class="d-flex">
+                            <p id="pesan-${idm}" class="mb-0 small isi-pesan flex-grow-1">${cust_message}</p>
+                            <div class="dropdown">
+                                <button id="btn-options" class="bg-transparent border-0" data-bs-toggle="dropdown" style="height: fit-content">
+                                    <i class="bi bi-three-dots text-muted"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <button id="btn-edit-${idm}" class="dropdown-item small btn-edit" type="button">
+                                            <i class="bi bi-pencil me-3 text-primary"></i>Edit
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button id="btn-hapus-${idm}" class="dropdown-item small btn-hapus" type="button">
+                                            <i class="bi bi-trash3 me-3 text-danger"></i>Hapus
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                <div class="d-flex align-items-center ">
+                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>${cust_nama_depan}</button>
+                                    <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
+                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
+                                        <p id="jam-pesan-i${i}" class="jam text-black-50 small mb-0 ">${jam_pesan}</p>
+                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_i_${i}">${jam_pesan_hidden}</p>
+                                    </div>
+                                </div>
+                                <div id="container-btn-${idm}">
+                                    <button id="btn-accept-${i}" class="btn btn-accept bg-success  bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted" title="Setujui pertanyaan"  style="width: 50px;">
+                                        <i class="bi bi-check-lg text-success "></i>
+                                    </button>
+                                    <button id="btn-decline-${i}" class="btn btn-decline bg-danger bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted"  title="Tolak pertanyaan"  style="width: 50px;">
+                                        <i class="bi bi-x-lg text-danger "></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>`
+
+                console.log("udah pindah")
+                $("#container-pesan").append(elements);
+
+                jam_i[jam_i.length] = jam_pesan_hidden
+
+                parent_element.remove()
+
+                setTimeout(function() {
+                    setFormatJam()
+                    counter()
+                    // scroll ke pesan terbaru
+                    $('#container-pesan').animate({
+                        scrollTop: $('#container-pesan-'+idm).offset().top - $('#container-pesan').offset().top + $('#container-pesan').scrollTop()
+                    }, 500);
+                    //
+                }, 100);
+
+                setTimeout(function () {
+                    $('#container-pesan-'+idm).css({
+                        "background-color" : 'rgba(25,135,84,0.1)',
+                    });
+                    $('#pesan-'+idm).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
+                },500)
+
+                setTimeout(function () {
+                    $('#container-pesan-'+idm).css({
+                        "background-color" : 'white',
+                    });
+                    console.log("ganti warna")
+                },1500)
+
+                i=i+1;
+                // Proses Pengiriman Pesan
+                var id_sesi = $('#login_id_sesi').val();
+                var data = {
+                    asal: 'admin-terpilih',
+                    userId: id_user,
+                    mId: idm,
+                    msg: cust_message,
+                    sesiId: id_sesi,
+                    date: jam_pesan_hidden,
+                };
+                conn.send(JSON.stringify(data));
+            })
+
+            //fungsi revert pertanyaan dari terpilih ke awal
+            $("body").on("click", ".btn-revert", function() {
+                $('#badge-baru').remove()
+
+                let id_element = $(this).parent().attr('id');
+                let id_numb = id_element.split("-");
+                let idm = id_numb[2]
+
+                let parent_element = $('#container-pesan-'+idm);
+
+                // $.ajax({
+                //     url: "../update.php",
+                //     type: "POST",
+                //     cache: false,
+                //     data:{
+                //         status: '0',
+                //         id_message: idm,
+                //     },
+                //     success: function(dataResult){
+                //         var dataResult = JSON.parse(dataResult);
+                //         if(dataResult.statusCode==200){
+                //             console.log('Data updated successfully ! '+idm+' apa');
+                //         }
+                //     }
+                // });
+
+                // get id user
+                let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
+                let id_user_arr = id_user_element.split("-");
+                let id_user = id_user_arr[3];
+                console.log(id_user)
+
+                // get nama user dan message
+                let cust_name = $('#nama-peserta-form-'+id_user).text();
+                let cust_nama_depan = Array.from(cust_name)[0];
+                let cust_message = $('#pesan-'+idm).text();
+
+                // get jam pesan
+                let element_j = $('#container-btn-'+idm).children('.btn-revert-terpilih').attr('id')
+                let id_j = element_j.split("-");
+                let jam_pesan = $('#jam-pesan-j'+id_j[2]).text();
+                let jam_pesan_hidden = $('#waktu_pengiriman_j_'+id_j[2]).text();
+
+                console.log(id_j[2])
+
+                let elements=
+                    `<div id="container-pesan-${idm}" class="p-3 pesan border-top border-bottom">
+                        <div class="d-flex">
+                            <p id="pesan-${idm}" class="mb-0 small isi-pesan flex-grow-1">${cust_message}</p>
+                            <div class="dropdown">
+                                <button id="btn-options" class="bg-transparent border-0" data-bs-toggle="dropdown" style="height: fit-content">
+                                    <i class="bi bi-three-dots text-muted"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <button id="btn-edit-${idm}" class="dropdown-item small btn-edit" type="button">
+                                            <i class="bi bi-pencil me-3 text-primary"></i>Edit
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button id="btn-hapus-${idm}" class="dropdown-item small btn-hapus" type="button">
+                                            <i class="bi bi-trash3 me-3 text-danger"></i>Hapus
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                <div class="d-flex align-items-center ">
+                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>${cust_nama_depan}</button>
+                                    <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
+                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
+                                        <p id="jam-pesan-i${i}" class="jam text-black-50 small mb-0 ">${jam_pesan}</p>
+                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_i_${i}">${jam_pesan_hidden}</p>
+                                    </div>
+                                </div>
+                                <div id="container-btn-${idm}">
+                                    <button id="btn-accept-${i}" class="btn btn-accept bg-success  bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted" title="Setujui pertanyaan"  style="width: 50px;">
+                                        <i class="bi bi-check-lg text-success "></i>
+                                    </button>
+                                    <button id="btn-decline-${i}" class="btn btn-decline bg-danger bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted"  title="Tolak pertanyaan"  style="width: 50px;">
+                                        <i class="bi bi-x-lg text-danger "></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>`
+
+                console.log("udah pindah")
+                $("#container-pesan").append(elements);
+
+                jam_i[jam_i.length] = jam_pesan_hidden
+
+                parent_element.remove()
+
+                setTimeout(function() {
+                    setFormatJam()
+                    counter()
+                    // scroll ke pesan terbaru
+                    $('#container-pesan').animate({
+                        scrollTop: $('#container-pesan-'+idm).offset().top - $('#container-pesan').offset().top + $('#container-pesan').scrollTop()
+                    }, 500);
+                    //
+                }, 100);
+
+                setTimeout(function () {
+                    $('#container-pesan-'+idm).css({
+                        "background-color" : 'rgba(25,135,84,0.1)',
+                    });
+                    $('#pesan-'+idm).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
+                },500)
+
+                setTimeout(function () {
+                    $('#container-pesan-'+idm).css({
+                        "background-color" : 'white',
+                    });
+                    console.log("ganti warna")
+                },1500)
+
+                i=i+1;
+                // Proses Pengiriman Pesan
+                var id_sesi = $('#login_id_sesi').val();
+                var data = {
+                    asal: 'admin-terpilih',
+                    userId: id_user,
+                    mId: idm,
+                    msg: cust_message,
+                    sesiId: id_sesi,
+                    date: jam_pesan_hidden,
+                };
+                conn.send(JSON.stringify(data));
+            })
         </script>
 
         <!--    function sortable-->
@@ -585,576 +1560,6 @@
             //     var data = ev.dataTransfer.getData("text");
             //     ev.target.appendChild(document.getElementById(data));
             // }
-        </script>
-
-        <!--    counter jumlah pertanyaan-->
-        <script>
-            function counter() {
-                $('#jumlah-pertanyaan').text("Jumlah : " + $('#container-pesan .pesan').length)
-                $('#jumlah-pertanyaan-terpilih').text("Jumlah : " +$('#container-pesan-terpilih .pesan-terpilih').length)
-                $('#jumlah-pertanyaan-terjawab').text("Jumlah : " +$('#accordionFlush-answered .accordion-item').length)
-            }
-            counter()
-        </script>
-
-        <script>
-            function escapeHtml(text) {
-              return text
-                  .replace(/&/g, "&'';")
-                  .replace(/</g, "<'")
-                  .replace(/>/g, ">'")
-                  .replace(/"/g, "''")
-                  .replace(/'/g, "'");
-            }
-            // Koneksi Websocket
-            var port = '8082'
-            var conn = new WebSocket('ws://localhost:'+port);
-            // var conn = new WebSocket('ws://0.tcp.ngrok.io:14538);
-            conn.onopen = function(e) {
-                console.log("Connection established!");
-            };
-            $(document).ready(function(){
-                conn.onmessage = function(e) {
-                    console.log("TESTETETETES" +e.data);
-
-                    var sesi_id1 = $('#login_id_sesi').val();
-
-                    var data1 = JSON.parse(e.data);
-                    $.ajax({
-                        url: kel1_api+'/items/customer?fields=customer_id,customer_name&filter[customer_id]='+data1.userId,
-                        type: 'GET',
-                        //Authorization Header
-                        // beforeSend: function (xhr) {
-                        //     xhr.setRequestHeader('Authorization', 'Bearer tokencoba');
-                        // },
-                        dataType: 'json',
-                        success: function(data, textStatus, xhr) {
-                            var list_data = ''
-
-                            var nama = data.data[0].customer_name
-                            let nama_depan = Array.from(nama)[0]
-                            let i= <?php echo $i; ?>
-
-                            <?php $i++; ?>
-
-                            if( data1.sesiId === sesi_id1 )
-                            {
-                              list_data =
-                                `<div id="container-pesan-${data1.mId}" class="p-3 pesan border-top border-bottom">
-                                    <div class="d-flex">
-                                        <p id="pesan-${data1.mId}" class="mb-0 small isi-pesan flex-grow-1">${escapeHtml(data1.msg)}</p>
-                                        <div class="dropdown">
-                                            <button id="btn-options" class="bg-transparent border-0" data-bs-toggle="dropdown" style="height: fit-content">
-                                                <i class="bi bi-three-dots text-muted"></i>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li>
-                                                    <button id="btn-edit-${data1.mId}" class="dropdown-item small btn-edit" type="button">
-                                                        <i class="bi bi-pencil me-3 text-primary"></i>Edit
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button id="btn-hapus-${data1.mId}" class="dropdown-item small btn-hapus" type="button">
-                                                        <i class="bi bi-trash3 me-3 text-danger"></i>Hapus
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="card-footer bg-transparent">
-                                        <div class="d-flex justify-content-between align-items-center mt-3 ">
-                                            <div class="d-flex align-items-center ">
-                                                <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>${nama_depan}</button>
-                                                <div id="container-nama-waktu-${data1.mId}" class="small align-self-center ms-2">
-                                                    <p id="nama-peserta-form-${data1.userId}" class="text-truncate fw-bold mb-0">${nama}</p>
-                                                    <p id="jam-pesan-i${i}" class="jam text-black-50 small mb-0 ">${moment(data1.date).fromNow()}</p>
-                                                    <p class="waktu-kirim d-none" id="waktu_pengiriman_i_${i}">${data1.date}</p>
-                                                </div>
-                                            </div>
-                                            <div id="container-btn-${data1.mId}">
-                                                <button id="btn-accept-${i}" class="btn btn-accept bg-success  bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted" title="Setujui pertanyaan"  style="width: 50px;">
-                                                    <i class="bi bi-check-lg text-success "></i>
-                                                </button>
-                                                <button id="btn-decline-${i}" class="btn btn-decline bg-danger bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted"  title="Tolak pertanyaan"  style="width: 50px;">
-                                                    <i class="bi bi-x-lg text-danger "></i>
-                                                </button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>`
-                            }
-
-                            $('#container-pesan').append(list_data);
-                            console.log(<?php echo $i ?>)
-                        },
-                        complete: function (data) {
-                            jam_i[jam_i.length] = data1.date
-                            counter()
-                            if( $('#radio-terbaru').is(':checked') ){
-                                $('#container-pesan .pesan').sort(sortTerbaru).appendTo('#container-pesan')
-                            }
-                            else if ($('#radio-terlama').is(':checked')){
-                                $('#container-pesan .pesan').sort(sortTerlama).appendTo('#container-pesan')
-                            }
-                        }
-                    })
-                };
-
-            });
-
-        </script>
-
-        <!-- function search pertanyaan   -->
-        <script>
-            //search question pool
-            $("#search-pertanyaan").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-
-                $("#container-pesan .pesan .isi-pesan").filter(function() {
-                    $(this).parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-                counter()
-            });
-
-            //search selected question pool
-            $("#search-pertanyaan-terpilih").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-
-                $("#container-pesan-terpilih .pesan-terpilih .isi-pesan").filter(function() {
-                    $(this).parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-                counter()
-            });
-        </script>
-
-        <script>
-            //dapet data dari url untuk dapet ID tiketnya
-            var id_tiket = 1;
-            var id_tiket_session = 1;
-            var arr_customers = []
-            var arr_all = []
-            var arr_sorted = []
-            var arr_temp = []
-            var arr_choose = []
-            var arr_answered = []
-            var status_sort = 0
-
-            getDataCustomer()
-
-
-            $.ajax({
-            url: kel1_api+'/items/ticket?fields=ticket_id,ticket_type,ticket_x_session.session_id.*,ticket_x_day.day_id.*',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data, textStatus, xhr) {
-                    let nama = data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.session_desc
-                    let time_start = new Date(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.start_time)
-                    let time_finish = new Date(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.finish_time)
-
-                    let day = moment(time_start).format('dddd')
-                    let time_begin = moment(time_start).format('HH:mm')
-                    let time_end = moment(time_finish).format('HH:mm')
-                    let date = moment(time_start).format('LL')
-
-                    $('#event-name').text(nama)
-                    $('#date-time').text(day+", "+date+" | "+time_begin+" - "+time_end+" WIB")
-                    // $('#time').text(time_begin+" - "+time_end)
-            },
-            error: function(xhr, textStatus, errorThrown) {
-                console.log('Error in Database');
-            }
-            })
-
-            // get data dari API customer
-            function getDataCustomer() {
-              arr_customers.length = 0
-              arr_all.length = 0
-              $.ajax({
-                  url: kel1_api+'/items/customer/',
-                  type: 'GET',
-                  dataType: 'json',
-                  success: function(data, textStatus, xhr) {
-                    for(var i = 0; i < data.data.length; i++){
-                        // console.log(data.data[i].customer_name)
-                        arr_customers.push({
-                            id : data.data[i].customer_id,
-                            name : data.data[i].customer_name ,
-
-                        });
-                    }
-                    console.log(arr_customers)
-                  },
-                  error: function(xhr, textStatus, errorThrown) {
-                      console.log(errorThrown);
-                  }
-
-              }).done(function (){
-                  getMessagesDatabase()
-              })
-
-            }
-
-            function getMessagesDatabase() {
-              console.log(arr_all)
-              $.ajax({
-                  url: '../get_messages.php',
-                  type: 'GET',
-                  dataType: 'json',
-                  success: function (data, textStatus, xhr) {
-                      console.log(data.length)
-                      for (var i = 0; i < data.length; i++) {
-                          // match data berdasarkan id pengirim/nama pengirim (ini belum)
-                          for (var j = 0; j < arr_customers.length; j++) {
-
-                              if (arr_customers[j].id == data[i].id_pengirim) {
-                                  arr_all.push({
-                                      id_pesan: data[i].id_message,
-                                      id_chat: data[i].id_chat,
-                                      id_pengirim: data[i].id_pengirim,
-                                      nama: arr_customers[j].name,
-                                      pesan: data[i].pesan,
-                                      status: data[i].status,
-                                      waktu_pengiriman: data[i].waktu_pengiriman,
-                                  });
-                                  console.log("masuk sini")
-                              }
-                          }
-                      }
-
-                  },
-                  error: function (xhr, textStatus, errorThrown) {
-                      console.log(errorThrown + " " + xhr + " " + textStatus);
-                  }
-              })
-          }
-        </script>
-
-        <!-- fungsi pindah pertanyaan   -->
-        <script>
-            //fungsi pindah accordion ke section terpilih
-            $("body").on("click", '.btn-accept', function() {
-                let id_element = $(this).parent().attr('id');
-                let id_numb = id_element.split("-");
-                let idm = id_numb[2]
-                console.log($('#container-pesan-'+idm).parent().attr('class'))
-
-                let parent_element = $('#container-pesan-'+idm);
-
-                // $.ajax({
-                //     url: "../update.php",
-                //     type: "POST",
-                //     cache: false,
-                //     data:{
-                //         status: '1',
-                //         id_message: idm,
-                //     },
-                //     success: function(dataResult){
-                //         var dataResult = JSON.parse(dataResult);
-                //         if(dataResult.statusCode==200){
-                //             console.log('Data updated successfully ! '+idm+' apa');
-                //         }
-                //     }
-                // });
-                // let i,j =0;
-                // let id_waktu_kirim= $('#nama-peserta-form-'+idm).siblings('.waktu-kirim').attr('id');
-                // let i_split = id_waktu_kirim.split('_')
-                // let i = i_split[3];
-                let j= <?php echo $j; ?>;
-                <?php $j++; ?>
-
-                // get id user
-                let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
-                let id_user_arr = id_user_element.split("-");
-                let id_user = id_user_arr[3];
-                console.log(id_user)
-
-                // get nama user dan message
-                var cust_name = $('#nama-peserta-form-'+id_user).text();
-                let cust_nama_depan = Array.from(cust_name)[0];
-                let cust_message = escapeHtml($('#pesan-'+idm).text());
-
-                // get jam pesan
-                let jam_pesan = $('#nama-peserta-form-'+id_user).siblings('.jam').text();
-                let jam_pesan_hidden = $('#nama-peserta-form-'+id_user).siblings('.waktu-kirim').text();
-
-
-                let elements=
-                    `<div id="container-pesan-${idm}" class="p-3 pesan-terpilih border-top border-bottom ">
-                        <div class="d-flex">
-                            <p id="pesan-${idm}" class="mb-0 small isi-pesan flex-grow-1">
-                                ${cust_message}
-                            </p>
-                        </div>
-
-                        <div class="card-footer bg-transparent">
-                            <div class="d-flex justify-content-between align-items-center mt-3 ">
-                                <div class="d-flex align-items-center ">
-                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                        ${cust_nama_depan}
-                                    </button>
-                                    <div class="small align-self-center ms-2">
-                                        <p id="nama-peserta-form-${id_user}" class="text-truncate fw-bold mb-0"> ${cust_name} </p>
-                                        <p id="jam-pesan-j${j}" class="jam text-black-50 small mb-0 ">
-                                            ${jam_pesan}
-                                        </p>
-                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_j_${j} ">${jam_pesan_hidden}</p>
-                                    </div>
-                                </div>
-
-                                <div id="container-btn-${idm}">
-                                    <button id="btn-revert-${idm}" class="btn btn-revert bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
-                                        <i class="bi bi-arrow-counterclockwise"></i>
-                                    </button>
-                                    <button id="btn-love-${idm}" class="btn btn-love bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
-                                        <i class="bi bi-heart" ></i>
-                                    </button>
-                                    <button id="btn-terjawab-${idm}" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
-                                        <i class="bi bi-check-lg text-white"></i>
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>`
-
-                console.log("udah pindah")
-                $("#container-pesan-terpilih").append(elements);
-
-                jam_j[jam_j.length] = jam_pesan_hidden
-
-                if( $('#radio-terbaru-live').is(':checked') ){
-                    $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerbaru).appendTo('#container-pesan-terpilih')
-                    console.log("terbaru")
-                }
-                else if ($('#radio-terlama-live').is(':checked')){
-                    $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerlama).appendTo('#container-pesan-terpilih')
-                    console.log("terlama")
-                }
-                parent_element.remove()
-                setTimeout(function() {
-                    setFormatJam()
-                    counter()
-                }, 500);
-                
-                setTimeout(function () {
-                    $('#container-pesan-'+idm).css({
-                        "background-color" : 'rgb(255 102 65 / 18%)',
-                    });
-                    console.log("ganti warna")
-                },100)
-
-                setTimeout(function () {
-                    $('#container-pesan-'+idm).css({
-                        "background-color" : 'white',
-                        WebkitTransition : 'color .3s ease .15s',
-                        MozTransition    : 'color .3s ease .15s',
-                        MsTransition     : 'color .3s ease .15s',
-                        OTransition      : 'color .3s ease .15s',
-                        transition       : 'color .3s ease .15s'
-                    });
-                    console.log("ganti warna")
-                },1500)
-
-                // Proses Pengiriman Pesan
-                // var id_sesi = $('#login_id_sesi').val();
-                // var data = {
-                //     userId: id_user,
-                //     mId: '',
-                //     msg: cust_message,
-                //     sesiId: id_sesi
-                // };
-                // conn.send(JSON.stringify(data));
-            })
-
-            //fungsi pindah accordion ke section awal
-            $("body").on("click", ".btn-delete", function() {
-                var id_accordion_header = $(this).parent().parent().parent().siblings().attr('id')
-                var id_numb = id_accordion_header.split("-")
-                var idm = id_numb[1]
-                console.log(idm)
-
-                $.ajax({
-                    url: "../update.php",
-                    type: "POST",
-                    cache: false,
-                    data:{
-                        status: '0',
-                        id_message: idm,
-                    },
-                    success: function(dataResult){
-                        var dataResult = JSON.parse(dataResult);
-                        if(dataResult.statusCode==200){
-                            console.log('Data updated successfully ! '+idm+' apa');
-                        }
-                    }
-                });
-
-                var cust_name = $(this).parent().parent().parent().siblings().children().children().children('span').text()
-                var cust_message = escapeHtml($(this).parent().parent().parent().siblings().children().children().children('div').text())
-                var parent_element = $(this).parent().parent().parent().parent().attr('id')
-
-                //get id accordion header number
-                var id_accordion_header = $(this).parent().parent().parent().siblings().attr('id')
-                var id_numb = id_accordion_header.split("-")
-
-                //get customer id number
-                var id_customer = $(this).parent().parent().parent().siblings().children().children()
-
-                var id_accordion = $(this).parent().parent().parent().attr('id')
-                console.log("mau pindah")
-
-                $("#"+parent_element).remove()
-                let elements=`<div class="accordion-item rounded" id="${parent_element}">
-                            <h3 class="accordion-header" id="heading-${id_numb[1]}">
-                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-${id_numb[1]}" aria-expanded="false" aria-controls="flush-${id_numb[1]}">
-                                <div class="align-items-center " style="width: 90%!important;">
-                                  <span class="fw-bold mb-2" id="${id_customer}">${cust_name}</span>
-                                  <div class="small text-truncate mt-2">${cust_message}</div>
-                                </div>
-                              </button>
-                            </h3>
-                            <div id="flush-${id_numb[1]}" class="accordion-collapse collapse" aria-labelledby="heading-${id_numb[1]}" data-bs-parent="#accordionFlush">
-                              <div class="accordion-body">
-                                <p>${cust_message}</p>
-                                <div class="d-grid gap-2">
-                                  <input type="hidden" id="isi_pesan" value="${id_numb[1]}"/>
-                                  <button type="button" class="btn btn-outline-primary btn-choose">Pilih</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>`
-
-                console.log("udah pindah")
-                $("#accordionFlushExample").append(elements);
-                counter()
-            })
-
-            //fungsi pindah accordion ke section dipilih dari terjawab
-            $("body").on("click", ".btn-delete-terjawab", function() {
-                var id_accordion_header = $(this).parent().parent().parent().siblings().attr('id');
-                var id_numb = id_accordion_header.split("-");
-                var idm = id_numb[1]
-                console.log(idm)
-
-
-                var cust_name = $(this).parent().parent().parent().siblings().children().children().children('span').text()
-                var cust_message = escapeHtml($(this).parent().parent().parent().siblings().children().children().children('div').text())
-                var parent_element = $(this).parent().parent().parent().parent().attr('id')
-
-                // //get id accordion header number
-                // var id_accordion_header = $(this).parent().parent().parent().siblings().attr('id')
-                // var id_numb = id_accordion_header.split("-")
-
-                //get customer id number
-                var id_customer = $(this).parent().parent().parent().siblings().children().children()
-
-                var id_accordion = $(this).parent().parent().parent().attr('id')
-
-                console.log("mau pindah")
-                let elements=`<div class="accordion-item rounded" id="${parent_element}">
-                            <h3 class="accordion-header" id="heading-${id_numb[1]}-choose">
-                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-${id_numb[1]}-choose" aria-expanded="false" aria-controls="flush-${id_numb[1]}-choose">
-                                <div class="align-items-center " style="width: 90%!important;">
-                                  <span id="${id_numb[1]}" class="fw-bold mb-2">${cust_name}</span>
-                                  <div class="small text-truncate mt-2">${cust_message}</div>
-                                  </div>
-                              </button>
-                            </h3>
-                            <div id="flush-${id_numb[1]}-choose" class="accordion-collapse collapse" aria-labelledby="heading-${id_numb[1]}-choose" data-bs-parent="#accordionFlush-choose">
-                              <div class="accordion-body">
-                                <p>${cust_message}</p>
-                                <div class="d-grid gap-2">
-                                  <input type="hidden" id="isi_pesan1" value="${id_numb[1]}"/>
-                                  <button type="button" id="btn-delete" class="btn btn-outline-danger d-block btn-delete">Hapus</button>
-                                  <button type="button" class="btn btn-outline-success d-block btn-done">Selesai Jawab</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>`
-
-                console.log("udah pindah")
-                $.ajax({
-                    url: "../update.php",
-                    type: "POST",
-                    cache: false,
-                    data:{
-                        status: '1',
-                        id_message: idm,
-                    },
-                    success: function(dataResult){
-                        var dataResult = JSON.parse(dataResult);
-                        if(dataResult.statusCode==200){
-                            console.log('Data updated successfully ! '+idm+' apa');
-                        }
-                    }
-                });
-                $("#"+parent_element).remove()
-                $("#accordionFlush-choose").append(elements);
-                counter()
-            })
-
-            //fungsi pindah accordion ke section terjawab
-            $("body").on("click", ".btn-done", function() {
-                var id_accordion_header = $(this).parent().parent().parent().siblings().attr('id')
-                var id_numb = id_accordion_header.split("-")
-                var idm = id_numb[1]
-                console.log(idm)
-
-                $.ajax({
-                    url: "../update.php",
-                    type: "POST",
-                    cache: false,
-                    data:{
-                        status: '2',
-                        id_message: idm,
-                    },
-                    success: function(dataResult){
-                        var dataResult = JSON.parse(dataResult);
-                        if(dataResult.statusCode==200){
-                            console.log('Data updated successfully ! '+idm+' apa');
-                        }
-                    }
-                });
-                var cust_name = $(this).parent().parent().parent().siblings().children().children().children('span').text()
-                var cust_message = escapeHtml($(this).parent().parent().parent().siblings().children().children().children('div').text())
-                var parent_element = $(this).parent().parent().parent().parent().attr('id')
-
-                // //get id accordion header number
-                // var id_accordion_header = $(this).parent().parent().parent().siblings().attr('id')
-                // var id_numb = id_accordion_header.split("-")
-
-                //get customer id number
-                var id_customer = $(this).parent().parent().parent().siblings().children().children()
-
-                var id_accordion = $(this).parent().parent().parent().attr('id')
-                console.log(parent_element)
-
-                $("#"+parent_element).remove()
-                let elements=`<div class="accordion-item rounded" id="${parent_element}">
-                            <h3 class="accordion-header" id="heading-${id_numb[1]}-answered">
-                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-${id_numb[1]}-answered" aria-expanded="false" aria-controls="flush-${id_numb[1]}-answered">
-                                <div class="align-items-center " style="width: 90%!important;">
-                                  <span id="${id_numb[1]}" class="fw-bold mb-2">${cust_name}</span>
-                                  <div class="small text-truncate mt-2">${cust_message}</div>
-                                  </div>
-                              </button>
-                              </h3>
-                            <div id="flush-${id_numb[1]}-answered" class="accordion-collapse collapse" aria-labelledby="heading-${id_numb[1]}-answered" data-bs-parent="#accordionFlush-answered">
-                              <div class="accordion-body">
-                                <p>${cust_message}</p>
-                                <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-outline-danger d-block btn-delete-terjawab">Hapus</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>`
-
-                $("#accordionFlush-answered").append(elements);
-                counter()
-            })
-
         </script>
 
     </body>
