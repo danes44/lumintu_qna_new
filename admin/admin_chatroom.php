@@ -24,35 +24,94 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin QnA</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin QnA</title>
 
-    <!-- Script API -->
-    <script src="../api.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-    <script src="http://parsleyjs.org/dist/parsley.js"></script>
-    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+        <!-- Script API -->
+        <script src="../api.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+        <script src="http://parsleyjs.org/dist/parsley.js"></script>
+        <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 
-    <!-- moment Js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
+        <!-- moment Js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
 
-    <!-- Bootstrap CSS -->
-    <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <!-- Bootstrap CSS -->
+        <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 
-    <!-- Custom styles for this template -->
-    <link href="../css-js/style.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="../css-js/style.css" rel="stylesheet">
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+        <!-- Bootstrap Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
     </head>
 
     <body>
+        <!-- Toast -->
+        <div id="container-toast" class="toast-container bottom-0 end-0 p-3">
+            <!-- toast new-->
+            <div id="toast-new" class="toast align-items-center text-primary border-1 border-primary" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e6f0ff">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-bell me-3"></i>
+                        Ada pertanyaan baru.
+                    </div>
+                </div>
+            </div>
+            <!--toast_accept-->
+            <div id="toast-accept" class="toast align-items-center text-primary border-1 border-primary" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e6f0ff">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-bell me-3"></i>
+                        Pertanyaan lolos untuk presentasi.
+                    </div>
+                </div>
+            </div>
+            <!--toast_decline-->
+            <div id="toast-decline" class="toast align-items-center text-primary border-1 border-primary" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e6f0ff">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-bell me-3"></i>
+                        Pertanyaan ditolak untuk presentasi.
+                    </div>
+                </div>
+            </div>
+            <!--toast_revert-->
+            <div id="toast-revert" class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-check-circle me-3"></i>
+                        Pertanyaan berhasil dikembalikan.
+                    </div>
+                </div>
+            </div>
+            <!--toast_answer-->
+            <div id="toast-answer" class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-check-circle me-3"></i>
+                        Berhasil ditandai sebagai "terjawab".
+                    </div>
+                </div>
+            </div>
+            <!--toast_love-->
+            <div id="toast-love" class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-check-circle me-3"></i>
+                        Berhasil ditandai sebagai "favorit".
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pertanyaan2 -->
         <div class="container pt-4 px-0">
             <div class="d-flex justify-content-between mb-4">
                 <div class="d-flex justify-content-start align-items-center ">
@@ -60,8 +119,6 @@
                         <i class="bi bi-arrow-left me-1"></i>
                         Kembali
                     </a>
-<!--                    <img src="../assets/Logo QnA.svg" class="img-fluid text-center" width="14%" alt="...">-->
-<!--                    <h2 class="align-middle fw-bold mb-0 ps-3 ">Dashboard</h2>-->
                 </div>
                 <div class="align-items-center text-center flex-grow-1">
                     <p id="event-name" class="fw-bold mb-0"></p>
@@ -75,29 +132,13 @@
                 </div>
             </div>
 
-            <!--<div class="d-flex justify-content-between mb-4">
-                <div class="d-flex justify-content-start align-items-center">
-                    <a id="btn-kembali" class="fw-bold text-decoration-none text-black border-0 rounded my-0 p-0 bg-transparent" role="button" href="dashboard_admin.php" onclick="return confirm('Apakah anda yakin ingin keluar ?')">
-                        <i class="bi bi-arrow-left me-1"></i>
-                        Kembali
-                    </a>
-                </div>
-                <div class="d-flex justify-content-start align-items-center">
-                    <a id="btn-display" class="fw-bold text-decoration-none text-white border-0 rounded my-0 p-2 bg-opacity-10" style="background-color: #FF6641" role="button" href="../qna_display.php?id_session=<?php /*echo $_GET["id_session"] ; */?>" target="_blank">
-                        <i class="bi bi-easel me-1"></i>
-                        Presentasi
-                    </a>
-                </div>
-            </div>-->
-
             <div class="row pt-1" >
                 <div class="col-6">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex">
-                            <h5 class="fw-bold me-2" title="Daftar pertanyaan yang perlu di pilih">Daftar Pertanyaan <i class="bi bi-question-circle" style="font-size: .6em"></i></h5>
-                        </div>
-                        <h6 id="jumlah-pertanyaan"></h6>
-                        <h6 id="jumlah-pertanyaan-ditolak-terjawab" class="d-none"></h6>
+                    <div class="d-flex align-items-center mb-2">
+                        <h5 class="fw-bold mb-0" title="Daftar pertanyaan yang perlu di pilih">Daftar Pertanyaan </h5>
+                        <i class="ms-2 bi bi-question-circle" style="font-size: .8em" title="Daftar pertanyaan yang perlu di pilih"></i>
+                        <h6 id="jumlah-pertanyaan" class="ms-auto"></h6>
+                        <h6 id="jumlah-pertanyaan-ditolak-terjawab" class="ms-auto d-none"></h6>
                     </div>
                     <div class="input-group mb-3">
                         <input type="text" id="search-pertanyaan" class="form-control border border-1 border-end-0 py-2 px-3 rounded-start" placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan..." aria-describedby="search-addon" style="background-color: white;" >
@@ -210,7 +251,7 @@
                                                             <i class="bi bi-check-lg text-success "></i>
                                                         </button>
                                                         
-                                                        <button id="btn-decline-'. $i .'" class="btn btn-decline bg-danger bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted"  title="Tolak pertanyaan"  style="width: 50px;">
+                                                        <button id="btn-decline-'.$i.'" class="btn btn-decline bg-danger bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted"  title="Tolak pertanyaan"  style="width: 50px;">
                                                             <i class="bi bi-x-lg text-danger "></i>
                                                         </button>
                                                     </div>
@@ -289,11 +330,13 @@
                 </div>
 
                 <div class="col-6">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="fw-bold" title="Daftar pertanyaan yang tertampil di presentasi">Daftar Pertanyaan <span class="ms-1 badge bg-danger rounded-pill text-danger bg-opacity-10" style="height: fit-content;"><i class="bi bi-circle-fill me-2"></i>Live
-                        </span><i class="ms-2 bi bi-question-circle" style="font-size: .6em"></i></h5>
-
-                        <h6 id="jumlah-pertanyaan-terpilih"></h6>
+                    <div class="d-flex align-items-center mb-2">
+                        <h5 class="fw-bold mb-0" title="Daftar pertanyaan yang tertampil di presentasi">
+                            Daftar Pertanyaan
+                        </h5>
+                        <i class="ms-2 bi bi-question-circle" style="font-size: .8em" title="Daftar pertanyaan yang tertampil di presentasi"></i>
+                        <span class="ms-2 badge rounded-pill text-bg-danger"><i class="bi bi-circle-fill me-2 blink"></i>Live</span>
+                        <h6 id="jumlah-pertanyaan-terpilih" class="ms-auto"></h6>
                     </div>
                     <div class="input-group mb-3">
                         <input type="text" id="search-pertanyaan-terpilih" class="form-control border border-1 border-end-0 py-2 px-3 rounded-start" placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan..." aria-describedby="search-addon-terpilih" style="background-color: white; border-radius: .5rem 0 0 .5rem;">
@@ -343,7 +386,7 @@
                         </div>
                     </div>
 
-                    <div class="border border-1 rounded-3 sortable list-pertanyaan" id="container-pesan-terpilih" style="max-height: calc(100vh - 210px); overflow-y: overlay;">
+                    <div class="border border-1 rounded-3 sortable list-pertanyaan" id="container-pesan-terpilih" style="height: calc(100vh - 210px); overflow-y: overlay;">
                       <?php
                         $j = 0;
                         $last = count($chat_data);
@@ -501,6 +544,86 @@
             console.log(moment(Date.now()).fromNow());
             console.log(moment().format('LT'))
             console.log(moment('2022-07-01 15:25:05').fromNow())
+            $('#liveToastBtn').click(function () {
+                $('#toast-answer').show()
+                setTimeout(function () {
+                    $('#toast-answer').hide()
+                },5000)
+
+            })
+            $('.btn-close-toast').click(function () {
+
+
+            })
+        </script>
+
+        <!-- element toast -->
+        <script>
+            const toast_baru = `
+                <div class="toast align-items-center text-primary border-1 border-primary" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e6f0ff">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="bi bi-bell me-3"></i>
+                            Ada pertanyaan baru.
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>`
+
+            const toast_accept = `
+                <div class="toast align-items-center text-primary border-1 border-primary" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e6f0ff">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="bi bi-bell me-3"></i>
+                            Pertanyaan lolos untuk presentasi.
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>`
+
+            const toast_decline = `
+                <div class="toast align-items-center text-primary border-1 border-primary" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e6f0ff">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="bi bi-bell me-3"></i>
+                            Pertanyaan ditolak untuk presentasi.
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>`
+
+            const toast_revert = `
+                <div class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="bi bi-check-circle me-3"></i>
+                            Pertanyaan berhasil dikembalikan.
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>`
+
+            const toast_answer = `
+                 <div class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="bi bi-check-circle me-3"></i>
+                            Berhasil ditandai sebagai "terjawab".
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>`
+
+            const toast_love = `
+                <div class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="bi bi-check-circle me-3"></i>
+                            Berhasil ditandai sebagai "favorit".
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>`
         </script>
 
         <!-- function olah tanggal -->
@@ -665,7 +788,10 @@
                     var sesi_id1 = $('#login_id_sesi').val();
                     var data1 = JSON.parse(e.data);
 
+                    console.log(data1)
+
                     if(data1.asal === 'user'){
+                        console.log(data1.asal)
                         $.ajax({
                             url: kel1_api+'/items/customer?fields=customer_id,customer_name&filter[customer_id]='+data1.userId,
                             type: 'GET',
@@ -741,7 +867,10 @@
                                 else if ($('#radio-terlama').is(':checked')){
                                     $('#container-pesan .pesan').sort(sortTerlama).appendTo('#container-pesan')
                                 }
-
+                                $('#toast-new').show()
+                                setTimeout(function () {
+                                    $('#toast-new').hide()
+                                },5000)
                             }
                         })
                     }
@@ -870,7 +999,7 @@
                 let jam_pesan = $('#jam-pesan-i'+id_i[2]).text();
                 let jam_pesan_hidden = $('#waktu_pengiriman_i_'+id_i[2]).text();
 
-                console.log(jam_pesan_hidden)
+                console.log(jam_pesan_hidden + j)
 
                 let elements=
                     `<div id="container-pesan-${idm}" class="p-3 pesan-terpilih border-top border-bottom ">
@@ -887,12 +1016,12 @@
                                     <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
                                         ${cust_nama_depan}
                                     </button>
-                                    <div class="small align-self-center ms-2">
-                                        <p id="nama-peserta-form-${id_user}" class="text-truncate fw-bold mb-0"> ${cust_name} </p>
+                                    <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
+                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0"> ${cust_name} </p>
                                         <p id="jam-pesan-j${j}" class="jam text-black-50 small mb-0 ">
                                             ${jam_pesan}
                                         </p>
-                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_j_${j} ">${jam_pesan_hidden}</p>
+                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_j_${j}">${jam_pesan_hidden}</p>
                                     </div>
                                 </div>
 
@@ -950,6 +1079,12 @@
                     });
                     console.log("ganti warna")
                 },1500)
+
+                //show toast
+                $('#toast-accept').show()
+                setTimeout(function () {
+                    $('#toast-accept').hide()
+                },5000)
 
                 j=j+1;
                 // Proses Pengiriman Pesan
@@ -1027,18 +1162,18 @@
                                     <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
                                         ${cust_nama_depan}
                                     </button>
-                                    <div class="small align-self-center ms-2">
-                                        <p id="nama-peserta-form-${id_user}" class="text-truncate fw-bold mb-0"> ${cust_name} </p>
+                                    <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
+                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0"> ${cust_name} </p>
                                         <p id="jam-pesan-k${k}" class="jam text-black-50 small mb-0 ">
                                             ${jam_pesan}
                                         </p>
-                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_k_${k} ">${jam_pesan_hidden}</p>
+                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_k_${k}">${jam_pesan_hidden}</p>
                                     </div>
                                     <i class="bi bi-file-earmark-x text-danger ms-2 align-self-end" title="Pertanyaan Ditolak"></i>
                                 </div>
 
                                 <div id="container-btn-${idm}">
-                                    <button id="btn-revert-${idm}" class="btn btn-revert bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
+                                    <button id="btn-revert-${k}" class="btn btn-revert bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
                                         <i class="bi bi-arrow-counterclockwise"></i>
                                     </button>
                                 </div>
@@ -1077,6 +1212,12 @@
                     });
                     console.log("ganti warna")
                 },1500)
+
+                //show toast
+                $('#toast-decline').show()
+                setTimeout(function () {
+                    $('#toast-decline').hide()
+                },5000)
 
                 k=k+1;
             })
@@ -1141,18 +1282,18 @@
                                     <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
                                         ${cust_nama_depan}
                                     </button>
-                                    <div class="small align-self-center ms-2">
-                                        <p id="nama-peserta-form-${id_user}" class="text-truncate fw-bold mb-0"> ${cust_name} </p>
+                                    <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
+                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0"> ${cust_name} </p>
                                         <p id="jam-pesan-k${k}" class="jam text-black-50 small mb-0 ">
                                             ${jam_pesan}
                                         </p>
-                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_k_${k} ">${jam_pesan_hidden}</p>
+                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_k_${k}">${jam_pesan_hidden}</p>
                                     </div>
                                     <i class="bi bi-patch-check text-success ms-2 align-self-end" title="Pertanyaan Terjawab"></i>
                                 </div>
 
                                 <div id="container-btn-${idm}">
-                                    <button id="btn-revert-${idm}" class="btn btn-revert bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
+                                    <button id="btn-revert-${k}" class="btn btn-revert bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
                                         <i class="bi bi-arrow-counterclockwise"></i>
                                     </button>
                                 </div>
@@ -1191,6 +1332,12 @@
                     });
                     console.log("ganti warna")
                 },1500)
+
+                //show toast
+                $('#toast-answer').show()
+                setTimeout(function () {
+                    $('#toast-answer').hide()
+                },5000)
 
                 k=k+1;
                 // Proses Pengiriman Pesan
@@ -1328,6 +1475,12 @@
                     console.log("ganti warna")
                 },1500)
 
+                //show toast
+                $('#toast-revert').show()
+                setTimeout(function () {
+                    $('#toast-revert').hide()
+                },5000)
+
                 i=i+1;
                 // Proses Pengiriman Pesan
                 var id_sesi = $('#login_id_sesi').val();
@@ -1342,7 +1495,7 @@
                 conn.send(JSON.stringify(data));
             })
 
-            //fungsi revert pertanyaan dari terpilih ke awal
+            //fungsi revert pertanyaan dari ditolak/terjawab ke awal
             $("body").on("click", ".btn-revert", function() {
                 $('#badge-baru').remove()
 
@@ -1350,23 +1503,7 @@
                 let id_numb = id_element.split("-");
                 let idm = id_numb[2]
 
-                let parent_element = $('#container-pesan-'+idm);
-
-                // $.ajax({
-                //     url: "../update.php",
-                //     type: "POST",
-                //     cache: false,
-                //     data:{
-                //         status: '0',
-                //         id_message: idm,
-                //     },
-                //     success: function(dataResult){
-                //         var dataResult = JSON.parse(dataResult);
-                //         if(dataResult.statusCode==200){
-                //             console.log('Data updated successfully ! '+idm+' apa');
-                //         }
-                //     }
-                // });
+                let parent_element = $('#container-pesan-ditolak-terjawab-'+idm);
 
                 // get id user
                 let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
@@ -1377,13 +1514,13 @@
                 // get nama user dan message
                 let cust_name = $('#nama-peserta-form-'+id_user).text();
                 let cust_nama_depan = Array.from(cust_name)[0];
-                let cust_message = $('#pesan-'+idm).text();
+                let cust_message = $('#pesan-ditolak-terjawab-'+idm).text();
 
                 // get jam pesan
-                let element_j = $('#container-btn-'+idm).children('.btn-revert-terpilih').attr('id')
+                let element_j = $('#container-btn-'+idm).children('.btn-revert').attr('id')
                 let id_j = element_j.split("-");
-                let jam_pesan = $('#jam-pesan-j'+id_j[2]).text();
-                let jam_pesan_hidden = $('#waktu_pengiriman_j_'+id_j[2]).text();
+                let jam_pesan = $('#jam-pesan-k'+id_j[2]).text();
+                let jam_pesan_hidden = $('#waktu_pengiriman_k_'+id_j[2]).text();
 
                 console.log(id_j[2])
 
@@ -1433,22 +1570,124 @@
                         </div>
                     </div>`
 
+                let element_terjawab = `
+                    <div id="container-pesan-${idm}" class="p-3 pesan-terpilih border-top border-bottom ">
+                        <div class="d-flex">
+                            <p id="pesan-${idm}" class="mb-0 small isi-pesan flex-grow-1">
+                                ${cust_message}
+                            </p>
+
+                        </div>
+
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                <div class="d-flex align-items-center ">
+                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                        ${cust_nama_depan}
+                                    </button>
+                                    <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
+                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0"> ${cust_name} </p>
+                                        <p id="jam-pesan-j${j}" class="jam text-black-50 small mb-0 ">
+                                            ${jam_pesan}
+                                        </p>
+                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_j_${j}">${jam_pesan_hidden}</p>
+                                    </div>
+                                </div>
+
+                                <div id="container-btn-${idm}">
+                                    <button id="btn-revert-${j}" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
+                                    <button id="btn-love-${j}" class="btn btn-love bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
+                                        <i class="bi bi-heart" ></i>
+                                    </button>
+                                    <button id="btn-terjawab-${j}" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
+                                        <i class="bi bi-check-lg text-white"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>`
+
                 console.log("udah pindah")
-                $("#container-pesan").append(elements);
+                if($('#container-nama-waktu-'+idm).siblings('.bi').attr('title') === 'Pertanyaan Ditolak') {
+                    $.ajax({
+                        url: "../update.php",
+                        type: "POST",
+                        cache: false,
+                        data:{
+                            status: '0',
+                            id_message: idm,
+                        },
+                        success: function(dataResult){
+                            var dataResult = JSON.parse(dataResult);
+                            if(dataResult.statusCode==200){
+                                console.log('Data updated successfully ! '+idm+' apa');
+                            }
+                        }
+                    });
 
-                jam_i[jam_i.length] = jam_pesan_hidden
+                    $("#container-pesan").append(elements);
+                    jam_i[jam_i.length] = jam_pesan_hidden
 
-                parent_element.remove()
+                    setTimeout(function() {
+                        setFormatJam()
+                        counter()
+                        // scroll ke pesan terbaru
+                        $('#container-pesan').animate({
+                            scrollTop: $('#container-pesan-'+idm).offset().top - $('#container-pesan').offset().top + $('#container-pesan').scrollTop()
+                        }, 500);
+                        //
+                    }, 100);
+                    parent_element.remove()
+                    i=i+1;
 
-                setTimeout(function() {
-                    setFormatJam()
-                    counter()
-                    // scroll ke pesan terbaru
-                    $('#container-pesan').animate({
-                        scrollTop: $('#container-pesan-'+idm).offset().top - $('#container-pesan').offset().top + $('#container-pesan').scrollTop()
-                    }, 500);
-                    //
-                }, 100);
+                }
+                else {
+                    $.ajax({
+                        url: "../update.php",
+                        type: "POST",
+                        cache: false,
+                        data:{
+                            status: '1',
+                            id_message: idm,
+                        },
+                        success: function(dataResult){
+                            var dataResult = JSON.parse(dataResult);
+                            if(dataResult.statusCode==200){
+                                console.log('Data updated successfully ! '+idm+' apa');
+                            }
+                        }
+                    });
+
+                    $("#container-pesan-terpilih").append(element_terjawab);
+                    jam_j[jam_j.length] = jam_pesan_hidden
+
+                    setTimeout(function() {
+                        setFormatJam()
+                        counter()
+                        // scroll ke pesan terbaru
+                        $('#container-pesan-terpilih').animate({
+                            scrollTop: $('#container-pesan-'+idm).offset().top - $('#container-pesan-terpilih').offset().top + $('#container-pesan-terpilih').scrollTop()
+                        }, 500);
+                        //
+                    }, 100);
+                    parent_element.remove()
+                    j=j+1;
+
+                    // Proses Pengiriman Pesan
+                    let id_sesi = $('#login_id_sesi').val();
+                    let data = {
+                        asal: 'admin',
+                        userId: id_user,
+                        mId: idm,
+                        msg: cust_message,
+                        sesiId: id_sesi,
+                        date: jam_pesan_hidden,
+                    };
+                    conn.send(JSON.stringify(data));
+                }
 
                 setTimeout(function () {
                     $('#container-pesan-'+idm).css({
@@ -1464,18 +1703,11 @@
                     console.log("ganti warna")
                 },1500)
 
-                i=i+1;
-                // Proses Pengiriman Pesan
-                var id_sesi = $('#login_id_sesi').val();
-                var data = {
-                    asal: 'admin-terpilih',
-                    userId: id_user,
-                    mId: idm,
-                    msg: cust_message,
-                    sesiId: id_sesi,
-                    date: jam_pesan_hidden,
-                };
-                conn.send(JSON.stringify(data));
+                //show toast
+                $('#toast-revert').show()
+                setTimeout(function () {
+                    $('#toast-revert').hide()
+                },5000)
             })
         </script>
 

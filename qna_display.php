@@ -41,9 +41,9 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
 
     </head>
-    <body style="background-color: #ffffff;">
+    <body style="background-color: #ffffff;max-height: 100vh">
         <!-- QnA  -->
-        <div class="container pb-5 vh-100">
+        <div class="container pb-5 vh-100 position-relative">
             <div class="d-flex justify-content-between mb-4 pt-4">
                 <div class="d-flex justify-content-start align-items-center">
                     <img src="./assets/Logo QnA.svg" class="img-fluid text-center" width="14%" alt="...">
@@ -53,7 +53,8 @@
                     <p id="nama_sesi" class="card-title fw-bold"><b></b></p>
                     <h6 id="date-time" class="card-text "><b></b></h6>
                 </div>
-                <button id="btn-test" class="btn btn-primary" data-bs-target="#carouselExampleControls" data-bs-slide="next">test</button>
+                <!--<button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
+                <button id="btn-test" class="btn btn-primary" data-bs-target="#carouselExampleControls" data-bs-slide="next">test</button>-->
             </div>
 
             <div class="d-flex align-items-center">
@@ -113,6 +114,8 @@
                 </div>
             </div>
         </div>
+
+
 
         <?php
             echo "<input type='hidden' name='login_id_sesi' id='login_id_sesi' value='".$_GET['id_session']."'/>";
