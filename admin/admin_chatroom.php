@@ -109,6 +109,14 @@
                     </div>
                 </div>
             </div>
+            <div id="toast-unlove" class="toast align-items-center text-danger border-1 border-danger" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #fbeaec">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-x-circle me-3"></i>
+                        Pertanyaan tidak lagi "favorit".
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Pertanyaan2 -->
@@ -137,8 +145,8 @@
                     <div class="d-flex align-items-center mb-2">
                         <h5 class="fw-bold mb-0" title="Daftar pertanyaan yang perlu di pilih">Daftar Pertanyaan </h5>
                         <i class="ms-2 bi bi-question-circle" style="font-size: .8em" title="Daftar pertanyaan yang perlu di pilih"></i>
-                        <h6 id="jumlah-pertanyaan" class="ms-auto"></h6>
-                        <h6 id="jumlah-pertanyaan-ditolak-terjawab" class="ms-auto d-none"></h6>
+                        <h6 id="jumlah-pertanyaan" class="ms-auto mb-0"></h6>
+                        <h6 id="jumlah-pertanyaan-ditolak-terjawab" class="ms-auto d-none mb-0"></h6>
                     </div>
                     <div class="input-group mb-3">
                         <input type="text" id="search-pertanyaan" class="form-control border border-1 border-end-0 py-2 px-3 rounded-start" placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan..." aria-describedby="search-addon" style="background-color: white;" >
@@ -207,7 +215,7 @@
                                     $i_x_waktu[$i] = $chat["waktu_pengiriman"];
 
                                     echo '
-                                        <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan border-top border-bottom ">
+                                        <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan border-top border-bottom d-none">
                                             <div class="d-flex">
                                                 <p id="pesan-'.$chat["id_message"].'" class="mb-0 small isi-pesan flex-grow-1">
                                                     '.$chat["pesan"].'
@@ -220,11 +228,6 @@
                                                         <li>
                                                             <button id="btn-edit-'.$chat["id_message"].'" class="dropdown-item small btn-edit" type="button">
                                                                 <i class="bi bi-pencil me-3 text-primary"></i>Edit
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button id="btn-hapus-'.$chat["id_message"].'" class="dropdown-item small btn-hapus" type="button">
-                                                                <i class="bi bi-trash3 me-3 text-danger"></i>Hapus
                                                             </button>
                                                         </li>
                                                     </ul> 
@@ -258,7 +261,30 @@
                                                     
                                                 </div>
                                             </div>
-                                        </div>';
+                                        </div>
+                                        
+                                        <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan border-top border-bottom ">
+                                            <div class="d-flex">
+                                                <input id="input-edit-'.$chat["id_message"].'" type="text" class="form-control border border-1 py-2 px-3 rounded-start" value="'.$chat["pesan"].'">
+                                            </div>
+                        
+                                            <div class="card-footer bg-transparent">
+                                                <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                                    <span id="char-counter" class="small text-mute" style="font-size: 12px">400</span>
+                                                    
+                                                    <div id="container-btn-'.$chat["id_message"].'">
+                                                        <button id="btn-save-" class="small btn btn-save border-0 rounded-3 py-1 me-0 text-white fw-bold"  title="Simpan perubahan"  style="background-color: #FF6641">
+                                                            Simpan
+                                                        </button>
+                                                        
+                                                        <button id="btn-cancel" class="small btn border border-1 rounded-3 py-1 me-0 text-muted fw-semibold"  title="Batalkan perubahan">
+                                                            Batal
+                                                        </button>
+                                                    </div>    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        ';
                                     $i++;
                                 }
                             }
@@ -335,15 +361,16 @@
                             Daftar Pertanyaan
                         </h5>
                         <i class="ms-2 bi bi-question-circle" style="font-size: .8em" title="Daftar pertanyaan yang tertampil di presentasi"></i>
-                        <span class="ms-2 badge rounded-pill text-bg-danger"><i class="bi bi-circle-fill me-2 blink"></i>Live</span>
-                        <h6 id="jumlah-pertanyaan-terpilih" class="ms-auto"></h6>
+                        <span class="ms-2 badge rounded-pill text-bg-danger"><i class="bi bi-circle-fill me-2 blink" style="font-size: 0.8em"></i>Live</span>
+                        <h6 id="jumlah-pertanyaan-terpilih" class="ms-auto mb-0"></h6>
+                        <h6 id="jumlah-pertanyaan-favorit" class="ms-auto mb-0 d-none"></h6>
                     </div>
                     <div class="input-group mb-3">
                         <input type="text" id="search-pertanyaan-terpilih" class="form-control border border-1 border-end-0 py-2 px-3 rounded-start" placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan..." aria-describedby="search-addon-terpilih" style="background-color: white; border-radius: .5rem 0 0 .5rem;">
                         <button class="input-group-text py-2 border border-1 border-start-0 rounded-end" disabled id="search-addon-terpilih" style="background-color: white; ">
                             <span id="badge-terbaru-live" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .6em">Terbaru
                             </span>
-                            <span id="badge-ditolak-terjawab-live" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .6em">Ditolak/Terjawab
+                            <span id="badge-favorit" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .6em">Favorit
                             </span>
                             <i class="ms-2 bi bi-search"></i>
                         </button>
@@ -376,7 +403,7 @@
                                 </li>
                                 <li>
                                     <div class="dropdown-item small">
-                                        <input class="form-check-input" type="checkbox" id="checkbox-favorit-live">
+                                        <input class="form-check-input" type="checkbox" name="checkbox-favorit-live" id="checkbox-favorit-live">
                                         <label class="form-check-label ms-2" for="checkbox-favorit-live">
                                             Favorit
                                         </label>
@@ -385,7 +412,7 @@
                             </ul>
                         </div>
                     </div>
-
+                    <!-- pesan terpilih-->
                     <div class="border border-1 rounded-3 sortable list-pertanyaan" id="container-pesan-terpilih" style="height: calc(100vh - 210px); overflow-y: overlay;">
                       <?php
                         $j = 0;
@@ -394,14 +421,18 @@
                             $str1 = str_split($chat["waktu_pengiriman"], 10);
                             $jam_pesan = str_split($str1[1], 6);
 
-                            if ($chat["id_chat"] == $_GET["id_session"] && $chat["status"]==$status_live){
+                            if ($chat["id_chat"] == $_GET["id_session"] && ($chat["status"]==1 || $chat["status"]==4)){
                                 $nama_peserta = get_nama($chat["id_pengirim"]);
                                 $id = $chat["id_message"];
                                 $huruf_depan = $nama_peserta[0];
                                 $j_x_waktu[$j] = $chat["waktu_pengiriman"];
 
                                 echo '
-                                    <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan-terpilih border-top border-bottom ">
+                                    <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan-terpilih border-top border-bottom " ';
+                                    if($chat["status"]==4){
+                                        echo 'style="background-color:rgba(255,65,123,0.1)"';
+                                    }
+                                    echo '>
                                         <div class="d-flex">
                                             <p id="pesan-'.$chat["id_message"].'" class="mb-0 small isi-pesan flex-grow-1">'.$chat["pesan"].'</p>
                                         </div>
@@ -409,33 +440,39 @@
                                         <div class="card-footer bg-transparent">
                                             <div class="d-flex justify-content-between align-items-center mt-3 ">
                                                 <div class="d-flex align-items-center ">
-                                                <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                                    '.$huruf_depan.'
-                                                </button>
-                                                <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
-                                                    <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0"> '.$nama_peserta.' </p>
-                                                    <p id="jam-pesan-j'.$j.'" class="jam text-black-50 small mb-0 ">'.$jam_pesan[0].'</p>
-                                                    
-                                                    <p class="waktu-kirim d-none" id="waktu_pengiriman_j_'. $j .'" >'.$chat["waktu_pengiriman"].'</p>
-                                                    
+                                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                                        '.$huruf_depan.'
+                                                    </button>
+                                                    <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
+                                                        <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0"> '.$nama_peserta.' </p>
+                                                        <p id="jam-pesan-j'.$j.'" class="jam text-black-50 small mb-0 ">'.$jam_pesan[0].'</p>
+                                                        
+                                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_j_'. $j .'" >'.$chat["waktu_pengiriman"].'</p>
+                                                        
+                                                    </div>
+                                                </div>
+                                            
+                                                <div id="container-btn-'.$chat["id_message"]. '" class="container-btn">
+                                                    <button id="btn-revert-'.$j.'" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
+                                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                                    </button>
+                                                    <button id="btn-love-'.$j.'" class="btn btn-love text-danger bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
+                                                        ';
+                                                        if($chat["status"]==4){
+                                                            echo '<i class="bi bi-heart-fill" ></i>';
+                                                        }
+                                                        else{
+                                                            echo '<i class="bi bi-heart" ></i>';
+                                                        }
+                                                        echo '
+                                                    </button>
+                                                    <button id="btn-terjawab-'.$j.'" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
+                                                        <i class="bi bi-check-lg text-white"></i>
+                                                    </button>                                        
                                                 </div>
                                             </div>
-                                            
-                                            <div id="container-btn-'.$chat["id_message"]. '" class="">
-                                                <button id="btn-revert-'.$j.'" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
-                                                    <i class="bi bi-arrow-counterclockwise"></i>
-                                                </button>
-                                                <button id="btn-love-'.$j.'" class="btn btn-love bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
-                                                    <i class="bi bi-heart" ></i>
-                                                </button>
-                                                <button id="btn-terjawab-'.$j.'" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
-                                                    <i class="bi bi-check-lg text-white"></i>
-                                                </button>                                        
-                                            </div>
                                         </div>
-                                    </div>
-                                        
-                                </div>';
+                                    </div>';
                                 $j++;
 
                                 /*echo '
@@ -461,6 +498,62 @@
                             }
                         }
                       ?>
+                    </div>
+
+                    <!-- pesan favorit-->
+                    <div class="border border-1 rounded-3 sortable list-pertanyaan d-none" id="container-pesan-favorit" style="height: calc(100vh - 210px); overflow-y: overlay;">
+                        <?php
+                        $l = 0;
+                        $last = count($chat_data);
+                        foreach($chat_data as $chat){
+                            $str1 = str_split($chat["waktu_pengiriman"], 10);
+                            $jam_pesan = str_split($str1[1], 6);
+
+                            if ($chat["id_chat"] == $_GET["id_session"] && $chat["status"]==4){
+                                $nama_peserta = get_nama($chat["id_pengirim"]);
+                                $id = $chat["id_message"];
+                                $huruf_depan = $nama_peserta[0];
+                                $l_x_waktu[$l] = $chat["waktu_pengiriman"];
+
+                                echo '
+                                    <div id="container-pesan-favorit-'.$chat["id_message"].'" class="p-3 pesan-favorit border-top border-bottom " style="background-color:rgba(255,65,123,0.1)">
+                                        <div class="d-flex">
+                                            <p id="pesan-'.$chat["id_message"].'" class="mb-0 small isi-pesan flex-grow-1">'.$chat["pesan"].'</p>
+                                        </div>
+                        
+                                        <div class="card-footer bg-transparent">
+                                            <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                                <div class="d-flex align-items-center ">
+                                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                                        '.$huruf_depan.'
+                                                    </button>
+                                                    <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
+                                                        <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0"> '.$nama_peserta.' </p>
+                                                        <p id="jam-pesan-l'.$l.'" class="jam text-black-50 small mb-0 ">'.$jam_pesan[0].'</p>
+                                                        
+                                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_l_'. $l .'" >'.$chat["waktu_pengiriman"].'</p>
+                                                        
+                                                    </div>
+                                                </div>
+                                            
+                                                <div id="container-btn-'.$chat["id_message"]. '" class="container-btn">
+                                                    <button id="btn-revert-'.$l.'" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
+                                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                                    </button>
+                                                    <button id="btn-love-'.$l.'" class="btn btn-love text-danger bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
+                                                        <i class="bi bi-heart-fill" ></i>
+                                                    </button>
+                                                    <button id="btn-terjawab-'.$l.'" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
+                                                        <i class="bi bi-check-lg text-white"></i>
+                                                    </button>                                        
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>';
+                                $l++;
+                            }
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -544,17 +637,14 @@
             console.log(moment(Date.now()).fromNow());
             console.log(moment().format('LT'))
             console.log(moment('2022-07-01 15:25:05').fromNow())
-            $('#liveToastBtn').click(function () {
-                $('#toast-answer').show()
-                setTimeout(function () {
-                    $('#toast-answer').hide()
-                },5000)
 
-            })
-            $('.btn-close-toast').click(function () {
-
-
-            })
+            /* Keterangan Status */
+            // 0 = belum di accept/ditolak
+            // 1 = sudah di acc
+            // 2 = sudah dijawab
+            // 3 = ditolak
+            // 4 = favorit
+            // 5 = diedit
         </script>
 
         <!-- element toast -->
@@ -636,6 +726,7 @@
             var jam_i = <?php echo json_encode($i_x_waktu); ?>;
             var jam_j = <?php echo json_encode($j_x_waktu); ?>;
             var jam_k = <?php echo json_encode($k_x_waktu); ?>;
+            var jam_l = <?php echo json_encode($l_x_waktu); ?>;
 
             function setFormatJam() {
                 console.log(jam_j)
@@ -650,6 +741,10 @@
                 for(let k=0; k<jam_k.length; k++){
                     let status_jam_k = moment(jam_k[k]).fromNow();
                     $("#jam-pesan-k"+k).text(status_jam_k)
+                }
+                for(let l=0; l<jam_l.length; l++){
+                    let status_jam_l = moment(jam_l[l]).fromNow();
+                    $("#jam-pesan-l"+l).text(status_jam_l)
                 }
             }
             setFormatJam()
@@ -752,6 +847,35 @@
                     $("#search-pertanyaan").val('')
                 }
             });
+
+            // fungsi filter favorit
+            $('input:checkbox[name="checkbox-favorit-live"]').change(function() {
+                if ($(this).is(":checked") === true) {
+                    console.log('true Check')
+                    // show pertanyaan ditolak terjawab - hide pertanyaan all
+                    $('#container-pesan-favorit').removeClass('d-none')
+                    $('#container-pesan-terpilih').addClass('d-none')
+                    // show jumlah pertanyaan ditolak terjawab - hide jumlah pertanyaan all
+                    $('#jumlah-pertanyaan-favorit').removeClass('d-none')
+                    $('#jumlah-pertanyaan-terpilih').addClass('d-none')
+                    // show badge
+                    $('#badge-favorit').removeClass('d-none')
+                    // reset search
+                    $("#search-pertanyaan-terpilih").val('')
+                } else {
+                    console.log('else')
+                    // show pertanyaan all - hide pertanyaan ditolak terjawab
+                    $('#container-pesan-favorit').addClass('d-none')
+                    $('#container-pesan-terpilih').removeClass('d-none')
+                    // show jumlah pertanyaan ditolak terjawab - hide jumlah pertanyaan all
+                    $('#jumlah-pertanyaan-favorit').addClass('d-none')
+                    $('#jumlah-pertanyaan-terpilih').removeClass('d-none')
+                    // hide badge
+                    $('#badge-favorit').addClass('d-none')
+                    // reset search
+                    $("#search-pertanyaan-terpilih").val('')
+                }
+            });
         </script>
 
         <!--    counter jumlah pertanyaan-->
@@ -760,8 +884,22 @@
                 $('#jumlah-pertanyaan').text("Jumlah : " + $('#container-pesan .pesan').length)
                 $('#jumlah-pertanyaan-terpilih').text("Jumlah : " +$('#container-pesan-terpilih .pesan-terpilih').length)
                 $('#jumlah-pertanyaan-ditolak-terjawab').text("Jumlah : " +$('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').length)
+                $('#jumlah-pertanyaan-favorit').text("Jumlah : " +$('#container-pesan-favorit .pesan-favorit').length)
             }
             counter()
+        </script>
+
+        <script>
+            function charCounter() {
+                var maxChar = 400
+                let id_element = $(this).parent().attr('id');
+                let id_numb = id_element.split("-");
+                let idm = id_numb[2]
+                var count = $("#container-pesan-"+idm).val().length
+                var remaining = maxChar - count
+
+                $("#char-counter").text(remaining)
+            }
         </script>
 
         <script>
@@ -820,11 +958,6 @@
                                                 <li>
                                                     <button id="btn-edit-${data1.mId}" class="dropdown-item small btn-edit" type="button">
                                                         <i class="bi bi-pencil me-3 text-primary"></i>Edit
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button id="btn-hapus-${data1.mId}" class="dropdown-item small btn-hapus" type="button">
-                                                        <i class="bi bi-trash3 me-3 text-danger"></i>Hapus
                                                     </button>
                                                 </li>
                                             </ul>
@@ -1025,7 +1158,7 @@
                                     </div>
                                 </div>
 
-                                <div id="container-btn-${idm}">
+                                <div id="container-btn-${idm}" class="container-btn">
                                     <button id="btn-revert-${j}" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
                                         <i class="bi bi-arrow-counterclockwise"></i>
                                     </button>
@@ -1412,11 +1545,6 @@
                                             <i class="bi bi-pencil me-3 text-primary"></i>Edit
                                         </button>
                                     </li>
-                                    <li>
-                                        <button id="btn-hapus-${idm}" class="dropdown-item small btn-hapus" type="button">
-                                            <i class="bi bi-trash3 me-3 text-danger"></i>Hapus
-                                        </button>
-                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -1538,11 +1666,6 @@
                                             <i class="bi bi-pencil me-3 text-primary"></i>Edit
                                         </button>
                                     </li>
-                                    <li>
-                                        <button id="btn-hapus-${idm}" class="dropdown-item small btn-hapus" type="button">
-                                            <i class="bi bi-trash3 me-3 text-danger"></i>Hapus
-                                        </button>
-                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -1594,7 +1717,7 @@
                                     </div>
                                 </div>
 
-                                <div id="container-btn-${idm}">
+                                <div id="container-btn-${idm}" class="container-btn">
                                     <button id="btn-revert-${j}" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
                                         <i class="bi bi-arrow-counterclockwise"></i>
                                     </button>
@@ -1709,6 +1832,174 @@
                     $('#toast-revert').hide()
                 },5000)
             })
+
+            //fungsi favorit pertanyaan
+            let l= <?php echo $l; ?>;
+            $("body").on("click", ".btn-love", function() {
+                let id_element = $(this).parent().attr('id');
+                let id_numb = id_element.split("-");
+                let idm = id_numb[2]
+
+                let parent_element = $('#container-pesan-favorit-'+idm);
+
+                // get id user
+                let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
+                let id_user_arr = id_user_element.split("-");
+                let id_user = id_user_arr[3];
+                console.log(id_user)
+
+                // get nama user dan message
+                let cust_name = $('#nama-peserta-form-'+id_user).text();
+                let cust_nama_depan = Array.from(cust_name)[0];
+                let cust_message = $('#pesan-'+idm).text();
+
+                // get jam pesan
+                let element_j = $('#container-btn-'+idm).children('.btn-love').attr('id')
+                let id_j = element_j.split("-");
+                let jam_pesan = $('#jam-pesan-j'+id_j[2]).text();
+                let jam_pesan_hidden = $('#waktu_pengiriman_j_'+id_j[2]).text();
+
+                console.log(id_j[2])
+
+                let element_icon= `<i class="bi bi-heart"></i>`;
+                let element_icon_fill= `<i class="bi bi-heart-fill"></i>`;
+                let element = `
+                    <div id="container-pesan-favorit-${idm}" class="p-3 pesan-favorit border-top border-bottom " style="background-color:rgba(255,65,123,0.1)">
+                        <div class="d-flex">
+                            <p id="pesan-${idm}" class="mb-0 small isi-pesan flex-grow-1">${cust_message}</p>
+                        </div>
+
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                <div class="d-flex align-items-center ">
+                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>${cust_nama_depan}</button>
+                                    <div id="container-nama-waktu-'${idm}" class="small align-self-center ms-2">
+                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
+                                        <p id="jam-pesan-l${l}" class="jam text-black-50 small mb-0 ">${jam_pesan}</p>
+                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_l_${l}" >${jam_pesan_hidden}</p>
+                                    </div>
+                                </div>
+
+                                <div id="container-btn-${idm}" class="container-btn">
+                                    <button id="btn-revert-${l}" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
+                                    <button id="btn-love-${l}" class="btn btn-love text-danger bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
+                                        <i class="bi bi-heart-fill"></i>
+                                    </button>
+                                    <button id="btn-terjawab-${l}" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
+                                        <i class="bi bi-check-lg text-white"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+
+                let status_pesan = 4;
+
+                if($(this).children().hasClass('bi-heart-fill'))
+                {
+                    $('#container-pesan-' + idm).css({
+                        "background-color": 'white',
+                    });
+                    $('#btn-love-' + id_j[2]).children('.bi-heart-fill').remove()
+                    $('#btn-love-' + id_j[2]).append(element_icon)
+                    console.log('false')
+                    console.log($('#btn-love-' + id_j[2]).children())
+
+                    $("#container-pesan-favorit-"+ idm).remove();
+                    //show toast
+                    setTimeout(function () {
+                        // $('#toast-unlove').hide()
+                        $('#toast-unlove').show()
+                    },500)
+                    setTimeout(function () {
+                        $('#toast-unlove').hide()
+                    },5000)
+
+                    status_pesan = 1;
+                }
+                else
+                {
+                    $('#container-pesan-' + idm).css({
+                        "background-color": 'rgba(255,65,123,0.1)',
+                    });
+                    console.log($('#btn-love-' + id_j[2]).children('.bi-heart-fill'))
+                    $('#btn-love-' + id_j[2]).children('.bi-heart').remove()
+                    $('#btn-love-' + id_j[2]).append(element_icon_fill)
+
+                    $("#container-pesan-favorit").append(element);
+                    jam_l[jam_l.length] = jam_pesan_hidden
+                    //show toast
+                    setTimeout(function () {
+                        // $('#toast-love').hide()
+                        $('#toast-love').show()
+                    },500)
+                    setTimeout(function () {
+                        $('#toast-love').hide()
+                    },5000)
+
+                    l=l+1;
+                }
+
+                console.log(status_pesan)
+
+                $.ajax({
+                    url: "../update.php",
+                    type: "POST",
+                    cache: false,
+                    data:{
+                        status: status_pesan,
+                        id_message: idm,
+                    },
+                    success: function(dataResult){
+                        var dataResult = JSON.parse(dataResult);
+                        if(dataResult.statusCode==200){
+                            console.log('Data updated successfully ! '+idm+' apa');
+                        }
+                    }
+                });
+                // jam_i[jam_i.length] = jam_pesan_hidden
+                // parent_element.remove()
+                // i=i+1;
+                // Proses Pengiriman Pesan
+                // var id_sesi = $('#login_id_sesi').val();
+                // var data = {
+                //     asal: 'admin-terpilih',
+                //     userId: id_user,
+                //     mId: idm,
+                //     msg: cust_message,
+                //     sesiId: id_sesi,
+                //     date: jam_pesan_hidden,
+                // };
+                // conn.send(JSON.stringify(data));
+            })
+
+            // fungsi edit
+            $("body").on("click", ".btn-edit", function() {
+                let id_element = $(this).parent().attr('id');
+                let id_numb = id_element.split("-");
+                let idm = id_numb[2]
+
+                let parent_element = $('#container-pesan-'+idm);
+
+                // get nama user dan message
+                let cust_name = $('#nama-peserta-form-'+id_user).text();
+                let cust_nama_depan = Array.from(cust_name)[0];
+                let cust_message = $('#pesan-'+idm).text();
+
+                // get jam pesan
+                let element_j = $('#container-btn-'+idm).children('.btn-love').attr('id')
+                let id_j = element_j.split("-");
+                let jam_pesan = $('#jam-pesan-j'+id_j[2]).text();
+                let jam_pesan_hidden = $('#waktu_pengiriman_j_'+id_j[2]).text();
+
+
+
+            })
+
+
         </script>
 
         <!--    function sortable-->

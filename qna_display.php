@@ -244,8 +244,12 @@
                     }
                     else if(data1.asal === 'admin-terpilih')
                     {
-                        $('#carouselExampleControls').carousel('next')
-                        $('#carousel-item-'+data1.mId).remove();
+                        let id_active = 'carousel-item-'+data1.mId
+                        console.log(id_active)
+                        if($('#carouselExampleControls').find('.active').attr('id') === id_active) {
+                            $('#carouselExampleControls').carousel('next')
+                        }
+                        $('#carousel-item-' + data1.mId).remove();
                     }
                 };
 
