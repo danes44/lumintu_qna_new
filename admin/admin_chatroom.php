@@ -64,6 +64,15 @@
                     </div>
                 </div>
             </div>
+            <!-- toast edit-->
+            <div id="toast-edit" class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-check-circle me-3"></i>
+                        Berhasil mengubah pertanyaan.
+                    </div>
+                </div>
+            </div>
             <!--toast_accept-->
             <div id="toast-accept" class="toast align-items-center text-primary border-1 border-primary" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e6f0ff">
                 <div class="d-flex">
@@ -207,7 +216,7 @@
                                 $str1 = str_split($chat["waktu_pengiriman"], 10);
                                 $jam_pesan = str_split($str1[1], 6);
 
-                                if ($chat["id_chat"] == $_GET["id_session"] && $chat["status"]==$status_all){
+                                if ($chat["id_chat"] == $_GET["id_session"] && ($chat["status"]==0 || $chat["status"]==5)){
                                     $nama_peserta = get_nama($chat["id_pengirim"]);
                                     $id = $chat["id_message"];
                                     $huruf_depan = $nama_peserta[0];
@@ -215,10 +224,15 @@
                                     $i_x_waktu[$i] = $chat["waktu_pengiriman"];
 
                                     echo '
-                                        <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan border-top border-bottom d-none">
+                                        <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan border-top border-bottom">
                                             <div class="d-flex">
                                                 <p id="pesan-'.$chat["id_message"].'" class="mb-0 small isi-pesan flex-grow-1">
                                                     '.$chat["pesan"].'
+                                                    ';
+                                                    if($chat["status"]==5){
+                                                        echo '<span id="badge-edited" class="small mb-0 text-muted"> (edited)</span>';
+                                                    }
+                                                    echo '
                                                 </p>
                                                 <div class="dropdown">
                                                     <button id="btn-options" class="bg-transparent border-0" data-bs-toggle="dropdown" style="height: fit-content">
@@ -261,35 +275,62 @@
                                                     
                                                 </div>
                                             </div>
-                                        </div>
-                                        
-                                        <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan border-top border-bottom ">
-                                            <div class="d-flex">
-                                                <input id="input-edit-'.$chat["id_message"].'" type="text" class="form-control border border-1 py-2 px-3 rounded-start" value="'.$chat["pesan"].'">
-                                            </div>
-                        
-                                            <div class="card-footer bg-transparent">
-                                                <div class="d-flex justify-content-between align-items-center mt-3 ">
-                                                    <span id="char-counter" class="small text-mute" style="font-size: 12px">400</span>
-                                                    
-                                                    <div id="container-btn-'.$chat["id_message"].'">
-                                                        <button id="btn-save-" class="small btn btn-save border-0 rounded-3 py-1 me-0 text-white fw-bold"  title="Simpan perubahan"  style="background-color: #FF6641">
-                                                            Simpan
-                                                        </button>
-                                                        
-                                                        <button id="btn-cancel" class="small btn border border-1 rounded-3 py-1 me-0 text-muted fw-semibold"  title="Batalkan perubahan">
-                                                            Batal
-                                                        </button>
-                                                    </div>    
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </div>                                  
                                         ';
                                     $i++;
                                 }
                             }
                         ?>
                     </div>
+
+                    <!--element edit-->
+                    <!--<div id="container-pesan-edit-'.$chat["id_message"].'" class="p-3 pesan-edit border-top border-bottom d-none">
+                        <div class="d-flex">
+                            <textarea id="input-edit-'.$chat["id_message"].'" type="text" class="form-control border border-1 py-2 px-3 rounded-start" style="min-height:40px;height:70px; max-height:150px;font-size: .875em;" maxlength="400" required>'.$chat["pesan"].'</textarea>
+                        </div>
+
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                <span id="char-counter-'.$chat["id_message"].'" class="small text-mute" style="font-size: 12px">400</span>
+
+                                <div id="container-btn-'.$chat["id_message"].'-edit">
+                                    <button id="btn-save-'.$chat["id_message"].'" class="btn btn-save border-0 rounded-3 py-1 me-0 text-white fw-bold"  title="Simpan perubahan"  style="background-color: #FF6641;font-size: .875em">
+                                    Simpan
+                                    </button>
+
+                                    <button id="btn-cancel-'.$chat["id_message"].'" class="btn btn-cancel border border-1 rounded-3 py-1 me-0 text-muted fw-semibold"  title="Batalkan perubahan" style="font-size: .875em">
+                                    Batal
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="modal-edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-edit-label" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header border-0">
+                                    <h5 class="modal-title fw-bold " id="staticBackdropLabel">Edit Pertanyaan</h5>
+                                </div>
+                                <div class="modal-body ">
+                                    <textarea id="input-edit" type="text" class="form-control border border-1 py-2 px-3 rounded-start" style="height:200px;font-size: .875em;resize: none" maxlength="400" required></textarea>
+                                </div>
+                                <div class="modal-footer border-0">
+                                    <span id="char-counter" class="small text-mute me-auto" style="font-size: 12px">400</span>
+
+                                    <button id="btn-save" class="btn btn-save border-0 rounded-3 py-2 px-3 me-0 text-white fw-bold"  title="Simpan perubahan"  style="background-color: #FF6641;font-size: .875em">
+                                        Simpan
+                                    </button>
+
+                                    <button id="btn-cancel" class="btn btn-cancel border border-1 rounded-3 py-2 px-3 me-0 text-muted fw-semibold"  title="Batalkan perubahan" style="font-size: .875em">
+                                        Batal
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Pertanyaan terjawab dan ditolak-->
                     <div class="border border-1 rounded-3 sortable list-pertanyaan d-none" id="container-pesan-ditolak-terjawab" style="height: calc(100vh - 210px); overflow-y: overlay;">
                         <?php
@@ -891,15 +932,17 @@
 
         <script>
             function charCounter() {
-                var maxChar = 400
-                let id_element = $(this).parent().attr('id');
-                let id_numb = id_element.split("-");
-                let idm = id_numb[2]
-                var count = $("#container-pesan-"+idm).val().length
-                var remaining = maxChar - count
+                let maxChar = 400
+                let count = $("#input-edit").val().length
+                let remaining = maxChar - count
 
                 $("#char-counter").text(remaining)
             }
+
+            // function char counter dinamis
+            $("#input-edit").on('keyup', function(e) {
+                charCounter()
+            });
         </script>
 
         <script>
@@ -1124,7 +1167,7 @@
                 // get nama user dan message
                 var cust_name = $('#nama-peserta-form-'+id_user).text();
                 let cust_nama_depan = Array.from(cust_name)[0];
-                let cust_message = $('#pesan-'+idm).text();
+                let cust_message = $.trim($('#pesan-'+idm).text());
 
                 // get jam pesan
                 let element_i = $('#container-btn-'+idm).children('.btn-accept').attr('id')
@@ -1270,7 +1313,7 @@
                 // get nama user dan message
                 var cust_name = $('#nama-peserta-form-'+id_user).text();
                 let cust_nama_depan = Array.from(cust_name)[0];
-                let cust_message = $('#pesan-'+idm).text();
+                let cust_message = $.trim($('#pesan-'+idm).text());
 
                 // get jam pesan
                 let element_k = $('#container-btn-'+idm).children('.btn-decline').attr('id')
@@ -1390,7 +1433,7 @@
                 // get nama user dan message
                 var cust_name = $('#nama-peserta-form-'+id_user).text();
                 let cust_nama_depan = Array.from(cust_name)[0];
-                let cust_message = $('#pesan-'+idm).text();
+                let cust_message = $.trim($('#pesan-'+idm).text());
 
                 // get jam pesan
                 let element_k = $('#container-btn-'+idm).children('.btn-terjawab').attr('id')
@@ -1521,7 +1564,7 @@
                 // get nama user dan message
                 let cust_name = $('#nama-peserta-form-'+id_user).text();
                 let cust_nama_depan = Array.from(cust_name)[0];
-                let cust_message = $('#pesan-'+idm).text();
+                let cust_message = $.trim($('#pesan-'+idm).text());
 
                 // get jam pesan
                 let element_j = $('#container-btn-'+idm).children('.btn-revert-terpilih').attr('id')
@@ -1851,7 +1894,7 @@
                 // get nama user dan message
                 let cust_name = $('#nama-peserta-form-'+id_user).text();
                 let cust_nama_depan = Array.from(cust_name)[0];
-                let cust_message = $('#pesan-'+idm).text();
+                let cust_message = $.trim($('#pesan-'+idm).text());
 
                 // get jam pesan
                 let element_j = $('#container-btn-'+idm).children('.btn-love').attr('id')
@@ -1977,28 +2020,184 @@
             })
 
             // fungsi edit
+            // $("body").on("click", ".btn-edit", function() {
+            //     let id_element = $(this).attr('id');
+            //     let id_numb = id_element.split("-");
+            //     let idm = id_numb[2]
+            //
+            //     if(sessionStorage.getItem("idm_edit") !== null){
+            //         let session_idm = sessionStorage.getItem("idm_edit")
+            //         let ori_element = $('#container-pesan-'+session_idm);
+            //         let edit_element = $('#container-pesan-edit-'+session_idm);
+            //         console.log(sessionStorage.getItem("idm_edit"))
+            //
+            //         edit_element.addClass('d-none')
+            //         ori_element.removeClass('d-none')
+            //         sessionStorage.removeItem("idm_edit");
+            //
+            //         console.log(edit_element)
+            //     }
+            //     else {
+            //         sessionStorage.setItem("idm_edit", idm);
+            //
+            //         // let parent_element = $('#container-pesan-'+idm);
+            //         // let edit_element = $('#container-pesan-edit-'+idm);
+            //         //
+            //         // parent_element.addClass('d-none')
+            //         // edit_element.removeClass('d-none')
+            //
+            //         console.log(sessionStorage.getItem("idm_edit"))
+            //     }
+            //
+            //     let parent_element = $('#container-pesan-'+idm);
+            //     let edit_element = $('#container-pesan-edit-'+idm);
+            //
+            //     // // get id user
+            //     // let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
+            //     // let id_user_arr = id_user_element.split("-");
+            //     // let id_user = id_user_arr[3];
+            //     // console.log(id_user)
+            //     //
+            //     // // get nama user dan message
+            //     // let cust_name = $('#nama-peserta-form-'+id_user).text();
+            //     // let cust_nama_depan = Array.from(cust_name)[0];
+            //     // let cust_message = $.trim($('#pesan-'+idm).text());
+            //     //
+            //     // // get jam pesan
+            //     // let element_i = $('#container-btn-'+idm).children('.btn-accept').attr('id')
+            //     // let id_i = element_i.split("-");
+            //     // let jam_pesan = $('#jam-pesan-i'+id_i[2]).text();
+            //     // let jam_pesan_hidden = $('#waktu_pengiriman_i_'+id_i[2]).text();
+            //     //
+            //     parent_element.addClass('d-none')
+            //     edit_element.removeClass('d-none')
+            //     // charCounter(idm);
+            //     //
+            //     // console.log(parent_element)
+            //     //
+            //     // // fungsi save edit
+            //     // $("body").on("click", ".btn-save", function() {
+            //     //     let edited_message = $.trim($("#input-edit-"+idm).text())
+            //     //     edit_element.addClass('d-none')
+            //     //     setTimeout(function () {
+            //     //         console.log(parent_element)
+            //     //         parent_element.removeClass('d-none')
+            //     //     },500)
+            //     //     if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
+            //     //         $('#pesan-' + idm).append(`<p class="badge-edited small mb-0 text-muted">(edited)</p>`)
+            //     //     }
+            //     //
+            //     //     console.log(edited_message)
+            //     //     // $.ajax({
+            //     //     //     url: "../update_messages.php",
+            //     //     //     type: "POST",
+            //     //     //     cache: false,
+            //     //     //     data:{
+            //     //     //         id_message: idm,
+            //     //     //         pesan: edited_message,
+            //     //     //
+            //     //     //     },
+            //     //     //     success: function(dataResult){
+            //     //     //         var dataResult = JSON.parse(dataResult);
+            //     //     //         if(dataResult.statusCode==200){
+            //     //     //             console.log('Data updated successfully ! '+idm+' apa');
+            //     //     //         }
+            //     //     //     }
+            //     //     // });
+            //     // })
+            //     // // fungsi cancel edit
+            //     // $("body").on("click", ".btn-cancel", function() {
+            //     //     edit_element.addClass('d-none')
+            //     //     parent_element.removeClass('d-none')
+            //     // })
+            // })
+
+            // fungsi edit
             $("body").on("click", ".btn-edit", function() {
-                let id_element = $(this).parent().attr('id');
+                $('#modal-edit').modal('show');
+
+                let id_element = $(this).attr('id');
                 let id_numb = id_element.split("-");
                 let idm = id_numb[2]
-
                 let parent_element = $('#container-pesan-'+idm);
+
+                // get id user
+                let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
+                let id_user_arr = id_user_element.split("-");
+                let id_user = id_user_arr[3];
+                console.log(id_user)
 
                 // get nama user dan message
                 let cust_name = $('#nama-peserta-form-'+id_user).text();
                 let cust_nama_depan = Array.from(cust_name)[0];
-                let cust_message = $('#pesan-'+idm).text();
+                let cust_message = $.trim($('#pesan-'+idm).text());
 
                 // get jam pesan
-                let element_j = $('#container-btn-'+idm).children('.btn-love').attr('id')
-                let id_j = element_j.split("-");
-                let jam_pesan = $('#jam-pesan-j'+id_j[2]).text();
-                let jam_pesan_hidden = $('#waktu_pengiriman_j_'+id_j[2]).text();
+                let element_i = $('#container-btn-'+idm).children('.btn-accept').attr('id')
+                let id_i = element_i.split("-");
+                let jam_pesan = $('#jam-pesan-i'+id_i[2]).text();
+                let jam_pesan_hidden = $('#waktu_pengiriman_i_'+id_i[2]).text();
 
+                console.log(id_i[2])
 
+                $('#input-edit').val(cust_message)
+                charCounter()
 
+                $("body").on("click", ".btn-save", function() {
+                    let edited_message = escapeHtml($.trim($('#input-edit').val()))
+
+                    $('#pesan-'+idm).text(edited_message);
+
+                    if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
+                        $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
+                    }
+
+                    $.ajax({
+                        url: "../update_messages.php",
+                        type: "POST",
+                        cache: false,
+                        data:{
+                            status: 5,
+                            id_message: idm,
+                            pesan : edited_message
+                        },
+                        success: function(dataResult){
+                            var dataResult = JSON.parse(dataResult);
+                            if(dataResult.statusCode==200){
+                                console.log('Data updated successfully ! '+idm+' apa');
+                            }
+                        }
+                    });
+
+                    //show toast
+                    setTimeout(function () {
+                        $('#toast-edit').show()
+                    },500)
+
+                    $('#modal-edit').modal('hide');
+
+                    setTimeout(function () {
+                        $('#toast-edit').hide()
+                    },5000)
+                })
+                // fungsi cancel edit
+                $("body").on("click", ".btn-cancel", function() {
+                    $('#input-edit').val('')
+                    $('#modal-edit').modal('hide');
+                })
+
+                // Proses Pengiriman Pesan
+                // var id_sesi = $('#login_id_sesi').val();
+                // var data = {
+                //     asal: 'admin-terpilih',
+                //     userId: id_user,
+                //     mId: idm,
+                //     msg: cust_message,
+                //     sesiId: id_sesi,
+                //     date: jam_pesan_hidden,
+                // };
+                // conn.send(JSON.stringify(data));
             })
-
 
         </script>
 
