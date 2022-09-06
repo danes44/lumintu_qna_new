@@ -16,10 +16,14 @@ if (isset($_POST['login'])) {
 	// $id = intval($_GET['id']);
 	$sql = mysqli_query($conn, "SELECT * FROM admins WHERE username ='$user' AND password='$pass'");
 	$cek = mysqli_num_rows($sql);
+    $hasil_sesi = mysqli_fetch_array($sql);
+    var_dump($hasil_sesi['id_admin']);
 	// apakah user tersebut ada 
 	if ($cek > 0) {
 		// buat session login
 		$_SESSION['is_login'] = true;
+        $_SESSION['id_admin'] = $hasil_sesi['id_admin'];
+        $_SESSION['username'] = $hasil_sesi['username'];
 
 		// beri pesan dan dialihkan ke halaman admin
 		echo "<script>document.location.href='dashboard_admin.php';</script>";

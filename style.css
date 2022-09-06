@@ -66,17 +66,36 @@ html {
     background-color: #005043 !important;
 }
 
+#btn-signout {
+    position: relative;
+    left:25px;
+}
+.bi-box-arrow-left{
+    position: absolute;
+    left:-25px;
+    transition: all .2s;
+}
+#btn-signout:hover>.bi-box-arrow-left {
+    left: -35px;
+}
+
+#btn-tambah:hover{
+    background-color: rgba(255, 102, 65, 0.7) !important;
+}
 /* .btn-send:hover{
     background-color: #005043 !important;
 } */
 
 
 .card,#btn-masuk i{
-    -webkit-transition: all .3s ease .15s;
-    -moz-transition: all .3s ease .15s;
-    -o-transition: all .3s ease .15s;
-    -ms-transition: all .3s ease .15s;
-    transition: all .3s ease .15s;
+    -webkit-transition: all ease .25s;
+    -moz-transition: all ease .25s;
+    -o-transition: all ease .25s;
+    -ms-transition: all ease .25s;
+    transition: all ease .25s;
+}
+.badge.bg-warning.bg-opacity-10.text-warning.mb-3{
+    color: #664d03 !important;
 }
 
 .card:hover{

@@ -1,22 +1,11 @@
 <?php
-
+    session_start();
     include 'database/connection.php';
-//    $status=!empty($_POST["status"]) ? $_POST["status"] : '';
-//    $nama=!empty($_POST["nama"]) ? $_POST["nama"] : '';
-//    $length=!empty($_POST["length"]) ? $_POST["length"] : '';
+//    echo $_SESSION['id_admin'];
 
-//    if($status == 0)
-//    {
-//        echo "masuk else php".$status;
-//        for ($i=0; $i < $length ; $i++){
-//
-//        }
-        $sql = "SELECT * FROM messages where status = 0 ORDER BY waktu_pengiriman ASC";
-//    }
-
-
-
-
+    $id_admin = $_SESSION['id_admin'];
+//    $sql = "SELECT events.*, images.image FROM events JOIN images ON events.id_image = images.id WHERE events.id_admin = '$id_admin'";
+    $sql = "SELECT events.*, images.name AS photo_name FROM `events` JOIN images ON events.id_image = images.id WHERE events.id_admin = '$id_admin'";
     if (mysqli_query($conn, $sql)) {
         $array_values = array();
         // output data of each row

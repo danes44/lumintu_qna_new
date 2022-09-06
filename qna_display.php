@@ -85,7 +85,7 @@
                                     for($x = 0; $x <= $panjang1; $x++){
                                         $nama_peserta1 = get_nama($chat_data[$x]["id_pengirim"]);
 
-                                        if ($chat_data[$x]["id_chat"] == $_GET["id_session"] && $chat_data[$x]["status"]==1){
+                                        if ($chat_data[$x]["id_chat"] == $_GET["id_session"] && ($chat_data[$x]["status"]==1 || $chat_data[$x]["status"]==4)){
                                             echo '<div id="carousel-item-'.$chat_data[$x]["id_message"].'" class="carousel-item">
                                                 <div class="container px-5" >
                                                     <h3 class="card-title text-dark mx-3 px-5">

@@ -42,25 +42,20 @@ class Chat implements MessageComponentInterface {
 
         if($data['asal'] == 'user'){
             $chat_object->setChatId($data["sesiId"]); // value nya ambil dari id_chat yang di chats
-
             $chat_object->setPengirimId($data['userId']);
-
             $chat_object->setMessage($data['msg']);
-
             $chat_object->setStatus(0);
-
             $chat_object->setCreatedOn($data['date']);
+            $chat_object->setIsEdited($data['is_edited']);
 
             $chat_object->save_chat();
         }
         else{
             $chat_object->setChatId($data["sesiId"]); // value nya ambil dari id_chat yang di chats
-
             $chat_object->setPengirimId($data['userId']);
-
             $chat_object->setMessage($data['msg']);
-
             $chat_object->setCreatedOn($data['date']);
+            $chat_object->setIsEdited($data['is_edited']);
         }
 
         $chat_last = new \ChatRooms;
@@ -72,16 +67,15 @@ class Chat implements MessageComponentInterface {
             if($from == $client)
             {
                 $data['from'] = 'Me';
-                
             }
             else
             {
                 $data['from'] = 'Other';
             }
 
-            if($data['asal'] == 'user')
+            if($data['asal'] == 'user') {
                 $data['mId'] = $last_chat[0]["id_message"];
-
+            }
 
             $client->send(json_encode($data));
         }

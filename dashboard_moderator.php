@@ -1,24 +1,24 @@
 <?php
-session_start();
+    session_start();
 
-require('../database/ChatRooms.php');
-include('../get_nama.php');
+    require('../database/ChatRooms.php');
+    include('../get_nama.php');
 
-if (!isset($_SESSION['is_login'])) {
-    echo "<script>document.location.href='index.php';</script>";
-    die();
-}
+    if (!isset($_SESSION['is_login'])) {
+        echo "<script>document.location.href='index.php';</script>";
+        die();
+    }
 
-$chat_object = new ChatRooms;
-$chat_data = $chat_object->get_all_chat_data();
+    $chat_object = new ChatRooms;
+    $chat_data = $chat_object->get_all_chat_data();
 
-$i_x_waktu = array();
-$j_x_waktu = array();
-$k_x_waktu = array();
-$l_x_waktu = array();
+    $i_x_waktu = array();
+    $j_x_waktu = array();
+    $k_x_waktu = array();
+    $l_x_waktu = array();
 
-$status_all = 0;
-$status_live = 1;
+    $status_all = 0;
+    $status_live = 1;
 ?>
 
 <!DOCTYPE html>

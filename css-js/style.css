@@ -106,8 +106,12 @@ body{
     left: -35px;
 }
 
-#btn-display:hover{
+#btn-display:hover, #btn-save:hover{
     background-color: rgba(255, 102, 65, 0.7) !important;
+}
+
+#btn-cancel:hover{
+    background-color: #d7d7d7;
 }
 
 #btn-delete:hover{

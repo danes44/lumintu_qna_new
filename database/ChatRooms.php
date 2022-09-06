@@ -2,6 +2,7 @@
 	
 class ChatRooms
 {
+    private $is_edited;
     private $asal;
     private $message_id;
     private $chat_id;
@@ -10,6 +11,16 @@ class ChatRooms
     private $status;
     private $created_on;
     protected $connect;
+
+    public function setIsEdited($is_edited)
+    {
+        $this->is_edited = $is_edited;
+    }
+
+    function getIsEdited()
+    {
+        return $this->is_edited;
+    }
 
     public function setAsalMessage($asal)
     {
@@ -94,8 +105,8 @@ class ChatRooms
     {
         $query = "
 		INSERT INTO messages 
-			(id_message, id_chat, id_pengirim, pesan, status, waktu_pengiriman) 
-			VALUES (:id_message, :id_chat, :id_pengirim, :msg, :status, :waktu_pengiriman)
+			(id_message, id_chat, id_pengirim, pesan, status, waktu_pengiriman, is_edited) 
+			VALUES (:id_message, :id_chat, :id_pengirim, :msg, :status, :waktu_pengiriman, :is_edited)
 		";
 
         $statement = $this->connect->prepare($query);
@@ -111,6 +122,8 @@ class ChatRooms
         $statement->bindParam(':status', $this->status);
 
         $statement->bindParam(':waktu_pengiriman', $this->created_on);
+
+        $statement->bindParam(':is_edited', $this->is_edited);
 
         $statement->execute();
     }
