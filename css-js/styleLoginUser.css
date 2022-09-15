@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
+
+body{
+    overflow-x: hidden;
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* scroll bar */
+.on-scrollbar{
+    width: 0.3rem;
+    scrollbar-width: 0.3rem !important; /* Firefox */
+    -ms-overflow-style: none !important; /* IE 10+ */
+  }
+  
+.on-scrollbar::-webkit-scrollbar-track {
+    -webkit-box-shadow: none !important;
+    background-color: transparent !important;
+}
+
+.on-scrollbar::-webkit-scrollbar {
+    width: 6px !important;
+    background-color: transparent;
+}
+
+.on-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #acacac;
+}
+
+::-webkit-scrollbar {
+    width: 0.35rem;
+    scrollbar-width: thin;
+    -webkit-box-shadow: none !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(17, 17, 17, 0.3);
+    scrollbar-color: #111111;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #444;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+    -webkit-box-shadow: none !important;
+}
+
+.card-header:first-child {
+    border-radius: 0;
+}
+
+.list-pertanyaan, .pesan, .pesan-terpilih, .pesan-ditolak-terjawab{
+    -webkit-transition: all .3s ease .15s;
+    -moz-transition: all .3s ease .15s;
+    -o-transition: all .3s ease .15s;
+    -ms-transition: all .3s ease .15s;
+    transition: all .3s ease .15s;
+}
+
+#btn-login:hover, #btn-save:hover{
+    background-color: rgba(255, 102, 65, 0.7) !important;
+}
+
+#btn-kembali{
+    -webkit-transition: color ease .15s;
+    -moz-transition: all ease .15s;
+    -o-transition: all ease .15s;
+    -ms-transition: all ease .15s;
+    transition: all ease .15s;
+}
+
+.form-control:focus {
+    border-color: none !important;
+    box-shadow: none !important;
+}
+
+#btn-kembali:hover {
+    margin-left: -5px;
+    font-size: 20px;
+}
+
+.blink {
+    animation: blink 1s infinite;
+    -webkit-animation: blink 1s infinite;
+}
+@keyframes blink {
+    from, to { opacity: 1 }
+    50% { opacity: 0.3 }
+
+}
+@-webkit-keyframes blink {
+    from, to { opacity: 1 }
+    50% { opacity: 0.3 }
+
+}
+
+/* `sm` applies to x-small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+    body{
+        background-size: auto !important;
+        background-position: 56% -15% !important;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+}
+
+/* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+
+}

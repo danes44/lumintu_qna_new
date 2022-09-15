@@ -1,6 +1,7 @@
 <?php
-	$servername = "localhost";
-	$database = "lumintu_qna"; 
+//	$servername = "0.tcp.ap.ngrok.io:11968";
+    $servername = "localhost";
+	$database = "lumintu_qna";
 	$username = "root";
 	$password = "";
 

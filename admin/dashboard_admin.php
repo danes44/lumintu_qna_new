@@ -6,7 +6,7 @@
         die();
     }
 
-//    var_dump($_SESSION['id_admin']);
+//    var_dump($_SESSION);
 //    $bytes = random_bytes(3);
 //    var_dump(bin2hex($bytes));
 ?>
@@ -73,7 +73,7 @@
                                     <div class="col-12 position-relative">
                                         <label for="input-nama-event" class="form-label input-nama-event small">Nama Event</label>
                                         <input type="text" class="form-control form-control-sm" id="input-nama-event" name="input-nama-pembicara" placeholder="Nama event Anda" required/>
-                                        <div class="invalid-tooltip">Nama event harus terisi</div>
+                                        <div class="invalid-tooltip end-0">Nama event harus terisi</div>
                                     </div>
                                 </div>
                                 <!--<div class="mb-3 row g-0">
@@ -99,19 +99,19 @@
                                     <div class="col-6 position-relative">
                                         <label for="input-gambar" class="form-label small">Gambar Sesi</label>
                                         <input class="form-control form-control-sm" id="input-gambar" type="file" name="input-gambar" required>
-                                        <div class="invalid-tooltip">Gambar harus diisi</div>
+                                        <div class="invalid-tooltip end-0">Gambar harus diisi</div>
                                     </div>
                                 </div>
                                 <div class="mb-5 row">
                                     <div class="col-6 position-relative">
                                         <label for="input-mulai" class="form-label input-mulai small">Waktu Mulai</label>
                                         <input type="datetime-local" class="form-control form-control-sm" id="input-mulai" name="input-mulai" required/>
-                                        <div class="invalid-tooltip">Waktu mulai harus terisi</div>
+                                        <div class="invalid-tooltip end-0">Waktu mulai harus terisi</div>
                                     </div>
                                     <div class="col-6 position-relative">
                                         <label for="input-selesai" class="form-label input-selesai small">Waktu Selesai</label>
                                         <input type="datetime-local" class="form-control form-control-sm" id="input-selesai" name="input-selesai" required/>
-                                        <div class="invalid-tooltip">Waktu selesai harus terisi</div>
+                                        <div class="invalid-tooltip end-0">Waktu selesai harus terisi</div>
                                     </div>
                                 </div>
 
@@ -140,7 +140,7 @@
                                 <div class="col-12 position-relative">
                                     <label for="input-nama-event-edit" class="form-label input-nama-event-edit small">Nama Event</label>
                                     <input type="text" class="form-control form-control-sm" id="input-nama-event-edit" name="input-nama-pembicara-edit" placeholder="Nama event Anda" required/>
-                                    <div class="invalid-tooltip">Nama event harus terisi</div>
+                                    <div class="invalid-tooltip end-0">Nama event harus terisi</div>
                                 </div>
                             </div>
                             <!--<div class="mb-3 row g-0">
@@ -169,12 +169,12 @@
                                 <div class="col-6 position-relative">
                                     <label for="input-mulai-edit" class="form-label input-mulai-edit small">Waktu Mulai</label>
                                     <input type="datetime-local" class="form-control form-control-sm" id="input-mulai-edit" name="input-mulai-edit" required/>
-                                    <div class="invalid-tooltip">Waktu mulai harus terisi</div>
+                                    <div class="invalid-tooltip end-0">Waktu mulai harus terisi</div>
                                 </div>
                                 <div class="col-6 position-relative">
                                     <label for="input-selesai-edit" class="form-label input-selesai-edit small">Waktu Selesai</label>
                                     <input type="datetime-local" class="form-control form-control-sm" id="input-selesai-edit" name="input-selesai-edit" required/>
-                                    <div class="invalid-tooltip">Waktu selesai harus terisi</div>
+                                    <div class="invalid-tooltip end-0">Waktu selesai harus terisi</div>
                                 </div>
                             </div>
 
@@ -197,26 +197,29 @@
             </div>
         </div>
 
-        <!-- Modal Create-->
+        <!-- Modal Delete-->
         <div class="modal fade" id="modal-delete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-create-label" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered justify-content-center">
                 <div class="modal-content py-2 px-4" style="width: auto">
-                        <div class="modal-body pb-0">
-                            <p class="">Anda yakin ingin menghapus sesi ini?</p>
-                        </div>
-                        <div class="modal-footer border-0 pt-0 px-3 justify-content-between">
-                            <button id="btn-confirm" type="submit" class="btn btn-confirm border-0 rounded-3 py-2 ms-0 me-0 text-white fw-bold btn-danger flex-fill"  title="Simpan perubahan"  style="font-size: .875em">
-                                Hapus
-                            </button>
-                            <button id="timer-confirm" class="btn-confirm border-0 rounded-3 py-2 me-0 ms-0 text-white fw-bold bg-danger bg-opacity-50 flex-fill" disabled title="Harap menunggu"  style="display:none;">
-                                <div  class=" spinner-border spinner-border-sm border-3 small" style="--bs-spinner-width: 0.8rem;--bs-spinner-height: 0.8rem;"></div>
-                                <span class="fw-normal small ms-2"> Tunggu...</span>
-                            </button>
+                    <div class="modal-header border-0 pb-0">
+                        <h6 class="modal-title fw-bold " id="staticBackdropLabel" >Apakah Anda yakin?</h6>
+                    </div>
+                    <div class="modal-body pb-0">
+                        <p class="small text-muted">Sesi Anda akan dihapus dari daftar sesi. Setelah dihapus, Anda <b>tidak dapat</b> mengembalikannya.</p>
+                    </div>
+                    <div class="modal-footer border-0 pt-0 px-3 justify-content-between">
+                        <button id="btn-confirm" type="submit" class="btn btn-confirm border-0 rounded-3 py-2 ms-0 me-0 text-white fw-bold btn-danger flex-fill"  title="Simpan perubahan"  style="font-size: .875em">
+                            Hapus
+                        </button>
+                        <button id="timer-confirm" class="btn-confirm border-0 rounded-3 py-2 me-0 ms-0 text-white fw-bold bg-danger bg-opacity-50 flex-fill" disabled title="Harap menunggu"  style="display:none;">
+                            <div  class=" spinner-border spinner-border-sm border-3 small" style="--bs-spinner-width: 0.8rem;--bs-spinner-height: 0.8rem;"></div>
+                            <span class="fw-normal small ms-2"> Tunggu...</span>
+                        </button>
 
-                            <button id="btn-cancel" type="reset" class="btn btn-cancel border border-1 rounded-3 py-2 px-3 me-0 ms-3 text-muted fw-semibold flex-fill"  title="Batalkan hapus sesi" style="font-size: .875em">
-                                Batal
-                            </button>
-                        </div>
+                        <button id="btn-cancel" type="reset" class="btn btn-cancel border border-1 rounded-3 py-2 px-3 me-0 ms-3 text-muted fw-semibold flex-fill"  title="Batalkan hapus sesi" style="font-size: .875em">
+                            Batal
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -282,7 +285,7 @@
 
         <script>
             moment.locale('id');
-            let test = moment().format('YYYY-MM-DDTHH:mm');
+            let test = moment().format('YYYY-MM-DDTHH:mm:ss');
             console.log(test);
             console.log($('#login_id_admin').val())
         </script>
@@ -893,8 +896,6 @@
                 }
             })
         </script>
-
-
 
     </body>
 </html>

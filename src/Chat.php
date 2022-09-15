@@ -46,16 +46,19 @@ class Chat implements MessageComponentInterface {
             $chat_object->setMessage($data['msg']);
             $chat_object->setStatus(0);
             $chat_object->setCreatedOn($data['date']);
-            $chat_object->setIsEdited($data['is_edited']);
+            $chat_object->setIsEdited(0);
 
             $chat_object->save_chat();
+        }
+        else if($data['asal'] == 'admin-edit' || $data['asal'] == 'user-delete'){
+            $chat_object->setMessage($data['msg']);
         }
         else{
             $chat_object->setChatId($data["sesiId"]); // value nya ambil dari id_chat yang di chats
             $chat_object->setPengirimId($data['userId']);
             $chat_object->setMessage($data['msg']);
             $chat_object->setCreatedOn($data['date']);
-            $chat_object->setIsEdited($data['is_edited']);
+//            $chat_object->setIsEdited($data['is_edited']);
         }
 
         $chat_last = new \ChatRooms;

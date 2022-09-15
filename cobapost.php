@@ -17,6 +17,19 @@
       include("crypt.php");
       $hasilHash = mycrypt("encrypt", "id_customer=1&id_ticket=1&id_session=1");
       $hasilDe = mycrypt("decrypt", $hasilHash);
+
+      $id_customer = 1;
+      $sesi_id = 1;
+      echo "[sudah checkpoint] Enkripsi dari id_customer=1&id_session=1 jadinya :". mycrypt("encrypt", "id_session='$sesi_id'&id_customer='$id_customer'");
+      echo "<br>";
+      echo "di decrypt ulang jadi ". mycrypt("decrypt", "QX8t9W9kmo+V3jQlVA+9n6FvUuYKjRMz19CfTRxhOlo=");
+      echo "<br>";echo "<br>";
+
+      echo "[sudah checkpoint] Enkripsi dari id_customer=9&id_session=1 jadinya :". mycrypt("encrypt", "id_customer=9&id_session=1");
+      echo "<br>";
+      echo "di decrypt ulang jadi ". mycrypt("decrypt", "r2PyTxJB8jqNTSO+2xPBjErYXj8tKoWbulyEOTXE7Bk=");
+      echo "<br>";echo "<br>";
+
       echo "[sudah checkpoint] Enkripsi dari id_customer=9&id_ticket=1&id_session=1 jadinya :". mycrypt("encrypt", "id_customer=9&id_ticket=1&id_session=1");
       echo "<br>";
       echo "di decrypt ulang jadi ". mycrypt("decrypt", "r2PyTxJB8jqNTSO+2xPBjDuyldVOhQflxqaMi+7fICOOFWNzXpdH6rfHD4cQH131");

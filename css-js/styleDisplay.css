@@ -62,9 +62,9 @@ body{
     background-color: #005043 !important;
 }
 
-/* .btn-send:hover{
-    background-color: #005043 !important;
-} */
+ #btn-qrcode:hover{
+    border-color: #9f9fa7 !important;
+}
 
 
 #btn-masuk i{

@@ -3,6 +3,8 @@
 
     require('../database/ChatRooms.php');
     include('../get_nama.php');
+    // panggil fungsi enkripsi
+    include("../crypt.php");
 
     if (!isset($_SESSION['is_login'])) {
       echo "<script>document.location.href='index.php';</script>";
@@ -19,6 +21,10 @@
 
     $status_all = 0;
     $status_live = 1;
+
+    //encrypt id sesi
+    $hasil_hash_id = mycrypt("encrypt", "id_session=".$_GET["id_session"]);
+//    var_dump($_GET['id_session']);
 ?>
 
 <!DOCTYPE html>
@@ -150,7 +156,7 @@
                     <h6 id="date-time" class="mb-0"></h6>
                 </div>
                 <div class="d-flex justify-content-start align-items-center">
-                    <a id="btn-display" class="btn fw-bold text-decoration-none text-white border-0 rounded my-0 p-2 bg-opacity-10" style="background-color: #FF6641" role="button" href="../qna_display.php?id_session=<?php echo $_GET["id_session"] ; ?>" target="_blank">
+                    <a id="btn-display" class="btn fw-bold text-decoration-none text-white border-0 rounded my-0 p-2 bg-opacity-10" style="background-color: #FF6641" role="button" href="../qna_display.php?<?php echo $hasil_hash_id ; ?>" target="_blank">
                         <i class="bi bi-easel me-1"></i>
                         Presentasi
                     </a>
@@ -165,12 +171,12 @@
                         <h6 id="jumlah-pertanyaan" class="ms-auto mb-0"></h6>
                         <h6 id="jumlah-pertanyaan-ditolak-terjawab" class="ms-auto d-none mb-0"></h6>
                     </div>
-                    <div class="input-group mb-3">
-                        <input type="text" id="search-pertanyaan" class="form-control border border-1 border-end-0 py-2 px-3 rounded-start" placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan..." aria-describedby="search-addon" style="background-color: white;" >
-                        <button class="input-group-text py-2 border border-1 border-start-0 rounded-end " disabled id="search-addon" style="background-color: white; ">
-                            <span id="badge-terbaru" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .6em">Terbaru
+                    <div class="input-group input-group-sm mb-3">
+                        <input type="text" id="search-pertanyaan" class="form-control border border-1 border-end-0 px-2 rounded-start" placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan..." aria-describedby="search-addon" style="background-color: white;" >
+                        <button class="input-group-text border border-1 border-start-0 rounded-end " disabled id="search-addon" style="background-color: white; ">
+                            <span id="badge-terbaru" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .8em">Terbaru
                             </span>
-                            <span id="badge-ditolak-terjawab" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .6em">Ditolak/Terjawab
+                            <span id="badge-ditolak-terjawab" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .8em">Ditolak/Terjawab
                             </span>
                             <i class="ms-2 bi bi-search"></i>
                         </button>
@@ -396,12 +402,12 @@
                         <h6 id="jumlah-pertanyaan-terpilih" class="ms-auto mb-0"></h6>
                         <h6 id="jumlah-pertanyaan-favorit" class="ms-auto mb-0 d-none"></h6>
                     </div>
-                    <div class="input-group mb-3">
-                        <input type="text" id="search-pertanyaan-terpilih" class="form-control border border-1 border-end-0 py-2 px-3 rounded-start" placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan..." aria-describedby="search-addon-terpilih" style="background-color: white; border-radius: .5rem 0 0 .5rem;">
-                        <button class="input-group-text py-2 border border-1 border-start-0 rounded-end" disabled id="search-addon-terpilih" style="background-color: white; ">
-                            <span id="badge-terbaru-live" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .6em">Terbaru
+                    <div class="input-group input-group-sm mb-3">
+                        <input type="text" id="search-pertanyaan-terpilih" class="form-control border border-1 border-end-0 px-2 rounded-start" placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan..." aria-describedby="search-addon-terpilih" style="background-color: white; border-radius: .5rem 0 0 .5rem;">
+                        <button class="input-group-text border border-1 border-start-0 rounded-end" disabled id="search-addon-terpilih" style="background-color: white; ">
+                            <span id="badge-terbaru-live" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .8em">Terbaru
                             </span>
-                            <span id="badge-favorit" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .6em">Favorit
+                            <span id="badge-favorit" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .8em">Favorit
                             </span>
                             <i class="ms-2 bi bi-search"></i>
                         </button>
@@ -579,6 +585,7 @@
                     </div>
                 </div>
             </div>
+        </div>
 
         <?php
           echo "<input type='hidden' name='login_id_sesi' id='login_id_sesi' value='".$_GET["id_session"]."'/>";
@@ -596,7 +603,7 @@
             // 2 = sudah dijawab
             // 3 = ditolak
             // 4 = favorit
-            // 5 = diedit
+            // 99 = dihapus
         </script>
 
         <!-- fungsi close toast-->
@@ -710,7 +717,7 @@
             setFormatJam()
         </script>
 
-
+        <!-- filtering -->
         <script>
             // fungsi sort tanggal dari lama -> baru
             function sortTerlama(a, b) {
@@ -848,7 +855,6 @@
             }
             counter()
         </script>
-
         <script>
             function charCounter() {
                 let maxChar = 400
@@ -864,6 +870,7 @@
             });
         </script>
 
+        <!-- tampilin pertanyaan -->
         <script>
             function escapeHtml(text) {
               return text
@@ -875,8 +882,8 @@
             }
             // Koneksi Websocket
             var port = '8082'
-            var conn = new WebSocket('ws://localhost:'+port);
-            // var conn = new WebSocket('ws://0.tcp.ngrok.io:14538);
+            // var conn = new WebSocket('ws://localhost:'+port);
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:17289');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
@@ -891,16 +898,22 @@
                     console.log(data1)
 
                     if(data1.asal === 'user'){
-                        console.log(data1.asal)
+                        console.log(data1.userId)
                         $.ajax({
-                            url: kel1_api+'/items/customer?fields=customer_id,customer_name&filter[customer_id]='+data1.userId,
-                            type: 'GET',
-                            dataType: 'json',
+                            url: '../get_nama_participant.php',
+                            type: 'POST',
+                            data: {
+                                id_participant: data1.userId,
+                            },
                             success: function(data, textStatus, xhr) {
-                                var list_data = ''
-
-                                var nama = data.data[0].customer_name
-                                let nama_depan = Array.from(nama)[0]
+                                let list_data = ''
+                                let dataResult = JSON.parse(data)
+                                let nama = dataResult.nama
+                                // let nama_temp = nama.replaceAll(' ', '-')
+                                // nama_temp = nama.split("-")
+                                let nama_depan = nama.charAt(0)
+                                // var nama = data.customer_name
+                                // let nama_depan = Array.from(nama)[0]
 
                                 if( data1.sesiId === sesi_id1 )
                                 {
@@ -952,20 +965,54 @@
                             },
                             complete: function (data) {
                                 if( data1.sesiId === sesi_id1 ) {
+                                    $('#badge-baru').remove()
+
                                     jam_i[jam_i.length] = data1.date
-                                    counter()
                                     if ($('#radio-terbaru').is(':checked')) {
                                         $('#container-pesan .pesan').sort(sortTerbaru).appendTo('#container-pesan')
                                     } else if ($('#radio-terlama').is(':checked')) {
                                         $('#container-pesan .pesan').sort(sortTerlama).appendTo('#container-pesan')
                                     }
+
+                                    setTimeout(function() {
+                                        setFormatJam()
+                                        counter()
+                                        //scroll ke pesan terbaru
+                                        $('#container-pesan').animate({
+                                            scrollTop: $('#container-pesan-'+data1.mId).offset().top - $('#container-pesan').offset().top + $('#container-pesan').scrollTop()
+                                        }, 500);
+                                    }, 100);
+
+                                    setTimeout(function () {
+                                        $('#container-pesan-'+data1.mId).css({
+                                            "background-color" : 'rgba(25,135,84,0.1)',
+                                        });
+
+                                        $('#pesan-'+data1.mId).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
+
+                                    },500)
+
+                                    setTimeout(function () {
+                                        $('#container-pesan-'+data1.mId).css({
+                                            "background-color" : 'white',
+                                        });
+                                        console.log("ganti warna")
+                                    },1500)
+
+                                    //show toast
                                     $('#toast-new').show()
                                     setTimeout(function () {
                                         $('#toast-new').hide()
-                                    }, 5000)
+                                    },5000)
                                 }
+                            },
+                            error: function(data, textStatus, xhr){
+                                console.log(xhr)
                             }
                         })
+                    }
+                    else if(data1.asal === 'user-delete'){
+                        $('#container-pesan-'+data1.mId).remove()
                     }
                 };
 
@@ -1004,39 +1051,72 @@
             });
         </script>
 
+        <!-- get data events-->
         <script>
-            //dapet data dari url untuk dapet ID tiketnya
-            var id_tiket = 1;
-            var id_tiket_session = 1;
-            var arr_customers = []
-            var arr_all = []
-            var arr_sorted = []
-            var arr_temp = []
-            var arr_choose = []
-            var arr_answered = []
-            var status_sort = 0
-
-
+            //get events data waktu
+            // var id_tiket = 1;
+            // var id_tiket_session = 1;
+            //
+            // $.ajax({
+            //     url: kel1_api+'/items/ticket?fields=ticket_id,ticket_type,ticket_x_session.session_id.*,ticket_x_day.day_id.*',
+            //     type: 'GET',
+            //     dataType: 'json',
+            //     success: function(data, textStatus, xhr) {
+            //             let nama = data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.session_desc
+            //             let time_start = new Date(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.start_time)
+            //             let time_finish = new Date(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.finish_time)
+            //
+            //             let day = moment(time_start).format('dddd')
+            //             let time_begin = moment(time_start).format('HH:mm')
+            //             let time_end = moment(time_finish).format('HH:mm')
+            //             let date = moment(time_start).format('LL')
+            //
+            //             $('#event-name').text(nama)
+            //             $('#date-time').text(day+", "+date+" | "+time_begin+" - "+time_end+" WIB")
+            //             // $('#time').text(time_begin+" - "+time_end)
+            //     },
+            //     error: function(xhr, textStatus, errorThrown) {
+            //         console.log('Error in Database');
+            //     }
+            // })
             $.ajax({
-                url: kel1_api+'/items/ticket?fields=ticket_id,ticket_type,ticket_x_session.session_id.*,ticket_x_day.day_id.*',
+                url: '../get_events.php',
                 type: 'GET',
                 dataType: 'json',
+                // dataType: 'jsonp',
+                // headers: {
+                //     'Access-Control-Allow-Origin': '*',
+                // },
                 success: function(data, textStatus, xhr) {
-                        let nama = data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.session_desc
-                        let time_start = new Date(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.start_time)
-                        let time_finish = new Date(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.finish_time)
+                    let html_data = ""
 
-                        let day = moment(time_start).format('dddd')
-                        let time_begin = moment(time_start).format('HH:mm')
-                        let time_end = moment(time_finish).format('HH:mm')
-                        let date = moment(time_start).format('LL')
+                    console.log(data)
+                    for(var i = 0; i < data.length; i++){
+                        if (data[i].id_event === $('#login_id_sesi').val())
+                        {
+                            console.log(data[i].id_event)
+                            let id_session = data[i].id_event
+                            let images = data[i].photo_name
 
-                        $('#event-name').text(nama)
-                        $('#date-time').text(day+", "+date+" | "+time_begin+" - "+time_end+" WIB")
-                        // $('#time').text(time_begin+" - "+time_end)
+                            let nama_event = data[i].nama_event
+                            let time_start = new Date(data[i].event_mulai)
+                            let time_finish = new Date(data[i].event_berakhir)
+                            console.log(moment(new Date(time_start)).format('LT'))
+
+                            let day = moment(time_start).format('dddd')
+                            let time_begin = moment(time_start).format('LT')
+                            let time_end = moment(time_finish).format('LT')
+                            let date = moment(time_start).format('LL')
+                            console.log(day + ' ' + date + ' ' + time_begin + ' ' + time_end)
+
+                            $('p#event-name').text(nama_event)
+                            $('#date-time').text(day + ", " + date + ' | '+ time_begin + " - " + time_end + " WIB")
+
+                        }
+                    }
                 },
                 error: function(xhr, textStatus, errorThrown) {
-                    console.log('Error in Database');
+                    console.log(textStatus);
                 }
             })
         </script>
@@ -2143,16 +2223,14 @@
                 },4000)
 
                 // Proses Pengiriman Pesan
-                // var id_sesi = $('#login_id_sesi').val();
-                // var data = {
-                //     asal: 'admin-terpilih',
-                //     userId: id_user,
-                //     mId: idm,
-                //     msg: cust_message,
-                //     sesiId: id_sesi,
-                //     date: jam_pesan_hidden,
-                // };
-                // conn.send(JSON.stringify(data));
+                let id_sesi = $('#login_id_sesi').val();
+                let data = {
+                    asal: 'admin-edit',
+                    mId: edit_idm,
+                    msg: edited_message,
+                    date: moment().format('YYYY-MM-DD HH:mm:ss'),
+                };
+                conn.send(JSON.stringify(data));
 
                 }
             })
