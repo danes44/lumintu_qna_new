@@ -47,10 +47,15 @@
     <body style="background-color: #ffffff;max-height: 100vh">
         <!-- QnA  -->
         <div class="container pb-5 vh-100 position-relative">
-            <div class="d-flex mb-4 pt-4 justify-content-center">
-                <div class="d-flex justify-content-center align-items-center">
+            <div class="d-flex mb-4 pt-4 justify-content-between">
+                <div class="d-flex justify-content-start align-items-center">
                     <img src="./assets/Logo QnA.svg" class="img-fluid text-center" width="14%" alt="...">
                     <h2 class="align-middle fw-bold mb-0 ps-3 ">QnA</h2>
+                </div>
+                <div class="align-items-center align-content-center align-self-center text-end">
+                    <p id="nama-sesi" class="card-title fw-bold mb-0"></p>
+                    <p id="kode-sesi" class="mb-0 small text-uppercase"></p>
+                    <p id="date-time" class="mb-0 small"></p>
                 </div>
                 <!--<button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
                 <button id="btn-test" class="btn btn-primary" data-bs-target="#carouselExampleControls" data-bs-slide="next">test</button>-->
@@ -76,13 +81,19 @@
                 </div>
             </div>
 
-
-            <div class="card text white  border rounded-3 p-5 mt-3" style="background-color: white; width: 100%;">
-                <div id="carouselExampleControls" class="carousel carousel-dark slide h-100" data-bs-interval="false" >
-                    <div class="carousel-inner" id="qna_display">
-                        <?php
-                            if ((cek_qchoosen($sesi_id)) == "2"){
-                                echo '<div class="carousel-item active">
+            <div class="row">
+                <div class="col-3">
+                    <button id="btn-qrcode" class="btn border border-1 ">
+                        <div id="qrcode" class="p-3"></div>
+                    </button>
+                </div>
+                <div class="col-9">
+                    <div class="card text white  border rounded-3 p-5" style="background-color: white; width: 100%;">
+                        <div id="carouselExampleControls" class="carousel carousel-dark slide h-100" data-bs-interval="false" >
+                            <div class="carousel-inner" id="qna_display">
+                                <?php
+                                if ((cek_qchoosen($sesi_id)) == "2"){
+                                    echo '<div class="carousel-item active">
                                     <div class="container  px-5" >
                                     <h3 class="card-title text-dark mx-3 px-5">
                                     Belum ada pertanyaan.
@@ -91,21 +102,21 @@
                                     <h3 class=" mx-3 px-5 fw-bold">silahkan menunggu</h3S>
                                 </div>
                                 </div>';
-                            } else {
-                                echo '<div class="carousel-item active">
+                                } else {
+                                    echo '<div class="carousel-item active">
                                         <div class="container  px-5" >
                                             <h3 class="card-title text-dark mx-3 px-5">Pertanyaan pertama ada di samping.</h3>
                                             <hr class=" mt-5 mx-5 ">
                                             <h3 class=" mx-3 px-5 fw-bold">Silahkan digeser.</h3S>
                                         </div>
                                     </div>';
-                                $panjang1 = sizeof($chat_data)-1;
+                                    $panjang1 = sizeof($chat_data)-1;
 
-                                for($x = 0; $x <= $panjang1; $x++){
-                                    $nama_peserta1 = get_nama($chat_data[$x]["id_pengirim"]);
+                                    for($x = 0; $x <= $panjang1; $x++){
+                                        $nama_peserta1 = get_nama($chat_data[$x]["id_pengirim"]);
 
-                                    if ($chat_data[$x]["id_chat"] == $sesi_id && ($chat_data[$x]["status"]==1 || $chat_data[$x]["status"]==4)){
-                                        echo '<div id="carousel-item-'.$chat_data[$x]["id_message"].'" class="carousel-item">
+                                        if ($chat_data[$x]["id_chat"] == $sesi_id && ($chat_data[$x]["status"]==1 || $chat_data[$x]["status"]==4)){
+                                            echo '<div id="carousel-item-'.$chat_data[$x]["id_message"].'" class="carousel-item">
                                             <div class="container px-5" >
                                                 <h3 class="card-title text-dark mx-3 px-5">
                                                 '.$chat_data[$x]["pesan"].'
@@ -116,31 +127,25 @@
                                                 </h3>
                                             </div>
                                         </div>';
+                                        }
                                     }
                                 }
-                            }
-                        ?>
+                                ?>
+                            </div>
+                            <button class="carousel-control-prev position-absolute start-0" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next position-absolute end-0" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
                     </div>
-                    <button class="carousel-control-prev position-absolute start-0" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next position-absolute end-0" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
                 </div>
             </div>
 
-            <!-- LAGI NGUTEKNGUTEK INI OKE-->
-            <div class="align-items-center align-content-center align-self-center text-end">
-                <p id="nama-sesi" class="card-title fw-bold mb-0"></p>
-                <p id="kode-sesi" class="mb-0 small text-uppercase"></p>
-                <p id="date-time" class="mb-0 small"></p>
-            </div>
-            <button id="btn-qrcode" class="ms-3 btn border border-1 p-2">
-                <div id="qrcode" ></div>
-            </button>
+
         </div>
 
 
@@ -170,9 +175,9 @@
             let encrypted_url = $('#uri_path').val()
 
             qrcode = new QRCode(document.getElementById("qrcode"), {
+                width: 100,
+                height: 100,
                 text: "http://localhost:8081/lumintu_qna/index_user.php?"+encrypted_url,
-                width: 40,
-                height: 40,
                 colorDark : "#000000",
                 colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.H
