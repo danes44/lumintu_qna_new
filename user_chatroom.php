@@ -1,10 +1,10 @@
 <?php
     session_start();
-    if(isset($_SESSION['is_login_user'])) {
-        require('database/ChatRooms.php');
-        include("crypt.php");
-        include("get_nama.php");
+    require('database/ChatRooms.php');
+    include("crypt.php");
+    include("get_nama.php");
 
+    if(isset($_SESSION['is_login_user'])) {
         $chat_object = new ChatRooms;
 
         $chat_data = $chat_object->get_all_chat_data();
@@ -23,7 +23,7 @@
     }
     else{
         echo $_SESSION['is_login_user'];
-//        echo "<script>document.location.href='index_user.php';</script>";
+        echo "<script>document.location.href='index_user.php';</script>";
     }
 
 
@@ -93,16 +93,14 @@
                 <div id="dropdownProfile" class="dropdown">
                     <button class="small border-0 rounded-pill ms-0 text-white bg-primary fw-bold"
                         style="width: 2rem; height:2rem;" data-bs-toggle="dropdown">
-                        <?php
-                            $huruf_depan = $nama_peserta[0];
-                            echo $huruf_depan;
-                        ?>
+                        <span class="avatar"><?php $huruf_depan = $nama_peserta[0];echo $huruf_depan;?></span>
                     </button>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <span class="small dropdown-item-text fw-bold">
-                                <?php echo $nama_peserta; ?>
-                            </span>
+                    <ul class="dropdown-menu dropdown-menu-end" style="min-width: max-content">
+                        <li class="d-flex justify-content-between">
+                            <span class="small dropdown-item-text align-self-center fw-bold"><?php echo $nama_peserta; ?></span>
+                            <button class="small btn-edit-profil border-0 bg-transparent">
+                                Edit
+                            </button>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -119,19 +117,18 @@
                     <button id="buttonOffCanvas" class="small border-0 rounded-pill ms-0 text-white bg-primary fw-bold"
                         style="width: 2.2rem; height:2.2rem;" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasProfile" aria-controls="offcanvasProfile">
-                        <?php
-                            echo $huruf_depan;
-                        ?>
+                        <span class="avatar"><?php echo $huruf_depan;?></span>
                     </button>
                     <div class="offcanvas offcanvas-bottom border-0 shadow rounded-top" data-bs-backdrop="true"
                         style="height: inherit;" tabindex="-1" id="offcanvasProfile"
                         aria-labelledby="offcanvasProfileLabel">
                         <div class="offcanvas-body">
-                            <span class="text-black fw-bold">
-                                <?php
-                                    echo $nama_peserta;
-                                ?>
-                            </span>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-black fw-bold"><?php echo $nama_peserta;?></span>
+                                <button class="small btn-edit-profil border-0 bg-transparent">
+                                    Edit
+                                </button>
+                            </div>
                             <hr class="text-black">
                             <a class="btn-logout text-decoration-none text-black justify-content-between" role="button" href="logoutUser.php?id_session=<?php echo $sesi_id[1];?>" onclick="return confirm('Apakah anda yakin ingin keluar ?')">
                                 <i class="bi bi-box-arrow-right  me-3"></i>
@@ -231,9 +228,9 @@
                             <div class="d-flex" data-bs-toggle="dropdown">
                                 <div id="as-peserta" class="">
                                     <button class="small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                        <?php echo $huruf_depan; ?>
+                                        <span class="avatar"><?php echo $huruf_depan; ?></span>
                                     </button>
-                                    <a id="nama-peserta-form" class="small align-self-center ms-2 text-truncate mb-0 dropdown-toggle text-decoration-none text-black"> <?php echo $nama_peserta; ?> </a>
+                                    <a id="nama-peserta-form-dropdown" class="small align-self-center ms-2 text-truncate mb-0 dropdown-toggle text-decoration-none text-black"><?php echo $nama_peserta; ?></a>
                                 </div>
                                 <div id="as-anonim" class="d-none">
                                     <button class="small border-0 rounded-pill ms-0 text-black bg-secondary bg-opacity-10 fw-bold" style="width: 2rem; height:2rem;" disabled>
@@ -248,7 +245,7 @@
                                 <li class="pb-2">
                                     <a id="btn-as-peserta" class="small dropdown-item justify-content-between">
                                         <button class="me-3 small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                            <?php echo $huruf_depan; ?>
+                                            <span class="avatar"><?php echo $huruf_depan; ?></span>
                                         </button>
                                         Tetap sebagai <b><?php echo $nama_peserta; ?></b>
                                     </a>
@@ -267,9 +264,9 @@
                         <div id="offcanvasAsContainer" class="me-auto ">
                             <div id="as-peserta-offcanvas" class="" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-as" aria-controls="offcanvas-as">
                                 <button id="btn-offcanvas-as" class="small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                    <?php echo $huruf_depan; ?>
+                                    <span class="avatar"><?php echo $huruf_depan; ?></span>
                                 </button>
-                                <a id="nama-peserta-form" class="small align-self-center ms-2 text-truncate mb-0 dropdown-toggle text-decoration-none text-black"> <?php echo $nama_peserta; ?> </a>
+                                <a id="nama-peserta-form-offcanvas" class="small align-self-center ms-2 text-truncate mb-0 dropdown-toggle text-decoration-none text-black"><?php echo $nama_peserta; ?></a>
                             </div>
                             <div id="as-anonim-offcanvas" class="d-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-as" aria-controls="offcanvas-as">
                                 <button class="small border-0 rounded-pill ms-0 text-black bg-secondary bg-opacity-10 fw-bold" style="width: 2rem; height:2rem;" disabled>
@@ -283,7 +280,7 @@
                                 <div class="offcanvas-body d-grid gap-2">
                                     <a id="btn-as-peserta-offcanvas" class="small text-decoration-none text-black">
                                         <button class="me-3 small border-0 rounded-pill ms-0 text-white bg-primary fw-bold " style="width: 2rem; height:2rem;" disabled>
-                                            <?php echo $huruf_depan; ?>
+                                            <span class="avatar"><?php echo $huruf_depan; ?></span>
                                         </button>
                                         Tetap sebagai <b><?php echo $nama_peserta; ?></b>
                                     </a>
@@ -340,6 +337,16 @@
 
         <!-- Toast -->
         <div id="container-toast" class="toast-container fixed-top ms-auto p-3" style="z-index: 2000">
+            <!--toast edit-->
+            <div id="toast-edit-profil" class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-check-circle me-3"></i>
+                        Berhasil mengubah profil.
+                    </div>
+                    <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
+                </div>
+            </div>
             <!--toast create-->
             <div id="toast-create" class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
                 <div class="d-flex">
@@ -382,6 +389,38 @@
             </div>
 
         </div>
+
+        <!-- Modal Edit Profil-->
+         <div class="modal fade" id="modal-edit-profil" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-edit-label" aria-hidden="true">
+             <div class="modal-dialog modal-dialog-centered">
+                 <div class="modal-content px-4">
+                     <div class="modal-header justify-content-center border-0">
+                         <h5 class="modal-title fw-bold" id="staticBackdropLabel">Edit Profil</h5>
+                     </div>
+                     <div class="modal-body mb-5">
+                         <div class="position-relative">
+                             <label for="input-nama-edit" class="form-label nama small">Nama</label>
+                             <input type="text" class="form-control form-control-sm" id="input-nama-edit" name="input-nama-edit" placeholder="John Doe" required/>
+                             <div class="invalid-tooltip end-0">Nama tidak valid</div>
+                         </div>
+                         <div class="mt-3 position-relative">
+                             <label for="input-email-edit" class="form-label email small">Email</label>
+                             <input type="email" class="form-control form-control-sm" id="input-email-edit" name="input-email-edit" placeholder="john@example.com" required/>
+                             <div class="invalid-tooltip end-0">Email tidak valid</div>
+                         </div>
+                     </div>
+                     <div class="modal-footer border-0">
+                         <button id="btn-save-profil" class="btn btn-save border-0 rounded-3 py-2 px-3 me-0 text-white fw-bold"  title="Simpan perubahan"  style="background-color: #FF6641;font-size: .875em">
+                             Simpan
+                         </button>
+
+                         <button id="btn-cancel" class="btn btn-cancel border border-1 rounded-3 py-2 px-3 me-0 text-muted fw-semibold"  title="Batalkan perubahan" style="font-size: .875em">
+                             Batal
+                         </button>
+                     </div>
+                 </div>
+             </div>
+         </div>
 
         <!-- Modal Edit-->
        <!-- <div class="modal fade" id="modal-edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-edit-label" aria-hidden="true">
@@ -440,7 +479,33 @@
         //    echo $url;  ?>//")
     </script>
 
-    <!-- pengiriman pertanyaan-->
+    <!-- fungsi ganti background letter avatar-->
+    <script>
+        let warna = ["#1abc9c", "#2ecc71", "#3498db", "#9b59b6", "#34495e", "#16a085", "#27ae60", "#2980b9", "#8e44ad", "#2c3e50", "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1", "#95a5a6", "#f39c12", "#d35400", "#c0392b", "#bdc3c7", "#7f8c8d"];
+
+        $(document).ready(function() {
+            $(".avatar").parent().removeClass('bg-primary');
+
+            if($('#nama-peserta-form-dropdown').text()==='Anonim'){
+                $('.avatar').html('<i class="bi bi-person"></i>')
+                $(".avatar").parent().css({"background-color": '#f0f1f2'});
+                $(".avatar").css({"color": '#1b1b1b'});
+            }
+
+            $(".avatar:contains('Q'), .avatar:contains('W'), .avatar:contains('N'), .avatar:contains('M')").parent().css({"background-color": '#1abc9c'});
+            $(".avatar:contains('E'), .avatar:contains('R')").parent().css({"background-color": '#2ecc71'});
+            $(".avatar:contains('T'), .avatar:contains('Y')").parent().css({"background-color": '#3498db'});
+            $(".avatar:contains('U'), .avatar:contains('I')").parent().css({"background-color": '#9b59b6'});
+            $(".avatar:contains('O'), .avatar:contains('P')").parent().css({"background-color": '#34495e'});
+            $(".avatar:contains('D'), .avatar:contains('F'), .avatar:contains('V'), .avatar:contains('B')").parent().css({"background-color": '#2980b9'});
+            $(".avatar:contains('G'), .avatar:contains('H')").parent().css({"background-color": '#8e44ad'});
+            $(".avatar:contains('J'), .avatar:contains('K')").parent().css({"background-color": '#f1c40f'});
+            $(".avatar:contains('L'), .avatar:contains('Z')").parent().css({"background-color": '#e67e22'});
+            $(".avatar:contains('X'), .avatar:contains('C'), .avatar:contains('A'), .avatar:contains('S')").parent().css({"background-color": '#e74c3c'});
+        })
+    </script>
+
+        <!-- pengiriman pertanyaan-->
     <script>
         function escapeHtml(text) {
             return text
@@ -455,7 +520,7 @@
         let i = <?php echo $i ?>;
         let user_id = $('#login_user_id').val();;
         // var conn = new WebSocket('ws://localhost:8082'); //dibuat dinamis
-        var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:17289'); //dibuat dinamis
+        var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19497 '); //dibuat dinamis
         conn.onopen = function (e) {
             console.log("Connection established!");
         };
@@ -534,9 +599,7 @@
         })
         // button cancel
         $("body").on("click", ".btn-cancel", function() {
-            $('#modal-delete').modal('hide');
-            $('#input-edit').val('')
-            $('#modal-edit').modal('hide');
+            $('#modal-edit-profil').modal('hide');
         })
 
         // button delete
@@ -621,6 +684,121 @@
             $('#as-peserta-offcanvas').addClass('d-none');
             console.log(user_id)
             $('#offcanvas-as').offcanvas('hide')
+        })
+
+        // fungsi edit
+        let id_user = $('#login_user_id').val()
+        if(id_user === '0'){
+            $(".btn-edit-profil").hide()
+            $("#dropdown-as").children().attr('data-bs-toggle',"")
+            $("#nama-peserta-form-dropdown").removeClass('dropdown-toggle')
+            $("#nama-peserta-form-dropdown").css({"cursor": 'auto'})
+
+            $("#as-peserta-offcanvas").attr('data-bs-toggle',"")
+            $("#nama-peserta-form-offcanvas").removeClass('dropdown-toggle')
+        }
+        else{
+            $(".btn-edit-profil").show()
+            $("#dropdown-as").children().attr('data-bs-toggle',"dropdown")
+            $("#as-peserta-offcanvas").attr('data-bs-toggle',"offcanvas")
+        }
+
+        $("body").on("click", ".btn-edit-profil", function() {
+            $('#modal-edit-profil').modal('show');
+            let nama = '';
+            let email = '';
+
+            $.ajax({
+                url: "./get_participant_by_id.php",
+                type: "POST",
+                cache: false,
+                dataType: 'json',
+                data:{
+                    id_participant: id_user
+                },
+                success: function(data){
+                    console.log(data)
+                    if(data.statusCode == 200) {
+                        nama = data.data.nama
+                        email = data.data.email
+
+                        $('#input-nama-edit').val(nama)
+                        $('#input-email-edit').val(email)
+
+                        // fungsi save edit
+                        $("body").on("click", "#btn-save-profil", function() {
+                            let nama_edited = $.trim($('#input-nama-edit').val())
+                            let email_edited = $.trim($('#input-email-edit').val())
+
+                            console.log(nama_edited + ' vs '+ nama)
+                            console.log(email_edited+ ' vs '+ email)
+
+                            if(nama === nama_edited && email === email_edited){
+                                $('#input-nama-edit').val('')
+                                $('#input-email-edit').val('')
+                                $('#modal-edit-profil').modal('hide');
+                            }
+                            else{
+                                $('#nama-peserta-form-dropdown').text(nama_edited);
+                                $('#nama-peserta-form-offcanvas').text(nama_edited);
+
+                                console.log("xhr.status");
+                                $.ajax({
+                                    url: "./update_participants.php",
+                                    type: "POST",
+                                    cache: false,
+                                    data:{
+                                        id_participant: id_user,
+                                        nama : nama_edited,
+                                        email: email_edited,
+                                    },
+                                    success: function(dataResult){
+                                        console.log(this.data)
+                                        var dataResult = JSON.parse(dataResult);
+                                        if(dataResult.statusCode===200){
+                                            console.log('Data updated successfully ! '+nama_edited+' apa');
+                                        }
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        console.log(xhr.status);
+                                        console.log(thrownError);
+                                    }
+                                });
+
+                                //show toast
+                                setTimeout(function () {
+                                    $('#toast-edit-profil').show()
+                                    $('#modal-edit-profil').modal('hide');
+                                },500)
+
+                                setTimeout(function () {
+                                    $('#toast-edit-profil').hide()
+                                },4000)
+
+                                // Proses Pengiriman Pesan
+                                // var id_sesi = $('#login_id_sesi').val();
+                                // var data = {
+                                //     asal: 'admin-terpilih',
+                                //     userId: id_user,
+                                //     mId: idm,
+                                //     msg: cust_message,
+                                //     sesiId: id_sesi,
+                                //     date: jam_pesan_hidden,
+                                // };
+                                // conn.send(JSON.stringify(data));
+
+                            }
+                        })
+                    }
+                    else if(data.statusCode == 201){
+                        console.log(data)
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr.status);
+                    console.log(thrownError);
+                }
+            });
         })
 
         // fungsi edit

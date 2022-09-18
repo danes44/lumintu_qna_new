@@ -49,7 +49,10 @@
                     <form id="form-unique-code" action="" method="post" class="needs-validation" novalidate>
                         <div class="mt-3 position-relative">
                             <label for="input-kode-sesi" class="form-label kode-sesi ">Kode Sesi</label>
-                            <input type="text" class="form-control" id="input-kode-sesi" name="input-kode-sesi" placeholder="c3o23s" maxlength="6" required/>
+                            <div class="position-relative">
+                                <span class="position-absolute top-50 start-0 translate-middle-y ms-3" id="hashtag">#</span>
+                                <input type="text" class="form-control text-uppercase" id="input-kode-sesi" name="input-kode-sesi" placeholder="c3o23s" maxlength="6" required style="padding-left: 2.2rem"/>
+                            </div>
                             <div class="invalid-tooltip end-0">Kode sesi tidak valid</div>
                         </div>
                         <div class="mt-5 mb-3">
@@ -95,16 +98,27 @@
                                 <span class="fw-normal small ms-2"> Tunggu...</span>
                             </button>
 
-                            <p class="mb-0 mt-1 small">Atau lanjutkan <a href="./user_chatroom.php?drWK59I5C/u3ajsLBoMX82o1VAihVGwZ3haiaMAC4BI=" class="text-decoration-none fw-bold">sebagai anonim</a></p>
+                            <p class="mb-0 mt-1 small">Atau lanjutkan <a id="btn-anonim" href="#" class="text-decoration-none fw-bold">sebagai anonim</a></p>
                         </div>
                     </form>
 
                 </div>
             </div>
+
         </div>
 
         <!-- Toast -->
         <div id="container-toast" class="toast-container bottom-0 end-0 p-3">
+            <!--toast berhasil login-->
+            <div id="toast-success-login" class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-check-circle me-3"></i>
+                        Berhasil masuk ke sesi Q&A.
+                    </div>
+                    <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
+                </div>
+            </div>
             <!--toast berhasil sesi-->
             <div id="toast-success" class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
                 <div class="d-flex">
@@ -290,10 +304,10 @@
                                 $("#btn-login").show();
                             }, 2000)
                             setTimeout(function () {
-                                $('#toast-success').show()
+                                $('#toast-success-login').show()
                             }, 2500)
                             setTimeout(function () {
-                                $('#toast-success').hide()
+                                $('#toast-success-login').hide()
                                 // window.location.reload();
                                 let location = 'user_chatroom.php?'+data.hasilHash
                                 document.location.href=location
@@ -327,6 +341,73 @@
                         setTimeout(function () {
                             $('#toast-failed').show()
                         }, 2500)
+                        setTimeout(function () {
+                            $('#toast-failed').hide()
+                            // window.location.reload();
+                        }, 4500)
+                    },
+                })
+            })
+
+            // button anonim
+            $("body").on("click", '#btn-anonim', function(e) {
+                $.ajax({
+                    url: './login_user.php',
+                    type: 'POST',
+                    cache: false,
+                    dataType: 'json',
+                    data: {
+                        id_sesi: id_sesi,
+                        input_nama: 'Anonim',
+                        input_email: 'Anonim'
+                    },
+                    success: function (data, textStatus, xhr) {
+                        console.log(data)
+                        if(data.statusCode == 200) {
+                            // $("#timer-login").show();
+                            // $("#btn-login").hide();
+                            // setTimeout(function () {
+                            //     $("#timer-login").hide();
+                            //     $("#btn-login").show();
+                            // }, 2000)
+                            // setTimeout(function () {
+                            //     $('#toast-success-login').show()
+                            // }, 2500)
+                            // setTimeout(function () {
+                            //     $('#toast-success-login').hide()
+                            //     // window.location.reload();
+                                let location = 'user_chatroom.php?'+data.hasilHash
+                                document.location.href=location
+                            // }, 4500)
+                        }
+                        else if(data.statusCode == 201){
+                            // $("#timer-login").show();
+                            // $("#btn-login").hide();
+                            // setTimeout(function () {
+                            //     $("#timer-login").hide();
+                            //     $("#btn-login").show();
+                            // }, 2000)
+                            // setTimeout(function () {
+                                $('#toast-failed').show()
+                            // }, 2500)
+                            setTimeout(function () {
+                                $('#toast-failed').hide()
+                                // window.location.reload();
+                            }, 4500)
+                        }
+                    },
+                    error: function (textStatus, xhr, errorThrown) {
+                        console.log(errorThrown)
+
+                        // $("#timer-login").show();
+                        // $("#btn-login").hide();
+                        // setTimeout(function () {
+                        //     $("#timer-login").hide();
+                        //     $("#btn-login").show();
+                        // }, 2000)
+                        // setTimeout(function () {
+                            $('#toast-failed').show()
+                        // }, 2500)
                         setTimeout(function () {
                             $('#toast-failed').hide()
                             // window.location.reload();

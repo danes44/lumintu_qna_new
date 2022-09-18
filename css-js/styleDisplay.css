@@ -82,6 +82,11 @@ body{
 .carousel-control-next, .carousel-control-prev {
     width: inherit;
 }
+
+#qrcode>img{
+    margin-right: 0!important;
+}
+
  /* `sm` applies to x-small devices (portrait phones, less than 576px) */
 @media (max-width: 575.98px) { 
     .chat-bubble.float-end.text-white.position-relative{
@@ -91,6 +96,10 @@ body{
     .container-lg.px-sm-0.px-md-4.py-md-4.pt-lg-4.pt-xl-4.pt-xxl-4{
         padding-right: 0!important;
         padding-left: 0!important;
+    }
+
+    #qrcode>img{
+        width: 100px;
     }
 
     #card-content-full{
@@ -107,6 +116,10 @@ body{
         min-width: 20% !important;
     }
 
+    #qrcode>img{
+        width: 100px;
+    }
+
     #card-content-full{
         display: none;
     }
@@ -116,7 +129,10 @@ body{
 }
 
  /* Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) {  
+@media (min-width: 768px) {
+    #qrcode>img{
+        width: 100px;
+    }
     #card-content-full{
         display: flex;
     }
@@ -126,7 +142,10 @@ body{
 }
 
  /* Large devices (desktops, 992px and up) */
-@media (min-width: 992px) { 
+@media (min-width: 992px) {
+    #qrcode>img{
+        width: 160px;
+    }
     #card-content-full{
         display: flex;
     }
@@ -136,7 +155,10 @@ body{
 }
 
  /* X-Large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {  
+@media (min-width: 1200px) {
+    #qrcode>img{
+        width: 200px;
+    }
     #card-content-full{
         display: flex;
     }
@@ -146,7 +168,10 @@ body{
 }
 
  /* XX-Large devices (larger desktops, 1400px and up) */
-@media (min-width: 1400px) { 
+@media (min-width: 1400px) {
+    #qrcode>img{
+        width: 250px;
+    }
     #card-content-full{
         display: flex;
     }

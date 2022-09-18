@@ -265,8 +265,8 @@
                                             <div class="card-footer bg-transparent">
                                                 <div class="d-flex justify-content-between align-items-center mt-3 ">
                                                     <div class="d-flex align-items-center ">
-                                                        <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                                            '.$huruf_depan.'
+                                                        <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                                            <span>'.$huruf_depan.'</span>
                                                         </button>
                                                         <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
                                                             <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0">'.$nama_peserta.' </p>
@@ -356,8 +356,8 @@
                                             <div class="card-footer bg-transparent">
                                                 <div class="d-flex justify-content-between align-items-center mt-3 ">
                                                     <div class="d-flex align-items-center ">
-                                                        <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                                            '.$huruf_depan.'
+                                                        <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                                            <span>'.$huruf_depan.'</span>
                                                         </button>
                                                         <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
                                                             <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0">'.$nama_peserta.' </p>
@@ -483,8 +483,8 @@
                                         <div class="card-footer bg-transparent">
                                             <div class="d-flex justify-content-between align-items-center mt-3 ">
                                                 <div class="d-flex align-items-center ">
-                                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                                        '.$huruf_depan.'
+                                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                                        <span>'.$huruf_depan.'</span>
                                                     </button>
                                                     <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
                                                         <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0"> '.$nama_peserta.' </p>
@@ -552,8 +552,8 @@
                                         <div class="card-footer bg-transparent">
                                             <div class="d-flex justify-content-between align-items-center mt-3 ">
                                                 <div class="d-flex align-items-center ">
-                                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                                        '.$huruf_depan.'
+                                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                                        <span>'.$huruf_depan.'</span>
                                                     </button>
                                                     <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
                                                         <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0"> '.$nama_peserta.' </p>
@@ -606,81 +606,40 @@
             // 99 = dihapus
         </script>
 
+        <!-- fungsi ganti background letter avatar-->
+        <script>
+            let warna = ["#1abc9c", "#2ecc71", "#3498db", "#9b59b6", "#34495e", "#16a085", "#27ae60", "#2980b9", "#8e44ad", "#2c3e50", "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1", "#95a5a6", "#f39c12", "#d35400", "#c0392b", "#bdc3c7", "#7f8c8d"];
+
+            function ubahWarnaAvatar() {
+                $(".avatar").removeClass('bg-primary');
+
+                $(".avatar").siblings().children('.nama:contains("Anonim")').parent().siblings().children().html('<i class="bi bi-person"></i>')
+                $(".avatar").siblings().children('.nama:contains("Anonim")').parent().siblings().css({"background-color": '#f0f1f2'});
+                $(".avatar").siblings().children('.nama:contains("Anonim")').parent().siblings().children().css({"color": '#1b1b1b'});
+
+
+                $(".avatar>span:contains('Q'), .avatar>span:contains('W'), .avatar>span:contains('N'), .avatar>span:contains('M')").parent().css({"background-color": '#1abc9c'});
+                $(".avatar > span:contains('E'), .avatar > span:contains('R')").parent().css({"background-color": '#2ecc71'});
+                $(".avatar > span:contains('T'), .avatar > span:contains('Y')").parent().css({"background-color": '#3498db'});
+                $(".avatar>span:contains('U'), .avatar>span:contains('I')").parent().css({"background-color": '#9b59b6'});
+                $(".avatar > span:contains('O'), .avatar > span:contains('P')").parent().css({"background-color": '#34495e'});
+                $(".avatar>span:contains('D'), .avatar>span:contains('F'), .avatar > span:contains('V'), .avatar > span:contains('B')").parent().css({"background-color": '#2980b9'});
+                $(".avatar > span:contains('G'), .avatar > span:contains('H')").parent().css({"background-color": '#8e44ad'});
+                $(".avatar > span:contains('J'), .avatar > span:contains('K')").parent().css({"background-color": '#f1c40f'});
+                $(".avatar>span:contains('L'), .avatar>span:contains('Z')").parent().css({"background-color": '#e67e22'});
+                $(".avatar > span:contains('X'), .avatar > span:contains('C'), .avatar > span:contains('A'), .avatar > span:contains('S')").parent().css({"background-color": '#e74c3c'});
+            }
+            $(document).ready(function() {
+                ubahWarnaAvatar();
+            })
+        </script>
+
         <!-- fungsi close toast-->
         <script>
             $("body").on("click", '.btn-close-toast', function() {
                 let element = $(this).parent().parent().attr('id')
                 $('#'+element).hide()
             })
-        </script>
-
-        <!-- element toast -->
-        <script>
-            const toast_baru = `
-                <div class="toast align-items-center text-primary border-1 border-primary" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e6f0ff">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <i class="bi bi-bell me-3"></i>
-                            Ada pertanyaan baru.
-                        </div>
-                        <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
-                    </div>
-                </div>`
-
-            const toast_accept = `
-                <div class="toast align-items-center text-primary border-1 border-primary" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e6f0ff">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <i class="bi bi-bell me-3"></i>
-                            Pertanyaan lolos untuk presentasi.
-                        </div>
-                        <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
-                    </div>
-                </div>`
-
-            const toast_decline = `
-                <div class="toast align-items-center text-primary border-1 border-primary" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e6f0ff">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <i class="bi bi-bell me-3"></i>
-                            Pertanyaan ditolak untuk presentasi.
-                        </div>
-                        <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
-                    </div>
-                </div>`
-
-            const toast_revert = `
-                <div class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <i class="bi bi-check-circle me-3"></i>
-                            Pertanyaan berhasil dikembalikan.
-                        </div>
-                        <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
-                    </div>
-                </div>`
-
-            const toast_answer = `
-                 <div class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <i class="bi bi-check-circle me-3"></i>
-                            Berhasil ditandai sebagai "terjawab".
-                        </div>
-                        <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
-                    </div>
-                </div>`
-
-            const toast_love = `
-                <div class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <i class="bi bi-check-circle me-3"></i>
-                            Berhasil ditandai sebagai "favorit".
-                        </div>
-                        <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
-                    </div>
-                </div>`
         </script>
 
         <!-- function olah tanggal -->
@@ -883,7 +842,7 @@
             // Koneksi Websocket
             var port = '8082'
             // var conn = new WebSocket('ws://localhost:'+port);
-            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:17289');
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19497');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
@@ -938,7 +897,9 @@
                                         <div class="card-footer bg-transparent">
                                             <div class="d-flex justify-content-between align-items-center mt-3 ">
                                                 <div class="d-flex align-items-center ">
-                                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>${nama_depan}</button>
+                                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                                        <span>${nama_depan}</span>
+                                                    </button>
                                                     <div id="container-nama-waktu-${data1.mId}" class="small align-self-center ms-2">
                                                         <p id="nama-peserta-form-${data1.userId}" class="nama text-truncate fw-bold mb-0">${nama}</p>
                                                         <p id="jam-pesan-i${i}" class="jam text-black-50 small mb-0 ">${moment(data1.date).fromNow()}</p>
@@ -1185,8 +1146,8 @@
                         <div class="card-footer bg-transparent">
                             <div class="d-flex justify-content-between align-items-center mt-3 ">
                                 <div class="d-flex align-items-center ">
-                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                        ${cust_nama_depan}
+                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                        <span>${cust_nama_depan}</span>
                                     </button>
                                     <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
                                         <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0"> ${cust_name} </p>
@@ -1215,6 +1176,8 @@
 
                 $("#container-pesan-terpilih").append(elements);
                 console.log("udah pindah"+$('#container-pesan-'+idm).parent().attr('id'))
+
+                ubahWarnaAvatar();
 
                 jam_j[jam_j.length] = jam_pesan_hidden
 
@@ -1352,8 +1315,8 @@
                         <div class="card-footer bg-transparent">
                             <div class="d-flex justify-content-between align-items-center mt-3 ">
                                 <div class="d-flex align-items-center ">
-                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                        ${cust_nama_depan}
+                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                        <span>${cust_nama_depan}</span>
                                     </button>
                                     <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
                                         <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0"> ${cust_name} </p>
@@ -1377,6 +1340,8 @@
 
                 console.log("udah pindah")
                 $("#container-pesan-ditolak-terjawab").append(elements);
+
+                ubahWarnaAvatar();
 
                 jam_k[jam_k.length] = jam_pesan_hidden
 
@@ -1492,8 +1457,8 @@
                         <div class="card-footer bg-transparent">
                             <div class="d-flex justify-content-between align-items-center mt-3 ">
                                 <div class="d-flex align-items-center ">
-                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                        ${cust_nama_depan}
+                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                        <span>${cust_nama_depan}</span>
                                     </button>
                                     <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
                                         <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0"> ${cust_name} </p>
@@ -1517,6 +1482,8 @@
 
                 console.log("udah pindah")
                 $("#container-pesan-ditolak-terjawab").append(elements);
+
+                ubahWarnaAvatar();
 
                 jam_k[jam_k.length] = jam_pesan_hidden
 
@@ -1652,7 +1619,9 @@
                         <div class="card-footer bg-transparent">
                             <div class="d-flex justify-content-between align-items-center mt-3 ">
                                 <div class="d-flex align-items-center ">
-                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>${cust_nama_depan}</button>
+                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                        <span>${cust_nama_depan}</span>
+                                    </button>
                                     <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
                                         <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
                                         <p id="jam-pesan-i${i}" class="jam text-black-50 small mb-0 ">${jam_pesan}</p>
@@ -1674,6 +1643,8 @@
 
                 console.log("udah pindah")
                 $("#container-pesan").append(elements);
+
+                ubahWarnaAvatar();
 
                 jam_i[jam_i.length] = jam_pesan_hidden
 
@@ -1793,7 +1764,9 @@
                         <div class="card-footer bg-transparent">
                             <div class="d-flex justify-content-between align-items-center mt-3 ">
                                 <div class="d-flex align-items-center ">
-                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>${cust_nama_depan}</button>
+                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                        <span>${cust_nama_depan}</span>
+                                    </button>
                                     <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
                                         <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
                                         <p id="jam-pesan-i${i}" class="jam text-black-50 small mb-0 ">${jam_pesan}</p>
@@ -1825,8 +1798,8 @@
                         <div class="card-footer bg-transparent">
                             <div class="d-flex justify-content-between align-items-center mt-3 ">
                                 <div class="d-flex align-items-center ">
-                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                        ${cust_nama_depan}
+                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                        <span>${cust_nama_depan}</span>
                                     </button>
                                     <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
                                         <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0"> ${cust_name} </p>
@@ -1872,6 +1845,8 @@
                     });
 
                     $("#container-pesan").append(elements);
+
+                    ubahWarnaAvatar();
                     jam_i[jam_i.length] = jam_pesan_hidden
 
                     setTimeout(function() {
@@ -1905,6 +1880,7 @@
                     });
 
                     $("#container-pesan-terpilih").append(element_terjawab);
+                    ubahWarnaAvatar();
                     jam_j[jam_j.length] = jam_pesan_hidden
 
                     setTimeout(function() {
@@ -2012,7 +1988,9 @@
                         <div class="card-footer bg-transparent">
                             <div class="d-flex justify-content-between align-items-center mt-3 ">
                                 <div class="d-flex align-items-center ">
-                                    <button class=" small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>${cust_nama_depan}</button>
+                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                        <span>${cust_nama_depan}</span>
+                                    </button>
                                     <div id="container-nama-waktu-'${idm}" class="small align-self-center ms-2">
                                         <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
                                         <p id="jam-pesan-l${l}" class="jam text-black-50 small mb-0 ">${jam_pesan}</p>
@@ -2070,6 +2048,9 @@
                     $('#btn-love-' + id_j[2]).append(element_icon_fill)
 
                     $("#container-pesan-favorit").append(element);
+
+                    ubahWarnaAvatar();
+
                     jam_l[jam_l.length] = jam_pesan_hidden
                     //show toast
                     setTimeout(function () {

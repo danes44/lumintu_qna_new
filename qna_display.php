@@ -54,7 +54,6 @@
                 </div>
                 <div class="align-items-center align-content-center align-self-center text-end">
                     <p id="nama-sesi" class="card-title fw-bold mb-0"></p>
-                    <p id="kode-sesi" class="mb-0 small text-uppercase"></p>
                     <p id="date-time" class="mb-0 small"></p>
                 </div>
                 <!--<button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
@@ -62,7 +61,7 @@
             </div>
 
             <!-- Modal QR COde-->
-            <div class="modal fade" id="modal-qrcode" data-bs-keyboard="true" tabindex="-1" aria-labelledby="modal-create-label" aria-hidden="true">
+            <!--<div class="modal fade" id="modal-qrcode" data-bs-keyboard="true" tabindex="-1" aria-labelledby="modal-create-label" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered justify-content-center">
                     <div class="modal-content py-2 px-4" style="width: auto">
                         <div class="modal-header border-0 pb-0">
@@ -79,15 +78,19 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
 
-            <div class="row">
-                <div class="col-3">
-                    <button id="btn-qrcode" class="btn border border-1 ">
+            <div class="row mt-5">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
+                    <button id="btn-qrcode" class="bg-white rounded-3 pe-none border border-1 " disabled>
                         <div id="qrcode" class="p-3"></div>
                     </button>
+                    <p class="mb-0">
+                        Scan untuk bertanya
+                        <b>atau</b> masukkan kode <span id="kode-sesi-qrcode" class="mb-0 text-uppercase fw-bold"></span>
+                    </p>
                 </div>
-                <div class="col-9">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9">
                     <div class="card text white  border rounded-3 p-5" style="background-color: white; width: 100%;">
                         <div id="carouselExampleControls" class="carousel carousel-dark slide h-100" data-bs-interval="false" >
                             <div class="carousel-inner" id="qna_display">
@@ -145,7 +148,7 @@
                 </div>
             </div>
 
-
+            <p class="mb-5 position-absolute bottom-0 start-50 translate-middle-x small">Made with ❤ from <b>Yogyakarta</b> ⓒ 2022</p>
         </div>
 
 
@@ -175,21 +178,22 @@
             let encrypted_url = $('#uri_path').val()
 
             qrcode = new QRCode(document.getElementById("qrcode"), {
-                width: 100,
-                height: 100,
-                text: "http://localhost:8081/lumintu_qna/index_user.php?"+encrypted_url,
+                width: 2500,
+                height: 2500,
+                // text: "http://localhost:8081/lumintu_qna/index_user.php?"+encrypted_url,
+                text: "http://bb9d-117-103-174-252.ap.ngrok.io/lumintu_qna/index_user.php?"+encrypted_url,
                 colorDark : "#000000",
                 colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.H
             });
-            qrcode = new QRCode(document.getElementById("qrcode2"), {
-                text: "http://localhost:8081/lumintu_qna/index_user.php?"+encrypted_url,
-                width: 400,
-                height: 400,
-                colorDark : "#000000",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H
-            });
+            // qrcode = new QRCode(document.getElementById("qrcode2"), {
+            //     text: "http://localhost:8081/lumintu_qna/index_user.php?"+encrypted_url,
+            //     width: 400,
+            //     height: 400,
+            //     colorDark : "#000000",
+            //     colorLight : "#ffffff",
+            //     correctLevel : QRCode.CorrectLevel.H
+            // });
 
             // button tutup
             $("body").on("click", "#btn-qrcode", function() {
@@ -268,6 +272,7 @@
                             $('#date-time').text(day + ", " + date + ' | '+ time_begin + " - " + time_end + " WIB")
                             $('p#kode-sesi').text("# "+data[i].unique_code)
                             $('#kode-sesi-modal').text("# "+data[i].unique_code)
+                            $('#kode-sesi-qrcode').text("# "+data[i].unique_code)
 
                         }
                     }
@@ -292,7 +297,7 @@
             $(document).ready(function(){
                 var port = '8082'
                 // var conn = new WebSocket('ws://localhost:'+port);
-                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:17289');
+                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19497');
                 conn.onopen = function(e) {
                     console.log("Connection established!");
                 };
