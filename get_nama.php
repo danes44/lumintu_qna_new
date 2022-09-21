@@ -39,4 +39,26 @@ function get_nama($id_participant){
     }
     mysqli_close($conn);
 }
+
+function get_email($id_participant){
+    include 'database/connection.php';
+    $sql = "SELECT * FROM participants WHERE id_participant = '$id_participant'";
+
+    if (mysqli_query($conn, $sql)) {
+        $array_values = array();
+        // output data of each row
+        $result = $conn->query($sql);
+        $row = mysqli_fetch_assoc($result);
+
+        if(empty($row["nama"])){
+            return "Kamu";
+        } else {
+            return $row["email"];
+        }
+    }
+    else {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    mysqli_close($conn);
+}
 ?>

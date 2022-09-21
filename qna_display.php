@@ -57,30 +57,12 @@
                     <p id="date-time" class="mb-0 small"></p>
                 </div>
                 <!--<button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
-                <button id="btn-test" class="btn btn-primary" data-bs-target="#carouselExampleControls" data-bs-slide="next">test</button>-->
+                <button id="btn-test" class="btn btn-primary" data-bs-target="#carousel-pertanyaan" data-bs-slide="next">test</button>-->
             </div>
-
-            <!-- Modal QR COde-->
-            <!--<div class="modal fade" id="modal-qrcode" data-bs-keyboard="true" tabindex="-1" aria-labelledby="modal-create-label" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered justify-content-center">
-                    <div class="modal-content py-2 px-4" style="width: auto">
-                        <div class="modal-header border-0 pb-0">
-                            <h6 class="modal-title fw-bold " id="staticBackdropLabel" >QR Code Sesi <span id="kode-sesi-modal" class="text-uppercase"></span>
-                            </h6>
-                        </div>
-                        <div class="modal-body pb-0">
-                            <div id="qrcode2" ></div>
-                        </div>
-                        <div class="modal-footer border-0 pt-3">
-                            <button id="btn-tutup" class="btn btn-cancel border border-1 rounded-3 py-2 px-3 me-0 text-muted fw-semibold float-end"  title="Tutup gambar" style="font-size: .875em">
-                                Tutup
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
-
-            <div class="row mt-5">
+            <div class="d-flex mt-3 ms-auto justify-content-end">
+                <span id="jumlah-pertanyaan" class=" mb-3 small"><b>20/30</b> pertanyaan</span>
+            </div>
+            <div class="row ">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
                     <button id="btn-qrcode" class="bg-white rounded-3 pe-none border border-1 " disabled>
                         <div id="qrcode" class="p-3"></div>
@@ -92,10 +74,10 @@
                 </div>
                 <div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-9">
                     <div class="card text white  border rounded-3 p-5" style="background-color: white; width: 100%;">
-                        <div id="carouselExampleControls" class="carousel carousel-dark slide h-100" data-bs-interval="false" >
+                        <div id="carousel-pertanyaan" class="carousel carousel-dark slide h-100" data-bs-interval="false" >
                             <div class="carousel-inner" id="qna_display">
                                 <?php
-                                if ((cek_qchoosen($sesi_id)) == "2"){
+                                if ((cek_qchoosen($sesi_id)) != $sesi_id){
                                     echo '<div class="carousel-item active">
                                     <div class="container  px-5" >
                                     <h3 class="card-title text-dark mx-3 px-5">
@@ -106,13 +88,13 @@
                                 </div>
                                 </div>';
                                 } else {
-                                    echo '<div class="carousel-item active">
+                                    /*echo '<div class="carousel-item active">
                                         <div class="container  px-5" >
                                             <h3 class="card-title text-dark mx-3 px-5">Pertanyaan pertama ada di samping.</h3>
                                             <hr class=" mt-5 mx-5 ">
                                             <h3 class=" mx-3 px-5 fw-bold">Silahkan digeser.</h3S>
                                         </div>
-                                    </div>';
+                                    </div>';*/
                                     $panjang1 = sizeof($chat_data)-1;
 
                                     for($x = 0; $x <= $panjang1; $x++){
@@ -125,7 +107,7 @@
                                                 '.$chat_data[$x]["pesan"].'
                                                 </h3>
                                                 <hr class=" mt-5 mx-5 ">
-                                                <h3 id="nama-cust-'.$chat_data[$x]["id_message"].'" class=" mx-3 px-5 fw-bold">
+                                                <h3 id="nama-cust-'.$chat_data[$x]["id_message"].'" class="nama-'.$chat_data[$x]["id_pengirim"].' mx-3 px-5 fw-bold">
                                                     '.$nama_peserta1.'
                                                 </h3>
                                             </div>
@@ -135,11 +117,11 @@
                                 }
                                 ?>
                             </div>
-                            <button class="carousel-control-prev position-absolute start-0" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                            <button class="carousel-control-prev position-absolute start-0" type="button" data-bs-target="#carousel-pertanyaan" data-bs-slide="prev" onclick="counter()">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
                             </button>
-                            <button class="carousel-control-next position-absolute end-0" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                            <button class="carousel-control-next position-absolute end-0" type="button" data-bs-target="#carousel-pertanyaan" data-bs-slide="next" onclick="counter()">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
@@ -162,6 +144,7 @@
         <script>
             moment.locale('id');
             console.log(moment(Date.now()).fromNow());
+            $('.carousel-inner').children().first().addClass('active')
             // $('#btn-test').click(function () {
             //     let active_class = $('#qna_display').find('.active').attr('id')
             //     console.log($('#carousel-item-1156').index())
@@ -169,7 +152,7 @@
             //         <span id="badge-baru" class="small ms-2 badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">
             //             Terbaru
             //         </span>`)
-            //     // $('#carouselExampleControls').carousel('next')
+            //     // $('#carousel-pertanyaan').carousel('next')
             // })
         </script>
 
@@ -297,7 +280,7 @@
             $(document).ready(function(){
                 var port = '8082'
                 // var conn = new WebSocket('ws://localhost:'+port);
-                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19497');
+                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19697');
                 conn.onopen = function(e) {
                     console.log("Connection established!");
                 };
@@ -330,40 +313,38 @@
                                             <div class="container  px-5" >
                                                 <h3 class="card-title text-dark mx-3 px-5">${escapeHtml(data1.msg)}</h3>
                                                 <hr class=" mt-5 mx-5 ">
-                                                <h3 id="nama-cust-${data1.mId}" class=" mx-3 px-5 fw-bold">${nama}</h3S>
+                                                <h3 id="nama-cust-${data1.mId}" class="nama-${data1.userId} mx-3 px-5 fw-bold">${nama}</h3S>
                                             </div>
                                         </div>`
                                 }
 
                                 $('#qna_display').append(list_data);
+
                             },
                             complete: function (data) {
-                                // $('#carouselExampleControls').carousel($('#carousel-item-'+data1.mId).index())
+                                // $('#carousel-pertanyaan').carousel($('#carousel-item-'+data1.mId).index())
 
                                 setTimeout(function () {
-                                    $('#carousel-item-'+data1.mId).parent().parent().parent().css({
-                                        "background-color" : 'rgba(25,135,84,0.1)',
-                                    });
                                     $('#nama-cust-'+data1.mId).append(`<span id="badge-baru" class="small ms-2 badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Terbaru</span>`)
                                 },500)
-
-                                setTimeout(function () {
-                                    $('#carousel-item-'+data1.mId).parent().parent().parent().css({
-                                        "background-color" : 'white',
-                                    });
-                                    console.log("ganti warna")
-                                },1500)
+                                counter()
                             }
                         })
                     }
-                    else if(data1.asal === 'admin-terpilih')
+                    else if(data1.asal === 'admin-terpilih' || data1.asal === 'user-delete')
                     {
                         let id_active = 'carousel-item-'+data1.mId
                         console.log(id_active)
-                        if($('#carouselExampleControls').find('.active').attr('id') === id_active) {
-                            $('#carouselExampleControls').carousel('next')
+                        if($('#carousel-pertanyaan').find('.active').attr('id') === id_active) {
+                            $('#carousel-pertanyaan').carousel('next')
                         }
                         $('#carousel-item-' + data1.mId).remove();
+                        counter()
+                    }
+                    else if(data1.asal === 'user-profil'){
+                        console.log(data1.userId + ' '+ data1.namaUser)
+                        $(".nama-"+data1.userId).text(data1.namaUser)
+                        counter()
                     }
                 };
 
@@ -371,6 +352,18 @@
 
         </script>
 
+        <!--    counter jumlah pertanyaan-->
+        <script>
+            $('#carousel-pertanyaan').on('slid.bs.carousel', function () {
+                counter()
+            })
+            function counter() {
+                let current = $('.carousel-item.active').index() + 1
+                let total = $(".carousel-item").length
+                $('#jumlah-pertanyaan').html(`<b>${current} dari ${total}</b> pertanyaan`)
+            }
+            counter()
+        </script>
 
     </body>
 </html>

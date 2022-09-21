@@ -517,6 +517,14 @@
                 $('#input-selesai-edit').val(selesai)
                 $('#input-kode-sesi-edit').val(kode)
 
+                $("#input-nama-event-edit, #input-mulai-edit, #input-selesai-edit, #input-kode-sesi-edit").on('keyup', function(e) {
+                    if($('#input-nama-event-edit').val() !== '' && $('#input-mulai-edit').val() !== '' && $('#input-selesai-edit').val() !== '' && $('#input-kode-sesi-edit').val() !== ''){
+                        $('#btn-save-edit').removeAttr('disabled')
+                    }
+                    else{
+                        $('#btn-save-edit').attr('disabled','true')
+                    }
+                });
                 // handling submit perubahan
                 $("form#form-sesi-edit").on('submit', function (e) {
                     e.preventDefault(); // avoid to execute the actual submit of the form.

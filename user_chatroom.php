@@ -17,6 +17,7 @@
         //    $ticket_id = explode("=",$arrayHasil[1]);
         $sesi_id = explode("=", $arrayHasil[1]);
         $nama_peserta = get_nama($peserta_id[1]);
+        $email = get_email($peserta_id[1]);
         $i_x_waktu = array();
 //        var_dump($hasilHash);
 
@@ -96,11 +97,14 @@
                         <span class="avatar"><?php $huruf_depan = $nama_peserta[0];echo $huruf_depan;?></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" style="min-width: max-content">
-                        <li class="d-flex justify-content-between">
-                            <span class="small dropdown-item-text align-self-center fw-bold"><?php echo $nama_peserta; ?></span>
-                            <button class="small btn-edit-profil border-0 bg-transparent">
+                        <li class="d-flex justify-content-between ">
+                            <span class="nama-user small dropdown-item-text align-self-center fw-bold"><?php echo $nama_peserta; ?></span>
+                            <a href="#" class="small btn-edit-profil align-self-center border-0 bg-transparent text-decoration-none me-3">
                                 Edit
-                            </button>
+                            </a>
+                        </li>
+                        <li>
+                            <span class="email-user dropdown-item-text text-muted small pt-0"><?php echo $email;?></span>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -124,11 +128,12 @@
                         aria-labelledby="offcanvasProfileLabel">
                         <div class="offcanvas-body">
                             <div class="d-flex justify-content-between">
-                                <span class="text-black fw-bold"><?php echo $nama_peserta;?></span>
+                                <span class="nama-user text-black fw-bold"><?php echo $nama_peserta;?></span>
                                 <button class="small btn-edit-profil border-0 bg-transparent">
                                     Edit
                                 </button>
                             </div>
+                            <span class="email-user text-black small"><?php echo $email;?></span>
                             <hr class="text-black">
                             <a class="btn-logout text-decoration-none text-black justify-content-between" role="button" href="logoutUser.php?id_session=<?php echo $sesi_id[1];?>" onclick="return confirm('Apakah anda yakin ingin keluar ?')">
                                 <i class="bi bi-box-arrow-right  me-3"></i>
@@ -230,7 +235,7 @@
                                     <button class="small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
                                         <span class="avatar"><?php echo $huruf_depan; ?></span>
                                     </button>
-                                    <a id="nama-peserta-form-dropdown" class="small align-self-center ms-2 text-truncate mb-0 dropdown-toggle text-decoration-none text-black"><?php echo $nama_peserta; ?></a>
+                                    <a id="nama-peserta-form-dropdown" class="small nama-user align-self-center ms-2 text-truncate mb-0 dropdown-toggle text-decoration-none text-black"><?php echo $nama_peserta; ?></a>
                                 </div>
                                 <div id="as-anonim" class="d-none">
                                     <button class="small border-0 rounded-pill ms-0 text-black bg-secondary bg-opacity-10 fw-bold" style="width: 2rem; height:2rem;" disabled>
@@ -247,7 +252,7 @@
                                         <button class="me-3 small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
                                             <span class="avatar"><?php echo $huruf_depan; ?></span>
                                         </button>
-                                        Tetap sebagai <b><?php echo $nama_peserta; ?></b>
+                                        Tetap sebagai <span class="nama-user fw-bold"><?php echo $nama_peserta; ?></span>
                                     </a>
                                 </li>
                                 <li class="">
@@ -266,7 +271,7 @@
                                 <button id="btn-offcanvas-as" class="small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
                                     <span class="avatar"><?php echo $huruf_depan; ?></span>
                                 </button>
-                                <a id="nama-peserta-form-offcanvas" class="small align-self-center ms-2 text-truncate mb-0 dropdown-toggle text-decoration-none text-black"><?php echo $nama_peserta; ?></a>
+                                <a id="nama-peserta-form-offcanvas" class="nama-user small align-self-center ms-2 text-truncate mb-0 dropdown-toggle text-decoration-none text-black"><?php echo $nama_peserta; ?></a>
                             </div>
                             <div id="as-anonim-offcanvas" class="d-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-as" aria-controls="offcanvas-as">
                                 <button class="small border-0 rounded-pill ms-0 text-black bg-secondary bg-opacity-10 fw-bold" style="width: 2rem; height:2rem;" disabled>
@@ -282,7 +287,7 @@
                                         <button class="me-3 small border-0 rounded-pill ms-0 text-white bg-primary fw-bold " style="width: 2rem; height:2rem;" disabled>
                                             <span class="avatar"><?php echo $huruf_depan; ?></span>
                                         </button>
-                                        Tetap sebagai <b><?php echo $nama_peserta; ?></b>
+                                        Tetap sebagai <span class="nama-user fw-bold "><?php echo $nama_peserta; ?></span>
                                     </a>
                                     <a id="btn-as-anonim-offcanvas" class="small text-decoration-none mt-4 text-black">
                                         <button class="me-3 small border-0 rounded-pill ms-0 text-black bg-secondary bg-opacity-10 fw-bold" style="width: 2rem; height:2rem;" disabled>
@@ -336,7 +341,7 @@
         </div>
 
         <!-- Toast -->
-        <div id="container-toast" class="toast-container fixed-top ms-auto p-3" style="z-index: 2000">
+        <div id="container-toast" class="toast-container fixed-bottom ms-auto p-3" style="z-index: 2000">
             <!--toast edit-->
             <div id="toast-edit-profil" class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
                 <div class="d-flex">
@@ -483,7 +488,9 @@
     <script>
         let warna = ["#1abc9c", "#2ecc71", "#3498db", "#9b59b6", "#34495e", "#16a085", "#27ae60", "#2980b9", "#8e44ad", "#2c3e50", "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1", "#95a5a6", "#f39c12", "#d35400", "#c0392b", "#bdc3c7", "#7f8c8d"];
 
-        $(document).ready(function() {
+        let warna2 = ["rgba(26,188,156,0.1)", "rgba(46,204,113,0.1)", "rgba(52,152,219,0.1)", "rgba(155,89,182,0.1)", "rgba(52,73,94,0.01)", "rgba(22,160,133,0.1)", "rgba(39,174,96,0.1)", "rgba(41,128,185,0.1)", "rgba(142,68,173,0.1)", "rgba(44,62,80,0.1)", "rgba(241,196,15,0.01)", "rgba(230,126,34,0.1)", "rgba(231,76,60,0.1)", "rgba(236,240,241,0.1)", "rgba(149,165,166,0.1)", "rgba(243,156,18,0.1)", "rgba(211,84,0,0.1)", "rgba(192,57,43,0.1)", "rgba(189,195,199,0.1)", "rgba(127,140,141,0.1)"];
+
+        function ubahWarnaAvatar() {
             $(".avatar").parent().removeClass('bg-primary');
 
             if($('#nama-peserta-form-dropdown').text()==='Anonim'){
@@ -492,16 +499,19 @@
                 $(".avatar").css({"color": '#1b1b1b'});
             }
 
-            $(".avatar:contains('Q'), .avatar:contains('W'), .avatar:contains('N'), .avatar:contains('M')").parent().css({"background-color": '#1abc9c'});
-            $(".avatar:contains('E'), .avatar:contains('R')").parent().css({"background-color": '#2ecc71'});
-            $(".avatar:contains('T'), .avatar:contains('Y')").parent().css({"background-color": '#3498db'});
-            $(".avatar:contains('U'), .avatar:contains('I')").parent().css({"background-color": '#9b59b6'});
-            $(".avatar:contains('O'), .avatar:contains('P')").parent().css({"background-color": '#34495e'});
-            $(".avatar:contains('D'), .avatar:contains('F'), .avatar:contains('V'), .avatar:contains('B')").parent().css({"background-color": '#2980b9'});
-            $(".avatar:contains('G'), .avatar:contains('H')").parent().css({"background-color": '#8e44ad'});
-            $(".avatar:contains('J'), .avatar:contains('K')").parent().css({"background-color": '#f1c40f'});
-            $(".avatar:contains('L'), .avatar:contains('Z')").parent().css({"background-color": '#e67e22'});
-            $(".avatar:contains('X'), .avatar:contains('C'), .avatar:contains('A'), .avatar:contains('S')").parent().css({"background-color": '#e74c3c'});
+            $(".avatar:contains('Q'), .avatar:contains('W'), .avatar:contains('N'), .avatar:contains('M')").parent().css({"background-color": warna[0]});
+            $(".avatar:contains('E'), .avatar:contains('R')").parent().css({"background-color": warna[1]});
+            $(".avatar:contains('T'), .avatar:contains('Y')").parent().css({"background-color": warna[2]});
+            $(".avatar:contains('U'), .avatar:contains('I')").parent().css({"background-color": warna[3]});
+            $(".avatar:contains('O'), .avatar:contains('P')").parent().css({"background-color": warna[4]});
+            $(".avatar:contains('D'), .avatar:contains('F'), .avatar:contains('V'), .avatar:contains('B')").parent().css({"background-color": warna[7]});
+            $(".avatar:contains('G'), .avatar:contains('H')").parent().css({"background-color": warna[16]});
+            $(".avatar:contains('J'), .avatar:contains('K')").parent().css({"background-color": warna[8]});
+            $(".avatar:contains('L'), .avatar:contains('Z')").parent().css({"background-color": warna[12]});
+            $(".avatar:contains('X'), .avatar:contains('C'), .avatar:contains('A'), .avatar:contains('S')").parent().css({"background-color": warna[11]});
+        }
+        $(document).ready(function() {
+            ubahWarnaAvatar();
         })
     </script>
 
@@ -520,7 +530,7 @@
         let i = <?php echo $i ?>;
         let user_id = $('#login_user_id').val();;
         // var conn = new WebSocket('ws://localhost:8082'); //dibuat dinamis
-        var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19497 '); //dibuat dinamis
+        var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19697'); //dibuat dinamis
         conn.onopen = function (e) {
             console.log("Connection established!");
         };
@@ -531,9 +541,10 @@
             let row_class = '';
             let background_class = '';
             let html_data = '';
-            let msg1 = escapeHtml(data.msg);
 
             if(data.asal === 'user') {
+                let msg1 = escapeHtml(data.msg);
+
                 if (data.from == 'Me') {
                     html_data = "<div id='container-pesan-" + data.mId + "' class='mb-3 mx-3 p-3 border border-1 rounded-3'><p class='mb-0 small'>" + msg1 + "</p><div class='d-flex justify-content-between align-items-center mt-3 '><p id='jam-pesan-" + i + "' class='text-black-50 small mb-0'>" + moment().fromNow() + "'</p><p class='waktu-kirim d-none' id='waktu_pengiriman_" + i + "'>" + data.date + "</p><button id='btn-delete-" + data.mId + "' class='btn btn-delete bg-danger bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted'  title='Hapus pertanyaan' style='width: 50px;'><i class='bi bi-trash3 text-danger'></i></button></div></div>"
                 }
@@ -552,6 +563,10 @@
                 let message = data.msg
 
                 $('#container-pesan-'+idm).children('p.pertanyaan').text(message)
+            }
+            else if(data.asal === 'user-delete'){
+                console.log(data.mId)
+                $("#container-pesan-"+data.mId).remove()
             }
         };
 
@@ -600,6 +615,7 @@
         // button cancel
         $("body").on("click", ".btn-cancel", function() {
             $('#modal-edit-profil').modal('hide');
+            $('#modal-delete').modal('hide');
         })
 
         // button delete
@@ -708,6 +724,15 @@
             let nama = '';
             let email = '';
 
+            $("#input-input-nama-edit, #input-email-edit").on('keyup', function(e) {
+                if($('#input-input-nama-edit').val() !== '' && $('#input-email-edit').val() !== ''){
+                    $('#btn-save-profil').removeAttr('disabled')
+                }
+                else{
+                    $('#btn-save-profil').attr('disabled','true')
+                }
+            });
+
             $.ajax({
                 url: "./get_participant_by_id.php",
                 type: "POST",
@@ -734,15 +759,9 @@
                             console.log(email_edited+ ' vs '+ email)
 
                             if(nama === nama_edited && email === email_edited){
-                                $('#input-nama-edit').val('')
-                                $('#input-email-edit').val('')
                                 $('#modal-edit-profil').modal('hide');
                             }
                             else{
-                                $('#nama-peserta-form-dropdown').text(nama_edited);
-                                $('#nama-peserta-form-offcanvas').text(nama_edited);
-
-                                console.log("xhr.status");
                                 $.ajax({
                                     url: "./update_participants.php",
                                     type: "POST",
@@ -757,6 +776,10 @@
                                         var dataResult = JSON.parse(dataResult);
                                         if(dataResult.statusCode===200){
                                             console.log('Data updated successfully ! '+nama_edited+' apa');
+
+                                            $('.nama-user').text(nama_edited);
+                                            $('.avatar').text(nama_edited.charAt(0));
+                                            ubahWarnaAvatar();
                                         }
                                     },
                                     error: function (xhr, ajaxOptions, thrownError) {
@@ -776,16 +799,13 @@
                                 },4000)
 
                                 // Proses Pengiriman Pesan
-                                // var id_sesi = $('#login_id_sesi').val();
-                                // var data = {
-                                //     asal: 'admin-terpilih',
-                                //     userId: id_user,
-                                //     mId: idm,
-                                //     msg: cust_message,
-                                //     sesiId: id_sesi,
-                                //     date: jam_pesan_hidden,
-                                // };
-                                // conn.send(JSON.stringify(data));
+                                let data = {
+                                    asal: 'user-profil',
+                                    userId: id_user,
+                                    namaUser: nama_edited,
+                                    date: moment().format('YYYY-MM-DD HH:mm:ss'),
+                                };
+                                conn.send(JSON.stringify(data));
 
                             }
                         })
@@ -799,6 +819,7 @@
                     console.log(thrownError);
                 }
             });
+
         })
 
         // fungsi edit

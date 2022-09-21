@@ -10,7 +10,17 @@ class ChatRooms
     private $message;
     private $status;
     private $created_on;
+    private $nama_user;
     protected $connect;
+
+    public function setNamaUser($nama_user)
+    {
+        $this->nama_user = $nama_user;
+    }
+    public function getNamaUser()
+    {
+        return $this->nama_user;
+    }
 
     public function setIsEdited($is_edited)
     {

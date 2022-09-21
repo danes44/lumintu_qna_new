@@ -140,6 +140,25 @@
                     <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
                 </div>
             </div>
+            <!--toast-presentasi-->
+            <div id="toast-presentasi" class="toast align-items-center text-primary border-1 border-primary" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e6f0ff">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-exclamation-circle me-3"></i>
+                        Pertanyaan dipresentasikan
+                    </div>
+                    <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
+                </div>
+            </div>
+            <div id="toast-presentasi-hide" class="toast align-items-center text-danger border-1 border-danger" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #fbeaec">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-exclamation-circle me-3"></i>
+                        Pertanyaan tidak lagi dipresentasikan
+                    </div>
+                    <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
+                </div>
+            </div>
         </div>
 
         <!-- Pertanyaan2 -->
@@ -458,14 +477,21 @@
                             $str1 = str_split($chat["waktu_pengiriman"], 10);
                             $jam_pesan = str_split($str1[1], 6);
 
-                            if ($chat["id_chat"] == $_GET["id_session"] && ($chat["status"]==1 || $chat["status"]==4)){
+                            if ($chat["id_chat"] == $_GET["id_session"] && ($chat["status"]==1 || $chat["status"]==4 || $chat["status"]==5)){
                                 $nama_peserta = get_nama($chat["id_pengirim"]);
                                 $id = $chat["id_message"];
                                 $huruf_depan = $nama_peserta[0];
                                 $j_x_waktu[$j] = $chat["waktu_pengiriman"];
 
                                 echo '
-                                    <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan-terpilih border-top border-bottom " ';
+                                    <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan-terpilih  ';
+                                    if($chat["status"]==5){
+                                        echo 'border border-2 border-orange';
+                                    }
+                                    else{
+                                        echo 'border-top border-bottom';
+                                    }
+                                    echo ' " ';
                                     if($chat["status"]==4){
                                         echo 'style="background-color:rgba(255,65,123,0.1)"';
                                     }
@@ -487,7 +513,7 @@
                                                         <span>'.$huruf_depan.'</span>
                                                     </button>
                                                     <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
-                                                        <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0"> '.$nama_peserta.' </p>
+                                                        <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0">'.$nama_peserta.'</p>
                                                         <p id="jam-pesan-j'.$j.'" class="jam text-black-50 small mb-0 ">'.$jam_pesan[0].'</p>
                                                         
                                                         <p class="waktu-kirim d-none" id="waktu_pengiriman_j_'. $j .'" >'.$chat["waktu_pengiriman"].'</p>
@@ -509,9 +535,19 @@
                                                         }
                                                         echo '
                                                     </button>
-                                                    <button id="btn-terjawab-'.$j.'" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
+                                                    <button id="btn-presentasi-'.$j.'" class="btn btn-presentasi bg-transparent border-0 rounded-3 py-1 px-1 ms-1 bg-opacity-10" style="color: #FF6641" title="Tampilkan di presentasi">
+                                                        ';
+                                                        if($chat["status"]==5){
+                                                            echo '<i class="bi bi-easel-fill me-1"></i>';
+                                                        }
+                                                        else{
+                                                            echo '<i class="bi bi-easel me-1"></i>';
+                                                        }
+                                                        echo '
+                                                    </button>                              
+                                                    <button id="btn-terjawab-'.$j.'" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-2"  title="Tandai sebagai terjawab" >
                                                         <i class="bi bi-check-lg text-white"></i>
-                                                    </button>                                        
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -556,7 +592,7 @@
                                                         <span>'.$huruf_depan.'</span>
                                                     </button>
                                                     <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
-                                                        <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0"> '.$nama_peserta.' </p>
+                                                        <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0">'.$nama_peserta.'</p>
                                                         <p id="jam-pesan-l'.$l.'" class="jam text-black-50 small mb-0 ">'.$jam_pesan[0].'</p>
                                                         
                                                         <p class="waktu-kirim d-none" id="waktu_pengiriman_l_'. $l .'" >'.$chat["waktu_pengiriman"].'</p>
@@ -608,26 +644,44 @@
 
         <!-- fungsi ganti background letter avatar-->
         <script>
-            let warna = ["#1abc9c", "#2ecc71", "#3498db", "#9b59b6", "#34495e", "#16a085", "#27ae60", "#2980b9", "#8e44ad", "#2c3e50", "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1", "#95a5a6", "#f39c12", "#d35400", "#c0392b", "#bdc3c7", "#7f8c8d"];
+            let warna = ["#1abc9c", "#2ecc71", "#3498db", "#9b59b6",
+                "#34495e", "#16a085", "#27ae60", "#2980b9",
+                "#8e44ad", "#2c3e50", "#f1c40f",
+                "#e67e22", "#e74c3c", "#ecf0f1",
+                "#95a5a6", "#f39c12", "#d35400", "#c0392b",
+                "#bdc3c7", "#7f8c8d"];
+
+            let warna2 = ["rgba(26,188,156,0.1)", "rgba(46,204,113,0.1)", "rgba(52,152,219,0.1)", "rgba(155,89,182,0.1)", "rgba(52,73,94,0.1)", "rgba(22,160,133,0.1)", "rgba(39,174,96,0.1)", "rgba(41,128,185,0.1)", "rgba(142,68,173,0.1)", "rgba(44,62,80,0.1)", "rgba(241,196,15,0.1)", "rgba(230,126,34,0.1)", "rgba(231,76,60,0.1)", "rgba(236,240,241,0.1)", "rgba(149,165,166,0.1)", "rgba(243,156,18,0.1)", "rgba(211,84,0,0.1)", "rgba(192,57,43,0.1)", "rgba(189,195,199,0.1)", "rgba(127,140,141,0.1)"];
 
             function ubahWarnaAvatar() {
                 $(".avatar").removeClass('bg-primary');
+                $(".avatar").removeClass('text-white');
 
                 $(".avatar").siblings().children('.nama:contains("Anonim")').parent().siblings().children().html('<i class="bi bi-person"></i>')
                 $(".avatar").siblings().children('.nama:contains("Anonim")').parent().siblings().css({"background-color": '#f0f1f2'});
                 $(".avatar").siblings().children('.nama:contains("Anonim")').parent().siblings().children().css({"color": '#1b1b1b'});
 
+                $(".avatar>span:contains('Q'), .avatar>span:contains('W'), .avatar>span:contains('N'), .avatar>span:contains('M')").parent().css({"background-color": warna2[0], "color": warna[0]});
+                $(".avatar > span:contains('E'), .avatar > span:contains('R')").parent().css({"background-color": warna2[1], "color": warna[1]});
+                $(".avatar > span:contains('T'), .avatar > span:contains('Y')").parent().css({"background-color": warna2[2], "color": warna[2]});
+                $(".avatar>span:contains('U'), .avatar>span:contains('I')").parent().css({"background-color": warna2[3], "color": warna[3]});
+                $(".avatar > span:contains('O'), .avatar > span:contains('P')").parent().css({"background-color": warna2[4], "color": warna[4]});
+                $(".avatar>span:contains('D'), .avatar>span:contains('F'), .avatar > span:contains('V'), .avatar > span:contains('B')").parent().css({"background-color": warna2[7], "color": warna[7]});
+                $(".avatar > span:contains('G'), .avatar > span:contains('H')").parent().css({"background-color": warna2[16], "color": warna[16]});
+                $(".avatar > span:contains('J'), .avatar > span:contains('K')").parent().css({"background-color": warna2[8], "color": warna[8]});
+                $(".avatar>span:contains('L'), .avatar>span:contains('Z')").parent().css({"background-color": warna2[12], "color": warna[12]});
+                $(".avatar > span:contains('X'), .avatar > span:contains('C'), .avatar > span:contains('A'), .avatar > span:contains('S')").parent().css({"background-color": warna2[11], "color": warna[11]});
 
-                $(".avatar>span:contains('Q'), .avatar>span:contains('W'), .avatar>span:contains('N'), .avatar>span:contains('M')").parent().css({"background-color": '#1abc9c'});
-                $(".avatar > span:contains('E'), .avatar > span:contains('R')").parent().css({"background-color": '#2ecc71'});
-                $(".avatar > span:contains('T'), .avatar > span:contains('Y')").parent().css({"background-color": '#3498db'});
-                $(".avatar>span:contains('U'), .avatar>span:contains('I')").parent().css({"background-color": '#9b59b6'});
-                $(".avatar > span:contains('O'), .avatar > span:contains('P')").parent().css({"background-color": '#34495e'});
-                $(".avatar>span:contains('D'), .avatar>span:contains('F'), .avatar > span:contains('V'), .avatar > span:contains('B')").parent().css({"background-color": '#2980b9'});
-                $(".avatar > span:contains('G'), .avatar > span:contains('H')").parent().css({"background-color": '#8e44ad'});
-                $(".avatar > span:contains('J'), .avatar > span:contains('K')").parent().css({"background-color": '#f1c40f'});
-                $(".avatar>span:contains('L'), .avatar>span:contains('Z')").parent().css({"background-color": '#e67e22'});
-                $(".avatar > span:contains('X'), .avatar > span:contains('C'), .avatar > span:contains('A'), .avatar > span:contains('S')").parent().css({"background-color": '#e74c3c'});
+                // $(".avatar>span:contains('Q'), .avatar>span:contains('W'), .avatar>span:contains('N'), .avatar>span:contains('M')").parent().css({"background-color": '#1abc9c'});
+                // $(".avatar > span:contains('E'), .avatar > span:contains('R')").parent().css({"background-color": '#2ecc71'});
+                // $(".avatar > span:contains('T'), .avatar > span:contains('Y')").parent().css({"background-color": '#3498db'});
+                // $(".avatar>span:contains('U'), .avatar>span:contains('I')").parent().css({"background-color": '#9b59b6'});
+                // $(".avatar > span:contains('O'), .avatar > span:contains('P')").parent().css({"background-color": '#34495e'});
+                // $(".avatar>span:contains('D'), .avatar>span:contains('F'), .avatar > span:contains('V'), .avatar > span:contains('B')").parent().css({"background-color": '#2980b9'});
+                // $(".avatar > span:contains('G'), .avatar > span:contains('H')").parent().css({"background-color": '#8e44ad'});
+                // $(".avatar > span:contains('J'), .avatar > span:contains('K')").parent().css({"background-color": '#f1c40f'});
+                // $(".avatar>span:contains('L'), .avatar>span:contains('Z')").parent().css({"background-color": '#e67e22'});
+                // $(".avatar > span:contains('X'), .avatar > span:contains('C'), .avatar > span:contains('A'), .avatar > span:contains('S')").parent().css({"background-color": '#e74c3c'});
             }
             $(document).ready(function() {
                 ubahWarnaAvatar();
@@ -842,7 +896,7 @@
             // Koneksi Websocket
             var port = '8082'
             // var conn = new WebSocket('ws://localhost:'+port);
-            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19497');
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19697');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
@@ -927,6 +981,7 @@
                             complete: function (data) {
                                 if( data1.sesiId === sesi_id1 ) {
                                     $('#badge-baru').remove()
+                                    ubahWarnaAvatar();
 
                                     jam_i[jam_i.length] = data1.date
                                     if ($('#radio-terbaru').is(':checked')) {
@@ -971,9 +1026,16 @@
                                 console.log(xhr)
                             }
                         })
+
                     }
                     else if(data1.asal === 'user-delete'){
                         $('#container-pesan-'+data1.mId).remove()
+                    }
+                    else if(data1.asal === 'user-profil'){
+                        console.log(data1.userId + ' '+ data1.namaUser)
+                        $("p#nama-peserta-form-"+data1.userId).text(data1.namaUser)
+                        $("p#nama-peserta-form-"+data1.userId).parent().siblings('.avatar').children().text(data1.namaUser.charAt(0))
+                        ubahWarnaAvatar();
                     }
                 };
 
@@ -1150,7 +1212,7 @@
                                         <span>${cust_nama_depan}</span>
                                     </button>
                                     <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
-                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0"> ${cust_name} </p>
+                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
                                         <p id="jam-pesan-j${j}" class="jam text-black-50 small mb-0 ">
                                             ${jam_pesan}
                                         </p>
@@ -1319,7 +1381,7 @@
                                         <span>${cust_nama_depan}</span>
                                     </button>
                                     <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
-                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0"> ${cust_name} </p>
+                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
                                         <p id="jam-pesan-k${k}" class="jam text-black-50 small mb-0 ">
                                             ${jam_pesan}
                                         </p>
@@ -1461,7 +1523,7 @@
                                         <span>${cust_nama_depan}</span>
                                     </button>
                                     <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
-                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0"> ${cust_name} </p>
+                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
                                         <p id="jam-pesan-k${k}" class="jam text-black-50 small mb-0 ">
                                             ${jam_pesan}
                                         </p>
@@ -1802,7 +1864,7 @@
                                         <span>${cust_nama_depan}</span>
                                     </button>
                                     <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
-                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0"> ${cust_name} </p>
+                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
                                         <p id="jam-pesan-j${j}" class="jam text-black-50 small mb-0 ">
                                             ${jam_pesan}
                                         </p>
@@ -1971,6 +2033,7 @@
 
                 // get jam pesan
                 let element_j = $('#container-btn-'+idm).children('.btn-love').attr('id')
+                console.log(element_j)
                 let id_j = element_j.split("-");
                 let jam_pesan = $('#jam-pesan-j'+id_j[2]).text();
                 let jam_pesan_hidden = $('#waktu_pengiriman_j_'+id_j[2]).text();
@@ -2120,6 +2183,189 @@
                 // conn.send(JSON.stringify(data));
             })
 
+            //fungsi presentasi pertanyaan
+            $("body").on("click", ".btn-presentasi", function() {
+                let id_element = $(this).parent().attr('id');
+                let id_numb = id_element.split("-");
+                let idm = id_numb[2]
+
+                let parent_element = $('#container-pesan-terpilih-'+idm);
+
+                // get id user
+                let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
+                let id_user_arr = id_user_element.split("-");
+                let id_user = id_user_arr[3];
+                console.log(id_user)
+
+                // get nama user dan message
+                let cust_name = $('#nama-peserta-form-'+id_user).text();
+                let cust_nama_depan = Array.from(cust_name)[0];
+                let cust_message = $.trim($('#pesan-'+idm).clone().children().remove().end().text());
+
+                // get jam pesan
+                let element_j = $('#container-btn-'+idm).children('.btn-presentasi').attr('id')
+                let id_j = element_j.split("-");
+                let jam_pesan = $('#jam-pesan-j'+id_j[2]).text();
+                let jam_pesan_hidden = $('#waktu_pengiriman_j_'+id_j[2]).text();
+
+                console.log(id_j[2])
+
+                let element_icon= `<i class="bi bi-easel me-1"></i>`;
+                let element_icon_fill= `<i class="bi bi-easel-fill me-1"></i>`;
+                // let element = `
+                //     <div id="container-pesan-favorit-${idm}" class="p-3 pesan-favorit border-top border-bottom " style="background-color:rgba(255,65,123,0.1)">
+                //         <div class="d-flex">
+                //             <p id="pesan-${idm}" class="mb-0 small isi-pesan flex-grow-1">${cust_message}</p>
+                //         </div>
+                //
+                //         <div class="card-footer bg-transparent">
+                //             <div class="d-flex justify-content-between align-items-center mt-3 ">
+                //                 <div class="d-flex align-items-center ">
+                //                     <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                //                         <span>${cust_nama_depan}</span>
+                //                     </button>
+                //                     <div id="container-nama-waktu-'${idm}" class="small align-self-center ms-2">
+                //                         <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
+                //                         <p id="jam-pesan-l${l}" class="jam text-black-50 small mb-0 ">${jam_pesan}</p>
+                //                         <p class="waktu-kirim d-none" id="waktu_pengiriman_l_${l}" >${jam_pesan_hidden}</p>
+                //                     </div>
+                //                 </div>
+                //
+                //                 <div id="container-btn-${idm}" class="container-btn">
+                //                     <button id="btn-revert-${l}" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
+                //                         <i class="bi bi-arrow-counterclockwise"></i>
+                //                     </button>
+                //                     <button id="btn-love-${l}" class="btn btn-love text-danger bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
+                //                         <i class="bi bi-heart-fill"></i>
+                //                     </button>
+                //                     <button id="btn-terjawab-${l}" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
+                //                         <i class="bi bi-check-lg text-white"></i>
+                //                     </button>
+                //                 </div>
+                //             </div>
+                //         </div>
+                //     </div>
+                // `
+
+                let status_pesan = 5;
+
+                if($('.btn-presentasi').find('.bi-easel-fill').length > 0){
+                    let id_presentasi = $('.btn-presentasi').find('.bi-easel-fill').parent().attr('id')
+                    let id_parent =$('.btn-presentasi').find('.bi-easel-fill').parent().parent().attr('id')
+
+                    if($('.btn-presentasi').find('.bi-easel-fill').hasClass('bi-heart-fill')){
+                        status_pesan = 4;
+                    }
+
+                    $('.btn-presentasi').find('.bi-easel-fill').remove()
+                    $('#' + id_presentasi).append(element_icon)
+
+                    let idp = id_parent.split("-");
+                    $('#container-pesan-'+idp[2]).addClass('border-top')
+                    $('#container-pesan-'+idp[2]).addClass('border-bottom')
+                    $('#container-pesan-'+idp[2]).removeClass('border')
+                    $('#container-pesan-'+idp[2]).removeClass('border-2')
+                    $('#container-pesan-'+idp[2]).removeClass('border-orange')
+                    console.log(idp)
+
+
+
+                    $.ajax({
+                        url: "../update.php",
+                        type: "POST",
+                        cache: false,
+                        data:{
+                            status: status_pesan,
+                            id_message: idm,
+                        },
+                        success: function(data){
+                            let dataResult = JSON.parse(data);
+                            if(dataResult.statusCode==200){
+                                console.log('Data updated successfully ! '+idm+' apa');
+                            }
+                        }
+                    });
+                }
+
+                if($(this).children().hasClass('bi-easel-fill'))
+                {
+                    if($(this).children().hasClass('bi-heart-fill')){
+                        status_pesan = 4;
+                    }
+
+                    $('#btn-presentasi-' + id_j[2]).children('.bi-easel-fill').remove()
+                    $('#btn-presentasi-' + id_j[2]).append(element_icon)
+                    //show toast
+                    setTimeout(function () {
+                        // $('#toast-unlove').hide()
+                        $('#toast-presentasi-hide').show()
+                    },500)
+                    setTimeout(function () {
+                        $('#toast-presentasi-hide').hide()
+                    },5000)
+
+                    status_pesan = 1;
+                }
+                else
+                {
+                    if($(this).children().hasClass('bi-heart-fill')){
+                        status_pesan = 6;
+                    }
+                    $('#container-pesan-'+idm).removeClass('border-top')
+                    $('#container-pesan-'+idm).removeClass('border-bottom')
+                    $('#container-pesan-'+idm).addClass('border')
+                    $('#container-pesan-'+idm).addClass('border-2')
+                    $('#container-pesan-'+idm).addClass('border-orange')
+
+                    console.log($('#btn-presentasi-' + id_j[2]).children())
+                    $('#btn-presentasi-' + id_j[2]).children('.bi-easel').remove()
+                    $('#btn-presentasi-' + id_j[2]).append(element_icon_fill)
+
+                    //show toast
+                    setTimeout(function () {
+                        // $('#toast-love').hide()
+                        $('#toast-presentasi').show()
+                    },500)
+                    setTimeout(function () {
+                        $('#toast-presentasi').hide()
+                    },5000)
+                }
+
+                console.log(status_pesan)
+                /* nambah badge dipresentasikan dan */
+
+                $.ajax({
+                    url: "../update.php",
+                    type: "POST",
+                    cache: false,
+                    data:{
+                        status: status_pesan,
+                        id_message: idm,
+                    },
+                    success: function(data){
+                        let dataResult = JSON.parse(data);
+                        if(dataResult.statusCode==200){
+                            console.log('Data updated successfully ! '+idm+' apa');
+                        }
+                    }
+                });
+
+                // jam_i[jam_i.length] = jam_pesan_hidden
+                // parent_element.remove()
+                // i=i+1;
+                // Proses Pengiriman Pesan
+                // var id_sesi = $('#login_id_sesi').val();
+                // var data = {
+                //     asal: 'admin-terpilih',
+                //     userId: id_user,
+                //     mId: idm,
+                //     msg: cust_message,
+                //     sesiId: id_sesi,
+                //     date: jam_pesan_hidden,
+                // };
+                // conn.send(JSON.stringify(data));
+            })
+
 
 
             // fungsi edit
@@ -2149,7 +2395,14 @@
                 $('#input-edit').val(cust_message)
                 charCounter()
 
-
+                $("#input-edit").on('keyup', function(e) {
+                    if($('#input-edit').val() !== ''){
+                        $('.btn-save').removeAttr('disabled')
+                    }
+                    else{
+                        $('.btn-save').attr('disabled','true')
+                    }
+                });
             })
             // fungsi save edit
             $("body").on("click", ".btn-save", function() {
