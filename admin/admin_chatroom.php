@@ -163,19 +163,23 @@
 
         <!-- Pertanyaan2 -->
         <div class="container pt-4 px-0">
-            <div class="d-flex justify-content-between mb-4">
+            <div class="d-flex justify-content-between position-relative mb-4">
                 <div class="d-flex justify-content-start align-items-center ">
                     <a id="btn-kembali" class="fw-bold text-decoration-none text-black border-0 rounded my-0 p-0 bg-transparent" role="button" href="dashboard_admin.php" onclick="return confirm('Apakah anda yakin ingin keluar ?')">
                         <i class="bi bi-arrow-left me-1"></i>
                         Kembali
                     </a>
                 </div>
-                <div class="align-items-center text-center flex-grow-1">
+                <div class=" align-items-center text-center position-absolute top-50 start-50 translate-middle">
                     <p id="event-name" class="fw-bold mb-0"></p>
                     <h6 id="date-time" class="mb-0"></h6>
                 </div>
                 <div class="d-flex justify-content-start align-items-center">
-                    <a id="btn-display" class="btn fw-bold text-decoration-none text-white border-0 rounded my-0 p-2 bg-opacity-10" style="background-color: #FF6641" role="button" href="../qna_display.php?<?php echo $hasil_hash_id ; ?>" target="_blank">
+                    <a id="btn-share" class="btn btn-sm fw-semibold text-decoration-none border-0 rounded my-0 p-2 px-3 bg-opacity-10 me-3" style="background-color: rgba(255,102,65,0.1); color:#FF6641" role="button" href="../index_user.php?<?php echo $hasil_hash_id ; ?>" target="_blank">
+                        <i class="bi bi-share me-1 small"></i>
+                        Share
+                    </a>
+                    <a id="btn-display" class="btn btn-sm fw-bold text-decoration-none text-white border-0 rounded my-0 p-2 px-3 bg-opacity-10" style="background-color: #FF6641" role="button" href="../qna_display.php?<?php echo $hasil_hash_id ; ?>" target="_blank">
                         <i class="bi bi-easel me-1"></i>
                         Presentasi
                     </a>
@@ -185,7 +189,7 @@
             <div class="row pt-1" >
                 <div class="col-6">
                     <div class="d-flex align-items-center mb-2">
-                        <h5 class="fw-bold mb-0" title="Daftar pertanyaan yang perlu di pilih">Daftar Pertanyaan </h5>
+                        <h5 class="fw-bold mb-0" title="Daftar pertanyaan yang perlu di pilih">Semua Pertanyaan </h5>
                         <i class="ms-2 bi bi-question-circle" style="font-size: .8em" title="Daftar pertanyaan yang perlu di pilih"></i>
                         <h6 id="jumlah-pertanyaan" class="ms-auto mb-0"></h6>
                         <h6 id="jumlah-pertanyaan-ditolak-terjawab" class="ms-auto d-none mb-0"></h6>
@@ -249,7 +253,7 @@
                                 $str1 = str_split($chat["waktu_pengiriman"], 10);
                                 $jam_pesan = str_split($str1[1], 6);
 
-                                if ($chat["id_chat"] == $_GET["id_session"] && ($chat["status"]==0 || $chat["status"]==5)){
+                                if ($chat["id_chat"] == $_GET["id_session"] && ($chat["status"]==0 )){
                                     $nama_peserta = get_nama($chat["id_pengirim"]);
                                     $id = $chat["id_message"];
                                     $huruf_depan = $nama_peserta[0];
@@ -414,7 +418,7 @@
                 <div class="col-6">
                     <div class="d-flex align-items-center mb-2">
                         <h5 class="fw-bold mb-0" title="Daftar pertanyaan yang tertampil di presentasi">
-                            Daftar Pertanyaan
+                            Pertanyaan Aktif
                         </h5>
                         <i class="ms-2 bi bi-question-circle" style="font-size: .8em" title="Daftar pertanyaan yang tertampil di presentasi"></i>
                         <span class="ms-2 badge rounded-pill text-bg-danger"><i class="bi bi-circle-fill me-2 blink" style="font-size: 0.8em"></i>Live</span>
@@ -477,7 +481,7 @@
                             $str1 = str_split($chat["waktu_pengiriman"], 10);
                             $jam_pesan = str_split($str1[1], 6);
 
-                            if ($chat["id_chat"] == $_GET["id_session"] && ($chat["status"]==1 || $chat["status"]==4 || $chat["status"]==5)){
+                            if ($chat["id_chat"] == $_GET["id_session"] && ($chat["status"]==1 || $chat["status"]==4 || $chat["status"]==5 || $chat["status"]==6)){
                                 $nama_peserta = get_nama($chat["id_pengirim"]);
                                 $id = $chat["id_message"];
                                 $huruf_depan = $nama_peserta[0];
@@ -485,14 +489,14 @@
 
                                 echo '
                                     <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan-terpilih  ';
-                                    if($chat["status"]==5){
+                                    if($chat["status"]==5 || $chat["status"]==6){
                                         echo 'border border-2 border-orange';
                                     }
                                     else{
                                         echo 'border-top border-bottom';
                                     }
                                     echo ' " ';
-                                    if($chat["status"]==4){
+                                    if($chat["status"]==4 || $chat["status"]==6){
                                         echo 'style="background-color:rgba(255,65,123,0.1)"';
                                     }
                                     echo '>
@@ -527,7 +531,7 @@
                                                     </button>
                                                     <button id="btn-love-'.$j.'" class="btn btn-love text-danger bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
                                                         ';
-                                                        if($chat["status"]==4){
+                                                        if($chat["status"]==4 || $chat["status"]==6){
                                                             echo '<i class="bi bi-heart-fill" ></i>';
                                                         }
                                                         else{
@@ -537,7 +541,7 @@
                                                     </button>
                                                     <button id="btn-presentasi-'.$j.'" class="btn btn-presentasi bg-transparent border-0 rounded-3 py-1 px-1 ms-1 bg-opacity-10" style="color: #FF6641" title="Tampilkan di presentasi">
                                                         ';
-                                                        if($chat["status"]==5){
+                                                        if($chat["status"]==5 || $chat["status"]==6){
                                                             echo '<i class="bi bi-easel-fill me-1"></i>';
                                                         }
                                                         else{
@@ -567,7 +571,7 @@
                             $str1 = str_split($chat["waktu_pengiriman"], 10);
                             $jam_pesan = str_split($str1[1], 6);
 
-                            if ($chat["id_chat"] == $_GET["id_session"] && $chat["status"]==4){
+                            if ($chat["id_chat"] == $_GET["id_session"] && ($chat["status"]==4 || $chat["status"]==6)){
                                 $nama_peserta = get_nama($chat["id_pengirim"]);
                                 $id = $chat["id_message"];
                                 $huruf_depan = $nama_peserta[0];
@@ -639,6 +643,7 @@
             // 2 = sudah dijawab
             // 3 = ditolak
             // 4 = favorit
+            // 5 = dipresentasikan
             // 99 = dihapus
         </script>
 
@@ -896,7 +901,7 @@
             // Koneksi Websocket
             var port = '8082'
             // var conn = new WebSocket('ws://localhost:'+port);
-            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19697');
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14096');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
@@ -2033,7 +2038,7 @@
 
                 // get jam pesan
                 let element_j = $('#container-btn-'+idm).children('.btn-love').attr('id')
-                console.log(element_j)
+                console.log(element_j + ' '+ idm)
                 let id_j = element_j.split("-");
                 let jam_pesan = $('#jam-pesan-j'+id_j[2]).text();
                 let jam_pesan_hidden = $('#waktu_pengiriman_j_'+id_j[2]).text();
@@ -2103,6 +2108,10 @@
                 }
                 else
                 {
+                    if($(this).parent().children('.btn-presentasi').children().hasClass('bi-easel-fill')){
+                        status_pesan = 6
+                    }
+
                     $('#container-pesan-' + idm).css({
                         "background-color": 'rgba(255,65,123,0.1)',
                     });
@@ -2117,7 +2126,6 @@
                     jam_l[jam_l.length] = jam_pesan_hidden
                     //show toast
                     setTimeout(function () {
-                        // $('#toast-love').hide()
                         $('#toast-love').show()
                     },500)
                     setTimeout(function () {
@@ -2249,18 +2257,23 @@
 
                 let status_pesan = 5;
 
-                if($('.btn-presentasi').find('.bi-easel-fill').length > 0){
+                if($('.btn-presentasi').find('.bi-easel-fill').length > 0){ /*sudah dipresentasi*/
                     let id_presentasi = $('.btn-presentasi').find('.bi-easel-fill').parent().attr('id')
-                    let id_parent =$('.btn-presentasi').find('.bi-easel-fill').parent().parent().attr('id')
+                    let id_parent = $('.btn-presentasi').find('.bi-easel-fill').parent().parent().attr('id')
 
-                    if($('.btn-presentasi').find('.bi-easel-fill').hasClass('bi-heart-fill')){
+                    if($('.btn-presentasi').find('.bi-easel-fill').parent().siblings('.btn-love').children().hasClass('bi-heart-fill')){ //apakah favorit pada button itu
                         status_pesan = 4;
                     }
+                    else{
+                        status_pesan = 1;
+                    }
 
+                    //ganti icon
                     $('.btn-presentasi').find('.bi-easel-fill').remove()
                     $('#' + id_presentasi).append(element_icon)
 
                     let idp = id_parent.split("-");
+                    //hilangin border kalo dipresentasi
                     $('#container-pesan-'+idp[2]).addClass('border-top')
                     $('#container-pesan-'+idp[2]).addClass('border-bottom')
                     $('#container-pesan-'+idp[2]).removeClass('border')
@@ -2268,68 +2281,95 @@
                     $('#container-pesan-'+idp[2]).removeClass('border-orange')
                     console.log(idp)
 
-
-
                     $.ajax({
                         url: "../update.php",
                         type: "POST",
                         cache: false,
                         data:{
                             status: status_pesan,
-                            id_message: idm,
+                            id_message: idp[2],
                         },
                         success: function(data){
                             let dataResult = JSON.parse(data);
                             if(dataResult.statusCode==200){
-                                console.log('Data updated successfully ! '+idm+' apa');
+                                console.log(idp+' sudah tidak dipresentasi');
                             }
                         }
                     });
                 }
 
-                if($(this).children().hasClass('bi-easel-fill'))
-                {
-                    if($(this).children().hasClass('bi-heart-fill')){
-                        status_pesan = 4;
-                    }
 
-                    $('#btn-presentasi-' + id_j[2]).children('.bi-easel-fill').remove()
-                    $('#btn-presentasi-' + id_j[2]).append(element_icon)
-                    //show toast
-                    setTimeout(function () {
-                        // $('#toast-unlove').hide()
-                        $('#toast-presentasi-hide').show()
-                    },500)
-                    setTimeout(function () {
-                        $('#toast-presentasi-hide').hide()
-                    },5000)
-
-                    status_pesan = 1;
+                if($('#btn-presentasi-' + id_j[2]).siblings('.btn-love').children().hasClass('bi-heart-fill')){
+                    status_pesan = 6;
                 }
-                else
-                {
-                    if($(this).children().hasClass('bi-heart-fill')){
-                        status_pesan = 6;
-                    }
-                    $('#container-pesan-'+idm).removeClass('border-top')
-                    $('#container-pesan-'+idm).removeClass('border-bottom')
-                    $('#container-pesan-'+idm).addClass('border')
-                    $('#container-pesan-'+idm).addClass('border-2')
-                    $('#container-pesan-'+idm).addClass('border-orange')
-
-                    console.log($('#btn-presentasi-' + id_j[2]).children())
-                    $('#btn-presentasi-' + id_j[2]).children('.bi-easel').remove()
-                    $('#btn-presentasi-' + id_j[2]).append(element_icon_fill)
-
-                    //show toast
-                    setTimeout(function () {
-                        // $('#toast-love').hide()
-                        $('#toast-presentasi').show()
-                    },500)
-                    setTimeout(function () {
-                        $('#toast-presentasi').hide()
-                    },5000)
+                else {
+                   status_pesan = 5;
                 }
+
+                //nambah border kalo dipresentasi
+                $('#container-pesan-'+idm).removeClass('border-top')
+                $('#container-pesan-'+idm).removeClass('border-bottom')
+                $('#container-pesan-'+idm).addClass('border')
+                $('#container-pesan-'+idm).addClass('border-2')
+                $('#container-pesan-'+idm).addClass('border-orange')
+
+                //ganti icon
+                console.log($('#btn-presentasi-' + id_j[2]).children())
+                $('#btn-presentasi-' + id_j[2]).children('.bi-easel').remove()
+                $('#btn-presentasi-' + id_j[2]).append(element_icon_fill)
+
+                //show toast
+                setTimeout(function () {
+                    $('#toast-presentasi').show()
+                },500)
+                setTimeout(function () {
+                    $('#toast-presentasi').hide()
+                },5000)
+
+                // if($(this).children().hasClass('bi-easel-fill')==false)
+                // {
+                    // if($(this).children().hasClass('bi-heart-fill')){
+                    //     status_pesan = 4;
+                    // }
+                    //
+                    // $('#btn-presentasi-' + id_j[2]).children('.bi-easel-fill').remove()
+                    // $('#btn-presentasi-' + id_j[2]).append(element_icon)
+                    //
+                    // //show toast
+                    // setTimeout(function () {
+                    //     // $('#toast-unlove').hide()
+                    //     $('#toast-presentasi-hide').show()
+                    // },500)
+                    // setTimeout(function () {
+                    //     $('#toast-presentasi-hide').hide()
+                    // },5000)
+                    //
+                    // status_pesan = 1;
+                // }
+                // else
+                // {
+                //     if($(this).children().hasClass('bi-heart-fill')){
+                //         status_pesan = 6;
+                //     }
+                //     $('#container-pesan-'+idm).removeClass('border-top')
+                //     $('#container-pesan-'+idm).removeClass('border-bottom')
+                //     $('#container-pesan-'+idm).addClass('border')
+                //     $('#container-pesan-'+idm).addClass('border-2')
+                //     $('#container-pesan-'+idm).addClass('border-orange')
+                //
+                //     console.log($('#btn-presentasi-' + id_j[2]).children())
+                //     $('#btn-presentasi-' + id_j[2]).children('.bi-easel').remove()
+                //     $('#btn-presentasi-' + id_j[2]).append(element_icon_fill)
+                //
+                //     //show toast
+                //     setTimeout(function () {
+                //         // $('#toast-love').hide()
+                //         $('#toast-presentasi').show()
+                //     },500)
+                //     setTimeout(function () {
+                //         $('#toast-presentasi').hide()
+                //     },5000)
+                // }
 
                 console.log(status_pesan)
                 /* nambah badge dipresentasikan dan */
@@ -2345,7 +2385,7 @@
                     success: function(data){
                         let dataResult = JSON.parse(data);
                         if(dataResult.statusCode==200){
-                            console.log('Data updated successfully ! '+idm+' apa');
+                            console.log(idm+' dipresentasikan');
                         }
                     }
                 });
@@ -2353,17 +2393,19 @@
                 // jam_i[jam_i.length] = jam_pesan_hidden
                 // parent_element.remove()
                 // i=i+1;
+
                 // Proses Pengiriman Pesan
-                // var id_sesi = $('#login_id_sesi').val();
-                // var data = {
-                //     asal: 'admin-terpilih',
-                //     userId: id_user,
-                //     mId: idm,
-                //     msg: cust_message,
-                //     sesiId: id_sesi,
-                //     date: jam_pesan_hidden,
-                // };
-                // conn.send(JSON.stringify(data));
+                var id_sesi = $('#login_id_sesi').val();
+                var data = {
+                    asal: 'admin-presentasi',
+                    userId: id_user,
+                    mId: idm,
+                    msg: cust_message,
+                    sesiId: id_sesi,
+                    status: status_pesan.toString(),
+                    date: jam_pesan_hidden,
+                };
+                conn.send(JSON.stringify(data));
             })
 
 

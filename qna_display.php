@@ -100,7 +100,7 @@
                                     for($x = 0; $x <= $panjang1; $x++){
                                         $nama_peserta1 = get_nama($chat_data[$x]["id_pengirim"]);
 
-                                        if ($chat_data[$x]["id_chat"] == $sesi_id && ($chat_data[$x]["status"]==1 || $chat_data[$x]["status"]==4)){
+                                        if ($chat_data[$x]["id_chat"] == $sesi_id && ($chat_data[$x]["status"]==1 || $chat_data[$x]["status"]==4 || $chat_data[$x]["status"]==5 || $chat_data[$x]["status"]==6)){
                                             echo '<div id="carousel-item-'.$chat_data[$x]["id_message"].'" class="carousel-item">
                                             <div class="container px-5" >
                                                 <h3 class="card-title text-dark mx-3 px-5">
@@ -280,7 +280,7 @@
             $(document).ready(function(){
                 var port = '8082'
                 // var conn = new WebSocket('ws://localhost:'+port);
-                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19697');
+                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14096');
                 conn.onopen = function(e) {
                     console.log("Connection established!");
                 };
@@ -344,6 +344,11 @@
                     else if(data1.asal === 'user-profil'){
                         console.log(data1.userId + ' '+ data1.namaUser)
                         $(".nama-"+data1.userId).text(data1.namaUser)
+                        counter()
+                    }
+                    else if(data1.asal === 'admin-presentasi'){
+                        console.log(data1.mId + ' '+ data1.userId)
+                        $('#carousel-pertanyaan').carousel($("#carousel-item-"+data1.mId).index())
                         counter()
                     }
                 };
