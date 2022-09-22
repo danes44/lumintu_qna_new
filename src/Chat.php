@@ -59,11 +59,17 @@ class Chat implements MessageComponentInterface {
             $chat_object->setMessage($data['msg']);
         }
         else if($data['asal'] == 'admin-presentasi'){
-            $chat_object->setMessage($data['msg']);
             $chat_object->setPengirimId($data['userId']);
             $chat_object->setMessage($data['msg']);
             $chat_object->setStatus($data['status']);
             $chat_object->setCreatedOn($data['date']);
+            $chat_object->setChatId($data["sesiId"]);
+        }
+        else if($data['asal'] == 'admin-navigasi'){
+            $chat_object->setMessage($data['msg']);
+            $chat_object->setStatus($data['status']);
+            $chat_object->setCreatedOn($data['date']);
+            $chat_object->setChatId($data["sesiId"]);
         }
         else{
             $chat_object->setChatId($data["sesiId"]); // value nya ambil dari id_chat yang di chats

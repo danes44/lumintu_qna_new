@@ -1,7 +1,7 @@
 <?php 
 function mycrypt($action, $data){
-	$secret_key="lumintulogic1818";
-	$secret_iv="3401402012810001";
+    $secret_key="frumentius442120";
+    $secret_iv="3501320421388490";
 
 	$key = hash("sha256", $secret_key);
 	$iv = substr(hash("sha256", $secret_iv), 0, 16);

@@ -101,7 +101,11 @@
                                         $nama_peserta1 = get_nama($chat_data[$x]["id_pengirim"]);
 
                                         if ($chat_data[$x]["id_chat"] == $sesi_id && ($chat_data[$x]["status"]==1 || $chat_data[$x]["status"]==4 || $chat_data[$x]["status"]==5 || $chat_data[$x]["status"]==6)){
-                                            echo '<div id="carousel-item-'.$chat_data[$x]["id_message"].'" class="carousel-item">
+                                            echo '<div id="carousel-item-'.$chat_data[$x]["id_message"].'" class="carousel-item ';
+                                            if($chat_data[$x]["status"]==5 || $chat_data[$x]["status"]==6){
+                                                echo 'active';
+                                            }
+                                            echo '">
                                             <div class="container px-5" >
                                                 <h3 class="card-title text-dark mx-3 px-5">
                                                 '.$chat_data[$x]["pesan"].'
@@ -144,7 +148,9 @@
         <script>
             moment.locale('id');
             console.log(moment(Date.now()).fromNow());
-            $('.carousel-inner').children().first().addClass('active')
+            if($('.carousel-inner').children('.active').length < 1) {
+                $('.carousel-inner').children().first().addClass('active')
+            }
             // $('#btn-test').click(function () {
             //     let active_class = $('#qna_display').find('.active').attr('id')
             //     console.log($('#carousel-item-1156').index())
@@ -280,7 +286,7 @@
             $(document).ready(function(){
                 var port = '8082'
                 // var conn = new WebSocket('ws://localhost:'+port);
-                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14096');
+                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:13818');
                 conn.onopen = function(e) {
                     console.log("Connection established!");
                 };
@@ -350,6 +356,13 @@
                         console.log(data1.mId + ' '+ data1.userId)
                         $('#carousel-pertanyaan').carousel($("#carousel-item-"+data1.mId).index())
                         counter()
+                    }
+                    else if(data1.asal === 'admin-navigasi'){
+                        console.log(data1.msg + ' '+ data1.sesiId)
+                        if(data1.sesiId === sesi_id1) {
+                            console.log(data1.msg)
+                            counter()
+                        }
                     }
                 };
 

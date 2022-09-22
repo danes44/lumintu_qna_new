@@ -171,339 +171,51 @@
             </div>
         </div>
 
-        <!-- Pertanyaan2 -->
-        <div class="container pt-4 px-0">
-            <div class="d-flex justify-content-between position-relative mb-4">
-                <div class="d-flex justify-content-start align-items-center ">
-                    <a id="btn-kembali" class="fw-bold text-decoration-none text-black border-0 rounded my-0 p-0 bg-transparent" role="button" href="dashboard_admin.php" onclick="return confirm('Apakah anda yakin ingin keluar ?')">
-                        <i class="bi bi-arrow-left me-1"></i>
-                        Kembali
-                    </a>
-                </div>
-                <div class=" align-items-center text-center position-absolute top-50 start-50 translate-middle">
-                    <p id="event-name" class="fw-bold mb-0"></p>
-                    <h6 id="date-time" class="mb-0"></h6>
-                </div>
-                <div class="d-flex justify-content-start align-items-center">
-                    <div class="dropdown">
-                        <a id="btn-share" class="btn btn-sm dropdown-toggle fw-semibold text-decoration-none border-0 rounded my-0 p-2 px-3 bg-opacity-10 me-3" style="background-color: rgba(255,102,65,0.1); color:#FF6641" role="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-share me-1 small"></i>
-                            Bagikan
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end mt-2 shadow">
-                            <li>
-                                <p class="text-muted small ms-3 my-2">Peserta</p>
-                            </li>
-                            <li>
-                                <a id="btn-user" class="text-black text-decoration-none dropdown-item small py-2" href="../index_user.php?<?php echo $hasil_hash_id ; ?>" target="_blank">
-                                    <i class="bi bi-phone me-4"></i>
-                                    Buka halaman peserta
-                                </a>
-                            </li>
-                            <li>
-                                <a id="btn-copy-link-peserta" class="btn-copy-link text-black text-decoration-none dropdown-item small py-2" href="#">
-                                    <i class="bi bi-clipboard me-4"></i>
-                                    Salin link halaman peserta
-                                </a>
-                            </li>
-                            <li>
-                                <p class="text-muted small ms-3 my-2">Moderator</p>
-                            </li>
-                            <li>
-                                <a id="btn-user" class="text-black text-decoration-none dropdown-item small py-2" href="../moderator/dashboard_moderator.php?<?php echo $hasil_hash_id ; ?>" target="_blank">
-                                    <i class="bi bi-person-video3 me-4"></i>
-                                    Buka halaman moderator
-                                </a>
-                            </li>
-                            <li>
-                                <a id="btn-copy-link-moderator" class="btn-copy-link text-black text-decoration-none dropdown-item small py-2" href="#">
-                                    <i class="bi bi-clipboard me-4"></i>
-                                    Salin link halaman moderator
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="dropdown">
-                        <a id="btn-display" class="btn btn-sm dropdown-toggle fw-bold text-decoration-none text-white border-0 rounded my-0 p-2 px-3 bg-opacity-10" style="background-color: #FF6641" data-bs-toggle="dropdown">
-                            <i class="bi bi-easel me-1"></i>
-                            Presentasi
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end mt-2 shadow">
-                            <li>
-                                <div class="dropdown-item small py-2">
-                                    <a id="btn-display-here" class=" text-black text-decoration-none " href="../qna_display.php?<?php echo $hasil_hash_id ; ?>">
-                                        <i class="bi bi-fullscreen me-4"></i>
-                                        Presentasi pada halaman ini
-                                    </a>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="dropdown-item small py-2">
-                                    <a id="btn-display-newtab" class=" text-black text-decoration-none" href="../qna_display.php?<?php echo $hasil_hash_id ; ?>" target="_blank">
-                                        <i class="bi bi-box-arrow-up-right me-4"></i>
-                                        Presentasi pada tab baru
-                                    </a>
-                                </div>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                                <div class="dropdown-item small py-2">
-                                    <div class="form-check form-switch">
-                                        <input id="navigasi-presentasi" name="navigasi-presentasi" class="form-check-input me-3" type="checkbox" role="switch" checked>
-                                        <label class="form-check-label" for="navigasi-presentasi ">
-                                            Navigasi presentasi
-                                            <i class="ms-2 bi bi-question-circle" style="font-size: .8em" title="Navigasi untuk menampilkan pertanyaan selanjutnya atau pertanyaan sebelumnya pada halaman presentasi"></i>
-                                        </label>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+        <div class="text-center mb-4 position-sticky-top">
+            <p id="event-name" class="fw-bold mb-0"></p>
+            <h6 id="date-time" class="mb-0"></h6>
+        </div>
+
+        <!-- sidebar -->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasInfo" aria-labelledby="offcanvasInfoLabel">
+            <div class="offcanvas-header justify-content-start ">
+                <button type="button" class="btn-close my-0 me-0" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
             </div>
+            <div class="offcanvas-body text-center">
+                <p class="align-middle fs-1 fw-bold mb-4 ">QnA</p>
+                <img src="assets/Logo QnA.svg" class="img-fluid text-center" width="35%" alt="...">
+                <p id="event-name" class="text-truncate fw-bold mb-0 mt-4"></p>
+                <h6 id="date-time" class="mb-0"></h6>
+            </div>
+        </div>
 
-            <div class="row pt-1" >
-                <div class="col-6">
-                    <div class="d-flex align-items-center mb-2">
-                        <h5 class="fw-bold mb-0" title="Daftar pertanyaan yang perlu di pilih">Semua Pertanyaan </h5>
-                        <i class="ms-2 bi bi-question-circle" style="font-size: .8em" title="Daftar pertanyaan yang perlu di pilih"></i>
-                        <h6 id="jumlah-pertanyaan" class="ms-auto mb-0"></h6>
-                        <h6 id="jumlah-pertanyaan-ditolak-terjawab" class="ms-auto d-none mb-0"></h6>
-                    </div>
-                    <div class="input-group input-group-sm mb-3">
-                        <input type="text" id="search-pertanyaan" class="form-control border border-1 border-end-0 px-2 rounded-start" placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan..." aria-describedby="search-addon" style="background-color: white;" >
-                        <button class="input-group-text border border-1 border-start-0 rounded-end " disabled id="search-addon" style="background-color: white; ">
-                            <span id="badge-terbaru" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .8em">Terbaru
-                            </span>
-                            <span id="badge-ditolak-terjawab" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .8em">Ditolak/Terjawab
-                            </span>
-                            <i class="ms-2 bi bi-search"></i>
-                        </button>
-                        <div class="dropdown">
-                            <button class="input-group-text py-2 border border-1 rounded ms-3" data-bs-toggle="dropdown" id="btn-filter" style="background-color: white; ">
-                              <i class="bi bi-filter"></i>
-                            </button>
-                            <ul class="dropdown-menu shadow">
-                              <li>
-                                  <p class="text-muted small ms-2 mb-2">Urutkan dari yang</p>
-                              </li>
-                              <li>
-                                  <div class="dropdown-item small">
-                                      <input class="form-check-input" type="radio" name="radio-filter" id="radio-terbaru" value="terbaru" >
-                                      <label class="form-check-label ms-2"  for="radio-terbaru">
-                                          Terbaru
-                                      </label>
-                                  </div>
-                              </li>
-                              <li>
-                                  <div class="dropdown-item small">
-                                      <input class="form-check-input" type="radio" name="radio-filter" id="radio-terlama" value="terlama" checked>
-                                      <label class="form-check-label ms-2" for="radio-terlama">
-                                          Terlama (Default)
-                                      </label>
-                                  </div>
-                              </li>
-                              <li>
-                                  <p class="text-muted small ms-2 my-2">Filter</p>
-                              </li>
-                              <li>
-                                  <div class="dropdown-item small">
-                                      <input class="form-check-input" type="checkbox" name="checkbox-terjawab" id="checkbox-terjawab">
-                                      <label class="form-check-label ms-2" for="checkbox-terjawab">
-                                          Terjawab atau Ditolak
-                                      </label>
-                                  </div>
-                              </li>
-                            </ul>
-                        </div>
-                    </div>
+        <!-- navbar -->
+        <div id="navbar" class="border-0 fixed-top px-3 py-2 text-dark border-bottom" style="background-color: #FFFFFF;">
+            <div class="d-flex align-items-center justify-content-between">
+                <button class="btn fs-3 p-0 me-0" data-bs-toggle="offcanvas" data-bs-target="#offcanvasInfo"
+                        aria-controls="offcanvasInfo">
+                    <i class="bi bi-list text-black"></i>
+                </button>
+                <p id="event-name" class="small text-truncate fw-bold mb-0 mt-4">memuat...</p>
+            </div>
+        </div>
 
-                    <!-- semua pertanyaan -->
-                    <div class="border border-1 rounded-3 sortable list-pertanyaan" id="container-pesan" style="height: calc(100vh - 210px); overflow-y: overlay;">
-                        <?php
-                            $i = 0;
-                            $last = count($chat_data);
+        <!-- Pertanyaan2 -->
+        <div class="container pt-4 px-0" style="max-width: 540px;overflow-y: overlay;">
 
-                            foreach($chat_data as $chat)
-                            {
-                                $str1 = str_split($chat["waktu_pengiriman"], 10);
-                                $jam_pesan = str_split($str1[1], 6);
-
-                                if ($chat["id_chat"] == $_GET["id_session"] && ($chat["status"]==0 )){
-                                    $nama_peserta = get_nama($chat["id_pengirim"]);
-                                    $id = $chat["id_message"];
-                                    $huruf_depan = $nama_peserta[0];
-
-                                    $i_x_waktu[$i] = $chat["waktu_pengiriman"];
-
-                                    echo '
-                                        <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan border-top border-bottom">
-                                            <div class="d-flex">
-                                                <p id="pesan-'.$chat["id_message"].'" class="mb-0 small isi-pesan flex-grow-1">
-                                                    '.$chat["pesan"].'
-                                                    ';
-                                                    if($chat["is_edited"]==1){
-                                                        echo '<span class="badge-edited small mb-0 text-muted"> (edited)</span>';
-                                                    }
-                                                    echo '
-                                                </p>
-                                                <div class="dropdown">
-                                                    <button id="btn-options" class="bg-transparent border-0" data-bs-toggle="dropdown" style="height: fit-content">
-                                                            <i class="bi bi-three-dots text-muted"></i>
-                                                    </button>    
-                                                    <ul class="dropdown-menu shadow">
-                                                        <li>
-                                                            <button id="btn-edit-'.$chat["id_message"].'" class="dropdown-item small btn-edit" type="button">
-                                                                <i class="bi bi-pencil me-3 text-primary"></i>Edit
-                                                            </button>
-                                                        </li>
-                                                    </ul> 
-                                                </div>
-                                            </div>
-                        
-                                            <div class="card-footer bg-transparent">
-                                                <div class="d-flex justify-content-between align-items-center mt-3 ">
-                                                    <div class="d-flex align-items-center ">
-                                                        <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                                            <span>'.$huruf_depan.'</span>
-                                                        </button>
-                                                        <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
-                                                            <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0">'.$nama_peserta.' </p>
-                                                            <p id="jam-pesan-i'.$i.'" class="jam text-black-50 small mb-0 ">
-                                                                '.$jam_pesan[0].'
-                                                            </p>
-                                                            <p class="waktu-kirim d-none" id="waktu_pengiriman_i_'. $i .'" >'.$chat["waktu_pengiriman"].'</p>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div id="container-btn-'.$chat["id_message"].'">
-                                                        <button id="btn-accept-'. $i .'" class="btn btn-accept bg-success bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted"  title="Setujui pertanyaan"  style="width: 50px;">
-                                                            <i class="bi bi-check-lg text-success "></i>
-                                                        </button>
-                                                        
-                                                        <button id="btn-decline-'.$i.'" class="btn btn-decline bg-danger bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted"  title="Tolak pertanyaan"  style="width: 50px;">
-                                                            <i class="bi bi-x-lg text-danger "></i>
-                                                        </button>
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>                                  
-                                        ';
-                                    $i++;
-                                }
-                            }
-                        ?>
-                    </div>
-
-                    <!-- Modal Edit-->
-                    <div class="modal fade" id="modal-edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-edit-label" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header border-0">
-                                    <h5 class="modal-title fw-bold " id="staticBackdropLabel">Edit Pertanyaan</h5>
-                                </div>
-                                <div class="modal-body ">
-                                    <textarea id="input-edit" type="text" class="form-control border border-1 py-2 px-3 rounded-start" style="height:200px;font-size: .875em;resize: none" maxlength="400" required></textarea>
-                                </div>
-                                <div class="modal-footer border-0">
-                                    <span id="char-counter" class="small text-mute me-auto" style="font-size: 12px">400</span>
-
-                                    <button id="btn-save" class="btn btn-save border-0 rounded-3 py-2 px-3 me-0 text-white fw-bold"  title="Simpan perubahan"  style="background-color: #FF6641;font-size: .875em">
-                                        Simpan
-                                    </button>
-
-                                    <button id="btn-cancel" class="btn btn-cancel border border-1 rounded-3 py-2 px-3 me-0 text-muted fw-semibold"  title="Batalkan perubahan" style="font-size: .875em">
-                                        Batal
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pertanyaan terjawab dan ditolak-->
-                    <div class="border border-1 rounded-3 sortable list-pertanyaan d-none" id="container-pesan-ditolak-terjawab" style="height: calc(100vh - 210px); overflow-y: overlay;">
-                        <?php
-                        $k = 0;
-                        $last = count($chat_data);
-
-                        foreach($chat_data as $chat)
-                        {
-                            $str1 = str_split($chat["waktu_pengiriman"], 10);
-                            $jam_pesan = str_split($str1[1], 6);
-
-                            if ($chat["id_chat"] == $_GET["id_session"] && ($chat["status"]==2 || $chat["status"]==3)){
-                                $nama_peserta = get_nama($chat["id_pengirim"]);
-                                $id = $chat["id_message"];
-                                $huruf_depan = $nama_peserta[0];
-
-                                $k_x_waktu[$k] = $chat["waktu_pengiriman"];
-
-                                echo '
-                                        <div id="container-pesan-ditolak-terjawab-'.$chat["id_message"].'" class="p-3 pesan-ditolak-terjawab border-top border-bottom ">
-                                            <div class="d-flex">
-                                                <p id="pesan-ditolak-terjawab-'.$chat["id_message"].'" class="mb-0 small isi-pesan flex-grow-1">
-                                                    '.$chat["pesan"].'
-                                                    ';
-                                                    if($chat["is_edited"]==1){
-                                                        echo '<span class="badge-edited small mb-0 text-muted"> (edited)</span>';
-                                                    }
-                                                    echo '
-                                                </p>
-                                            </div>
-                        
-                                            <div class="card-footer bg-transparent">
-                                                <div class="d-flex justify-content-between align-items-center mt-3 ">
-                                                    <div class="d-flex align-items-center ">
-                                                        <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                                            <span>'.$huruf_depan.'</span>
-                                                        </button>
-                                                        <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
-                                                            <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0">'.$nama_peserta.' </p>
-                                                            <p id="jam-pesan-k'.$k.'" class="jam text-black-50 small mb-0 ">
-                                                                '.$jam_pesan[0].'
-                                                            </p>
-                                                            <p class="waktu-kirim d-none" id="waktu_pengiriman_k_'. $k .'" >'.$chat["waktu_pengiriman"].'</p>
-                                                        </div>
-                                                        ';
-                                                        if($chat["status"]==2){
-                                                            echo '<i class="bi bi-patch-check text-success ms-2 align-self-end" title="Pertanyaan Terjawab"></i>';
-                                                        }
-                                                        else{
-                                                            echo '<i class="bi bi-file-earmark-x text-danger ms-2 align-self-end" title="Pertanyaan Ditolak"></i>';
-                                                        }
-                                                        echo '
-                                                    </div>
-                                                    
-                                                    <div id="container-btn-'.$chat["id_message"].'">
-                                                        <button id="btn-revert-'.$k.'" class="btn btn-revert bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal hapus pertanyaan">
-                                                            <i class="bi bi-arrow-counterclockwise"></i>
-                                                        </button>
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>';
-                                $k++;
-                            }
-                        }
-                        ?>
-                    </div>
-                </div>
-
-                <div class="col-6">
+<!--            <div class="row pt-1" >-->
+                <div class="position-absolute start-50 translate-middle-x w-100" style="max-width: 540px; overflow-y: overlay;">
                     <div class="d-flex align-items-center mb-2">
                         <h5 class="fw-bold mb-0" title="Daftar pertanyaan yang tertampil di presentasi">
-                            Pertanyaan Aktif
+                            Daftar Pertanyaan
                         </h5>
                         <i class="ms-2 bi bi-question-circle" style="font-size: .8em" title="Daftar pertanyaan yang tertampil di presentasi"></i>
                         <span class="ms-2 badge rounded-pill text-bg-danger"><i class="bi bi-circle-fill me-2 blink" style="font-size: 0.8em"></i>Live</span>
                         <h6 id="jumlah-pertanyaan-terpilih" class="ms-auto mb-0"></h6>
                         <h6 id="jumlah-pertanyaan-favorit" class="ms-auto mb-0 d-none"></h6>
                     </div>
-                    <div class="input-group input-group-sm mb-3">
+                    <div class="input-group input-group-sm">
                         <input type="text" id="search-pertanyaan-terpilih" class="form-control border border-1 border-end-0 px-2 rounded-start" placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan..." aria-describedby="search-addon-terpilih" style="background-color: white; border-radius: .5rem 0 0 .5rem;">
                         <button class="input-group-text border border-1 border-start-0 rounded-end" disabled id="search-addon-terpilih" style="background-color: white; ">
                             <span id="badge-terbaru-live" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .8em">Terbaru
@@ -551,7 +263,7 @@
                         </div>
                     </div>
                     <!-- pesan terpilih-->
-                    <div class="border border-1 rounded-3 sortable list-pertanyaan" id="container-pesan-terpilih" style="height: calc(100vh - 210px); overflow-y: overlay;">
+                    <div class="rounded-3 sortable list-pertanyaan " id="container-pesan-terpilih" style="max-height: 540px !important;">
                       <?php
                         $j = 0;
                         $last = count($chat_data);
@@ -566,12 +278,12 @@
                                 $j_x_waktu[$j] = $chat["waktu_pengiriman"];
 
                                 echo '
-                                    <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan-terpilih ';
+                                    <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan-terpilih rounded-3 my-4 ';
                                     if($chat["status"]==5 || $chat["status"]==6){
                                         echo 'border border-2 border-orange';
                                     }
                                     else{
-                                        echo 'border-top border-bottom';
+                                        echo 'border border-1';
                                     }
                                     echo ' " ';
                                     if($chat["status"]==4 || $chat["status"]==6){
@@ -604,9 +316,6 @@
                                                 </div>
                                             
                                                 <div id="container-btn-'.$chat["id_message"]. '" class="container-btn">
-                                                    <button id="btn-revert-'.$j.'" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
-                                                        <i class="bi bi-arrow-counterclockwise"></i>
-                                                    </button>
                                                     <button id="btn-love-'.$j.'" class="btn btn-love text-danger bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
                                                         ';
                                                         if($chat["status"]==4 || $chat["status"]==6){
@@ -690,9 +399,6 @@
                                                 </div>
                                             
                                                 <div id="container-btn-'.$chat["id_message"]. '" class="container-btn">
-                                                    <button id="btn-revert-'.$l.'" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
-                                                        <i class="bi bi-arrow-counterclockwise"></i>
-                                                    </button>
                                                     <button id="btn-love-'.$l.'" class="btn btn-love text-danger bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
                                                         <i class="bi bi-heart-fill" ></i>
                                                     </button>
@@ -719,7 +425,7 @@
                         ?>
                     </div>
                 </div>
-            </div>
+<!--            </div>-->
         </div>
 
         <?php
@@ -744,7 +450,7 @@
         </script>
 
         <!-- fungsi copy-->
-        <script>
+        <!--<script>
             $("body").on("click", ".btn-copy-link", function() {
                 let pathname = window.location.pathname; // Returns path only (/path/example.html)
                 let url      = window.location.href;     // Returns full URL (https://example.com/path/example.html)
@@ -756,10 +462,10 @@
                 let copyText = '';
                 console.log($(this).attr('id'))
                 if($(this).attr('id') === 'btn-copy-link-moderator'){
-                    let copyText = '/moderator/dashboard_moderator.php?<?php echo $hasil_hash_id; ?>';
+                    let copyText = '/moderator/dashboard_moderator.php?<?php /*echo $hasil_hash_id; */?>';
                 }
                 else if($(this).attr('id') === 'btn-copy-link-peserta') {
-                    let copyText = '/index_user.php?<?php echo $hasil_hash_id; ?>';
+                    let copyText = '/index_user.php?<?php /*echo $hasil_hash_id; */?>';
                     /* Copy the text inside the text field */
                 }
                 navigator.clipboard.writeText(origin + "/" + pathname_arr[1] + copyText);
@@ -769,10 +475,10 @@
                     $('#toast-copy').hide()
                 }, 3000)
             })
-        </script>
+        </script>-->
 
         <!-- fungsi on/off navigasi presentasi-->
-        <script>
+        <!--<script>
             let navigasi = 'on';
             $('input:checkbox[name="navigasi-presentasi"]').change(function() {
                 if ($(this).is(":checked") === true) {
@@ -793,7 +499,7 @@
                 };
                 conn.send(JSON.stringify(data));
             });
-        </script>
+        </script>-->
 
         <!-- fungsi ganti background letter avatar-->
         <script>
@@ -1053,7 +759,7 @@
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
-            let i= <?php echo $i; ?>;
+            let i= <?php echo $j; ?>;
             $(document).ready(function(){
                 conn.onmessage = function(e) {
                     console.log("websocket:" +e.data);
@@ -1109,15 +815,15 @@
                                                     </button>
                                                     <div id="container-nama-waktu-${data1.mId}" class="small align-self-center ms-2">
                                                         <p id="nama-peserta-form-${data1.userId}" class="nama text-truncate fw-bold mb-0">${nama}</p>
-                                                        <p id="jam-pesan-i${i}" class="jam text-black-50 small mb-0 ">${moment(data1.date).fromNow()}</p>
-                                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_i_${i}">${data1.date}</p>
+                                                        <p id="jam-pesan-j${j}" class="jam text-black-50 small mb-0 ">${moment(data1.date).fromNow()}</p>
+                                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_j_${j}">${data1.date}</p>
                                                     </div>
                                                 </div>
                                                 <div id="container-btn-${data1.mId}">
-                                                    <button id="btn-accept-${i}" class="btn btn-accept bg-success  bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted" title="Setujui pertanyaan"  style="width: 50px;">
+                                                    <button id="btn-accept-${j}" class="btn btn-accept bg-success  bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted" title="Setujui pertanyaan"  style="width: 50px;">
                                                         <i class="bi bi-check-lg text-success "></i>
                                                     </button>
-                                                    <button id="btn-decline-${i}" class="btn btn-decline bg-danger bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted"  title="Tolak pertanyaan"  style="width: 50px;">
+                                                    <button id="btn-decline-${j}" class="btn btn-decline bg-danger bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted"  title="Tolak pertanyaan"  style="width: 50px;">
                                                         <i class="bi bi-x-lg text-danger "></i>
                                                     </button>
                                                 </div>
@@ -1299,324 +1005,6 @@
 
         <!-- fungsi pindah pertanyaan   -->
         <script>
-            //fungsi button accept
-            let j= <?php echo $j; ?>;
-            $("body").on("click", '.btn-accept', function() {
-                $('#badge-baru').remove()
-
-                let id_element = $(this).parent().attr('id');
-                let id_numb = id_element.split("-");
-                let idm = id_numb[2]
-                console.log($('#container-pesan-'+idm))
-
-                let parent_element = $('#container-pesan-'+idm);
-
-                $.ajax({
-                    url: "../update.php",
-                    type: "POST",
-                    cache: false,
-                    data:{
-                        status: '1',
-                        id_message: idm,
-                    },
-                    success: function(dataResult){
-                        var dataResult = JSON.parse(dataResult);
-                        if(dataResult.statusCode==200){
-                            console.log('Data updated successfully ! '+idm+' apa');
-                        }
-                    }
-                });
-
-                // let id_waktu_kirim= $('#nama-peserta-form-'+idm).siblings('.waktu-kirim').attr('id');
-                // let i_split = id_waktu_kirim.split('_')
-                // let i = i_split[3];
-
-                // get id user
-                let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
-                let id_user_arr = id_user_element.split("-");
-                let id_user = id_user_arr[3];
-                console.log(id_user)
-
-                // get nama user dan message
-                var cust_name = $('#nama-peserta-form-'+id_user).text();
-                let cust_nama_depan = Array.from(cust_name)[0];
-                let cust_message = $.trim($('#pesan-'+idm).clone().children().remove().end().text());
-
-                // get jam pesan
-                let element_i = $('#container-btn-'+idm).children('.btn-accept').attr('id')
-                let id_i = element_i.split("-");
-                let jam_pesan = $('#jam-pesan-i'+id_i[2]).text();
-                let jam_pesan_hidden = $('#waktu_pengiriman_i_'+id_i[2]).text();
-
-                console.log(jam_pesan_hidden + j)
-
-                let elements=
-                    `<div id="container-pesan-${idm}" class="p-3 pesan-terpilih border-top border-bottom ">
-                        <div class="d-flex">
-                            <p id="pesan-${idm}" class="mb-0 small isi-pesan flex-grow-1">
-                                ${cust_message}
-                            </p>
-                        </div>
-
-                        <div class="card-footer bg-transparent">
-                            <div class="d-flex justify-content-between align-items-center mt-3 ">
-                                <div class="d-flex align-items-center ">
-                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                        <span>${cust_nama_depan}</span>
-                                    </button>
-                                    <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
-                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
-                                        <p id="jam-pesan-j${j}" class="jam text-black-50 small mb-0 ">
-                                            ${jam_pesan}
-                                        </p>
-                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_j_${j}">${jam_pesan_hidden}</p>
-                                    </div>
-                                </div>
-
-                                <div id="container-btn-${idm}" class="container-btn">
-                                    <button id="btn-revert-${j}" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
-                                        <i class="bi bi-arrow-counterclockwise"></i>
-                                    </button>
-                                    <button id="btn-love-${j}" class="btn btn-love bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
-                                        <i class="bi bi-heart" ></i>
-                                    </button>
-                                    <button id="btn-presentasi-${j}" class="btn btn-presentasi bg-transparent border-0 rounded-3 py-1 px-1 ms-1 bg-opacity-10" style="color: #FF6641" title="Tampilkan di presentasi"><i class="bi bi-easel me-1"></i>
-                                    </button>
-                                    <button id="btn-terjawab-${j}" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
-                                        <i class="bi bi-check-lg text-white"></i>
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>`
-
-                $("#container-pesan-terpilih").append(elements);
-                console.log("udah pindah"+$('#container-pesan-'+idm).parent().attr('id'))
-
-                ubahWarnaAvatar();
-
-                jam_j[jam_j.length] = jam_pesan_hidden
-
-                if( $('#radio-terbaru-live').is(':checked') ){
-                    $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerbaru).appendTo('#container-pesan-terpilih')
-                    console.log("terbaru")
-                }
-                else if ($('#radio-terlama-live').is(':checked')){
-                    $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerlama).appendTo('#container-pesan-terpilih')
-                    console.log("terlama")
-                }
-
-                parent_element.remove()
-
-                setTimeout(function() {
-                    setFormatJam()
-                    counter()
-                    //scroll ke pesan terbaru
-                    $('#container-pesan-terpilih').animate({
-                        scrollTop: $('#container-pesan-'+idm).offset().top - $('#container-pesan-terpilih').offset().top + $('#container-pesan-terpilih').scrollTop()
-                    }, 500);
-                }, 100);
-
-                setTimeout(function () {
-                    $('#container-pesan-'+idm).css({
-                        "background-color" : 'rgba(25,135,84,0.1)',
-                    });
-
-                    $('#pesan-'+idm).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
-
-                    // nambah badge edited
-                    $.ajax({
-                        url: "../get_is_edited_messages.php",
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'json',
-                        data:{
-                            id_message: idm,
-                        },
-                        success: function(data, textStatus, xhr) {
-                            console.log(typeof data[0].is_edited)
-                            if( data[0].is_edited === '1' ){
-                                console.log(data[0].is_edited)
-                                if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
-                                    $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
-                                }
-                            }
-                        }
-                    })
-                },500)
-
-                setTimeout(function () {
-                    $('#container-pesan-'+idm).css({
-                        "background-color" : 'white',
-                    });
-                    console.log("ganti warna")
-                },1500)
-
-                //show toast
-                $('#toast-accept').show()
-                setTimeout(function () {
-                    $('#toast-accept').hide()
-                },5000)
-
-                j=j+1;
-                // Proses Pengiriman Pesan
-                let id_sesi = $('#login_id_sesi').val();
-                let data = {
-                    asal: 'admin',
-                    userId: id_user,
-                    mId: idm,
-                    msg: cust_message,
-                    sesiId: id_sesi,
-                    date: jam_pesan_hidden,
-                };
-                conn.send(JSON.stringify(data));
-            })
-
-            //fungsi button decline
-            let k= <?php echo $k; ?>;
-            $("body").on("click", '.btn-decline', function() {
-                $('#badge-baru').remove()
-
-                let id_element = $(this).parent().attr('id');
-                let id_numb = id_element.split("-");
-                let idm = id_numb[2]
-                console.log($('#container-pesan-ditolak-terjawab-'+idm).parent().attr('class'))
-
-                let parent_element = $('#container-pesan-'+idm);
-
-                $.ajax({
-                    url: "../update.php",
-                    type: "POST",
-                    cache: false,
-                    data:{
-                        status: '3',
-                        id_message: idm,
-                    },
-                    success: function(dataResult){
-                        var dataResult = JSON.parse(dataResult);
-                        if(dataResult.statusCode==200){
-                            console.log('Data updated successfully ! '+idm+' apa');
-                        }
-                    }
-                });
-
-                // get id user
-                let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
-                let id_user_arr = id_user_element.split("-");
-                let id_user = id_user_arr[3];
-                console.log(id_user)
-
-                // get nama user dan message
-                var cust_name = $('#nama-peserta-form-'+id_user).text();
-                let cust_nama_depan = Array.from(cust_name)[0];
-                let cust_message = $.trim($('#pesan-'+idm).clone().children().remove().end().text());
-
-                // get jam pesan
-                let element_k = $('#container-btn-'+idm).children('.btn-decline').attr('id')
-                let id_k = element_k.split("-");
-                let jam_pesan = $('#jam-pesan-i'+id_k[2]).text();
-                let jam_pesan_hidden = $('#waktu_pengiriman_i_'+id_k[2]).text();
-
-                console.log(id_k[2])
-
-                let elements=
-                    `<div id="container-pesan-ditolak-terjawab-${idm}" class="p-3 pesan-ditolak-terjawab border-top border-bottom ">
-                        <div class="d-flex">
-                            <p id="pesan-ditolak-terjawab-${idm}" class="mb-0 small isi-pesan flex-grow-1">
-                                ${cust_message}
-                            </p>
-
-                        </div>
-
-                        <div class="card-footer bg-transparent">
-                            <div class="d-flex justify-content-between align-items-center mt-3 ">
-                                <div class="d-flex align-items-center ">
-                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                        <span>${cust_nama_depan}</span>
-                                    </button>
-                                    <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
-                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
-                                        <p id="jam-pesan-k${k}" class="jam text-black-50 small mb-0 ">
-                                            ${jam_pesan}
-                                        </p>
-                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_k_${k}">${jam_pesan_hidden}</p>
-                                    </div>
-                                    <i class="bi bi-file-earmark-x text-danger ms-2 align-self-end" title="Pertanyaan Ditolak"></i>
-                                </div>
-
-                                <div id="container-btn-${idm}">
-                                    <button id="btn-revert-${k}" class="btn btn-revert bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
-                                        <i class="bi bi-arrow-counterclockwise"></i>
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>`
-
-                console.log("udah pindah")
-                $("#container-pesan-ditolak-terjawab").append(elements);
-
-                ubahWarnaAvatar();
-
-                jam_k[jam_k.length] = jam_pesan_hidden
-
-                parent_element.remove()
-
-                setTimeout(function() {
-                    setFormatJam()
-                    counter()
-                    // scroll ke pesan terbaru
-                    $('#container-pesan-ditolak-terjawab').animate({
-                        scrollTop: $('#container-pesan-ditolak-terjawab-'+idm).offset().top - $('#container-pesan-ditolak-terjawab').offset().top + $('#container-pesan-ditolak-terjawab').scrollTop()
-                    }, 500);
-                    //
-                }, 100);
-
-                setTimeout(function () {
-                    $('#container-pesan-ditolak-terjawab-'+idm).css({
-                        "background-color" : 'rgba(25,135,84,0.1)',
-                    });
-                    $('#pesan-ditolak-terjawab-'+idm).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
-
-                    // nambah badge edited
-                    $.ajax({
-                        url: "../get_is_edited_messages.php",
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'json',
-                        data:{
-                            id_message: idm,
-                        },
-                        success: function(data, textStatus, xhr) {
-                            console.log(typeof data[0].is_edited)
-                            if( data[0].is_edited === '1' ){
-                                console.log(data[0].is_edited)
-                                if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
-                                    $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
-                                }
-                            }
-                        }
-                    })
-                },500)
-
-                setTimeout(function () {
-                    $('#container-pesan-ditolak-terjawab-'+idm).css({
-                        "background-color" : 'white',
-                    });
-                    console.log("ganti warna")
-                },1500)
-
-                //show toast
-                $('#toast-decline').show()
-                setTimeout(function () {
-                    $('#toast-decline').hide()
-                },5000)
-
-                k=k+1;
-            })
-
             //fungsi button terjawab
             $("body").on("click", ".btn-terjawab", function() {
                 $('#badge-baru').remove()
@@ -1768,404 +1156,6 @@
                     date: jam_pesan_hidden,
                 };
                 conn.send(JSON.stringify(data));
-            })
-
-            //fungsi revert pertanyaan dari terpilih ke awal
-            $("body").on("click", ".btn-revert-terpilih", function() {
-                $('#badge-baru').remove()
-
-                let id_element = $(this).parent().attr('id');
-                let id_numb = id_element.split("-");
-                let idm = id_numb[2]
-
-                let parent_element = $('#container-pesan-'+idm);
-
-                $.ajax({
-                    url: "../update.php",
-                    type: "POST",
-                    cache: false,
-                    data:{
-                        status: '0',
-                        id_message: idm,
-                    },
-                    success: function(dataResult){
-                        var dataResult = JSON.parse(dataResult);
-                        if(dataResult.statusCode==200){
-                            console.log('Data updated successfully ! '+idm+' apa');
-                        }
-                    }
-                });
-
-                // get id user
-                let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
-                let id_user_arr = id_user_element.split("-");
-                let id_user = id_user_arr[3];
-                console.log(id_user)
-
-                // get nama user dan message
-                let cust_name = $('#nama-peserta-form-'+id_user).text();
-                let cust_nama_depan = Array.from(cust_name)[0];
-                let cust_message = $.trim($('#pesan-'+idm).clone().children().remove().end().text());
-
-                // get jam pesan
-                let element_j = $('#container-btn-'+idm).children('.btn-revert-terpilih').attr('id')
-                let id_j = element_j.split("-");
-                let jam_pesan = $('#jam-pesan-j'+id_j[2]).text();
-                let jam_pesan_hidden = $('#waktu_pengiriman_j_'+id_j[2]).text();
-
-                console.log(id_j[2])
-
-                let elements=
-                    `<div id="container-pesan-${idm}" class="p-3 pesan border-top border-bottom">
-                        <div class="d-flex">
-                            <p id="pesan-${idm}" class="mb-0 small isi-pesan flex-grow-1">${cust_message}</p>
-                            <div class="dropdown">
-                                <button id="btn-options" class="bg-transparent border-0" data-bs-toggle="dropdown" style="height: fit-content">
-                                    <i class="bi bi-three-dots text-muted"></i>
-                                </button>
-                                <ul class="dropdown-menu shadow">
-                                    <li>
-                                        <button id="btn-edit-${idm}" class="dropdown-item small btn-edit" type="button">
-                                            <i class="bi bi-pencil me-3 text-primary"></i>Edit
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="card-footer bg-transparent">
-                            <div class="d-flex justify-content-between align-items-center mt-3 ">
-                                <div class="d-flex align-items-center ">
-                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                        <span>${cust_nama_depan}</span>
-                                    </button>
-                                    <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
-                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
-                                        <p id="jam-pesan-i${i}" class="jam text-black-50 small mb-0 ">${jam_pesan}</p>
-                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_i_${i}">${jam_pesan_hidden}</p>
-                                    </div>
-                                </div>
-                                <div id="container-btn-${idm}">
-                                    <button id="btn-accept-${i}" class="btn btn-accept bg-success  bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted" title="Setujui pertanyaan"  style="width: 50px;">
-                                        <i class="bi bi-check-lg text-success "></i>
-                                    </button>
-                                    <button id="btn-decline-${i}" class="btn btn-decline bg-danger bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted"  title="Tolak pertanyaan"  style="width: 50px;">
-                                        <i class="bi bi-x-lg text-danger "></i>
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>`
-
-                console.log("udah pindah")
-                $("#container-pesan").append(elements);
-
-                ubahWarnaAvatar();
-
-                jam_i[jam_i.length] = jam_pesan_hidden
-
-                parent_element.remove()
-
-                setTimeout(function() {
-                    setFormatJam()
-                    counter()
-                    // scroll ke pesan terbaru
-                    $('#container-pesan').animate({
-                        scrollTop: $('#container-pesan-'+idm).offset().top - $('#container-pesan').offset().top + $('#container-pesan').scrollTop()
-                    }, 500);
-                    //
-                }, 100);
-
-                setTimeout(function () {
-                    $('#container-pesan-'+idm).css({
-                        "background-color" : 'rgba(25,135,84,0.1)',
-                    });
-                    $('#pesan-'+idm).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
-
-                    // nambah badge edited
-                    $.ajax({
-                        url: "../get_is_edited_messages.php",
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'json',
-                        data:{
-                            id_message: idm,
-                        },
-                        success: function(data, textStatus, xhr) {
-                            console.log(typeof data[0].is_edited)
-                            if( data[0].is_edited === '1' ){
-                                console.log(data[0].is_edited)
-                                if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
-                                    $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
-                                }
-                            }
-                        }
-                    })
-                },500)
-
-                setTimeout(function () {
-                    $('#container-pesan-'+idm).css({
-                        "background-color" : 'white',
-                    });
-                    console.log("ganti warna")
-                },1500)
-
-                //show toast
-                $('#toast-revert').show()
-                setTimeout(function () {
-                    $('#toast-revert').hide()
-                },5000)
-
-                i=i+1;
-                // Proses Pengiriman Pesan
-                var id_sesi = $('#login_id_sesi').val();
-                var data = {
-                    asal: 'admin-terpilih',
-                    userId: id_user,
-                    mId: idm,
-                    msg: cust_message,
-                    sesiId: id_sesi,
-                    date: jam_pesan_hidden,
-                };
-                conn.send(JSON.stringify(data));
-            })
-
-            //fungsi revert pertanyaan dari ditolak/terjawab ke awal
-            $("body").on("click", ".btn-revert", function() {
-                $('#badge-baru').remove()
-
-                let id_element = $(this).parent().attr('id');
-                let id_numb = id_element.split("-");
-                let idm = id_numb[2]
-
-                let parent_element = $('#container-pesan-ditolak-terjawab-'+idm);
-
-                // get id user
-                let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
-                let id_user_arr = id_user_element.split("-");
-                let id_user = id_user_arr[3];
-                console.log(id_user)
-
-                // get nama user dan message
-                let cust_name = $('#nama-peserta-form-'+id_user).text();
-                let cust_nama_depan = Array.from(cust_name)[0];
-                let cust_message = $('#pesan-ditolak-terjawab-'+idm).text();
-
-                // get jam pesan
-                let element_j = $('#container-btn-'+idm).children('.btn-revert').attr('id')
-                let id_j = element_j.split("-");
-                let jam_pesan = $('#jam-pesan-k'+id_j[2]).text();
-                let jam_pesan_hidden = $('#waktu_pengiriman_k_'+id_j[2]).text();
-
-                console.log(id_j[2])
-
-                let elements=
-                    `<div id="container-pesan-${idm}" class="p-3 pesan border-top border-bottom">
-                        <div class="d-flex">
-                            <p id="pesan-${idm}" class="mb-0 small isi-pesan flex-grow-1">${cust_message}</p>
-                            <div class="dropdown">
-                                <button id="btn-options" class="bg-transparent border-0" data-bs-toggle="dropdown" style="height: fit-content">
-                                    <i class="bi bi-three-dots text-muted"></i>
-                                </button>
-                                <ul class="dropdown-menu shadow">
-                                    <li>
-                                        <button id="btn-edit-${idm}" class="dropdown-item small btn-edit" type="button">
-                                            <i class="bi bi-pencil me-3 text-primary"></i>Edit
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="card-footer bg-transparent">
-                            <div class="d-flex justify-content-between align-items-center mt-3 ">
-                                <div class="d-flex align-items-center ">
-                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                        <span>${cust_nama_depan}</span>
-                                    </button>
-                                    <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
-                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
-                                        <p id="jam-pesan-i${i}" class="jam text-black-50 small mb-0 ">${jam_pesan}</p>
-                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_i_${i}">${jam_pesan_hidden}</p>
-                                    </div>
-                                </div>
-                                <div id="container-btn-${idm}">
-                                    <button id="btn-accept-${i}" class="btn btn-accept bg-success  bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted" title="Setujui pertanyaan"  style="width: 50px;">
-                                        <i class="bi bi-check-lg text-success "></i>
-                                    </button>
-                                    <button id="btn-decline-${i}" class="btn btn-decline bg-danger bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted"  title="Tolak pertanyaan"  style="width: 50px;">
-                                        <i class="bi bi-x-lg text-danger "></i>
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>`
-
-                let element_terjawab = `
-                    <div id="container-pesan-${idm}" class="p-3 pesan-terpilih border-top border-bottom ">
-                        <div class="d-flex">
-                            <p id="pesan-${idm}" class="mb-0 small isi-pesan flex-grow-1">
-                                ${cust_message}
-                            </p>
-
-                        </div>
-
-                        <div class="card-footer bg-transparent">
-                            <div class="d-flex justify-content-between align-items-center mt-3 ">
-                                <div class="d-flex align-items-center ">
-                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                        <span>${cust_nama_depan}</span>
-                                    </button>
-                                    <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
-                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
-                                        <p id="jam-pesan-j${j}" class="jam text-black-50 small mb-0 ">
-                                            ${jam_pesan}
-                                        </p>
-                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_j_${j}">${jam_pesan_hidden}</p>
-                                    </div>
-                                </div>
-
-                                <div id="container-btn-${idm}" class="container-btn">
-                                    <button id="btn-revert-${j}" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
-                                        <i class="bi bi-arrow-counterclockwise"></i>
-                                    </button>
-                                    <button id="btn-love-${j}" class="btn btn-love bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
-                                        <i class="bi bi-heart" ></i>
-                                    </button>
-                                    <button id="btn-presentasi-${j}" class="btn btn-presentasi bg-transparent border-0 rounded-3 py-1 px-1 ms-1 bg-opacity-10" style="color: #FF6641" title="Tampilkan di presentasi"><i class="bi bi-easel me-1"></i>
-                                    </button>
-                                    <button id="btn-terjawab-${j}" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
-                                        <i class="bi bi-check-lg text-white"></i>
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>`
-
-                console.log("udah pindah")
-                if($('#container-nama-waktu-'+idm).siblings('.bi').attr('title') === 'Pertanyaan Ditolak') {
-                    $.ajax({
-                        url: "../update.php",
-                        type: "POST",
-                        cache: false,
-                        data:{
-                            status: '0',
-                            id_message: idm,
-                        },
-                        success: function(dataResult){
-                            var dataResult = JSON.parse(dataResult);
-                            if(dataResult.statusCode==200){
-                                console.log('Data updated successfully ! '+idm+' apa');
-                            }
-                        }
-                    });
-
-                    $("#container-pesan").append(elements);
-
-                    ubahWarnaAvatar();
-                    jam_i[jam_i.length] = jam_pesan_hidden
-
-                    setTimeout(function() {
-                        setFormatJam()
-                        counter()
-                        // scroll ke pesan terbaru
-                        $('#container-pesan').animate({
-                            scrollTop: $('#container-pesan-'+idm).offset().top - $('#container-pesan').offset().top + $('#container-pesan').scrollTop()
-                        }, 500);
-                        //
-                    }, 100);
-                    parent_element.remove()
-                    i=i+1;
-
-                }
-                else {
-                    $.ajax({
-                        url: "../update.php",
-                        type: "POST",
-                        cache: false,
-                        data:{
-                            status: '1',
-                            id_message: idm,
-                        },
-                        success: function(dataResult){
-                            var dataResult = JSON.parse(dataResult);
-                            if(dataResult.statusCode==200){
-                                console.log('Data updated successfully ! '+idm+' apa');
-                            }
-                        }
-                    });
-
-                    $("#container-pesan-terpilih").append(element_terjawab);
-                    ubahWarnaAvatar();
-                    jam_j[jam_j.length] = jam_pesan_hidden
-
-                    setTimeout(function() {
-                        setFormatJam()
-                        counter()
-                        // scroll ke pesan terbaru
-                        $('#container-pesan-terpilih').animate({
-                            scrollTop: $('#container-pesan-'+idm).offset().top - $('#container-pesan-terpilih').offset().top + $('#container-pesan-terpilih').scrollTop()
-                        }, 500);
-                        //
-                    }, 100);
-                    parent_element.remove()
-                    j=j+1;
-
-                    // Proses Pengiriman Pesan
-                    let id_sesi = $('#login_id_sesi').val();
-                    let data = {
-                        asal: 'admin',
-                        userId: id_user,
-                        mId: idm,
-                        msg: cust_message,
-                        sesiId: id_sesi,
-                        date: jam_pesan_hidden,
-                    };
-                    conn.send(JSON.stringify(data));
-                }
-
-                setTimeout(function () {
-                    $('#container-pesan-'+idm).css({
-                        "background-color" : 'rgba(25,135,84,0.1)',
-                    });
-                    $('#pesan-'+idm).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
-
-                    // nambah badge edited
-                    $.ajax({
-                        url: "../get_is_edited_messages.php",
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'json',
-                        data:{
-                            id_message: idm,
-                        },
-                        success: function(data, textStatus, xhr) {
-                            console.log(typeof data[0].is_edited)
-                            if( data[0].is_edited === '1' ){
-                                console.log(data[0].is_edited)
-                                if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
-                                    $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
-                                }
-                            }
-                        }
-                    })
-                },500)
-
-                setTimeout(function () {
-                    $('#container-pesan-'+idm).css({
-                        "background-color" : 'white',
-                    });
-                    console.log("ganti warna")
-                },1500)
-
-                //show toast
-                $('#toast-revert').show()
-                setTimeout(function () {
-                    $('#toast-revert').hide()
-                },5000)
             })
 
             //fungsi favorit pertanyaan
