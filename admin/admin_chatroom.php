@@ -756,12 +756,12 @@
                 let copyText = '';
                 console.log($(this).attr('id'))
                 if($(this).attr('id') === 'btn-copy-link-moderator'){
-                    let copyText = '/moderator/dashboard_moderator.php?<?php echo $hasil_hash_id; ?>';
+                    copyText = '/moderator/dashboard_moderator.php?<?php echo $hasil_hash_id; ?>';
                 }
                 else if($(this).attr('id') === 'btn-copy-link-peserta') {
-                    let copyText = '/index_user.php?<?php echo $hasil_hash_id; ?>';
-                    /* Copy the text inside the text field */
+                    copyText = '/index_user.php?<?php echo $hasil_hash_id; ?>';
                 }
+                /* Copy the text inside the text field */
                 navigator.clipboard.writeText(origin + "/" + pathname_arr[1] + copyText);
 
                 $('#toast-copy').show()
@@ -1049,7 +1049,7 @@
             // Koneksi Websocket
             var port = '8082'
             // var conn = new WebSocket('ws://localhost:'+port);
-            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:17379');
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:11801');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
@@ -1189,6 +1189,18 @@
                         $("p#nama-peserta-form-"+data1.userId).text(data1.namaUser)
                         $("p#nama-peserta-form-"+data1.userId).parent().siblings('.avatar').children().text(data1.namaUser.charAt(0))
                         ubahWarnaAvatar();
+                    }
+                    else if(data1.asal === 'moderator-terpilih'){
+                        console.log(data1)
+                        $('#container-btn-'+data1.mId).children('.btn-terjawab').click()
+                    }
+                    else if(data1.asal === 'moderator-presentasi'){
+                        console.log(data1)
+                        $('#container-btn-'+data1.mId).children('.btn-presentasi').click()
+                    }
+                    else if(data1.asal === 'moderator-favorit'){
+                        console.log(data1)
+                        $('#container-btn-'+data1.mId).children('.btn-love').click()
                     }
                 };
 
@@ -2677,6 +2689,7 @@
                     asal: 'admin-edit',
                     mId: edit_idm,
                     msg: edited_message,
+                    sesiId: id_sesi,
                     date: moment().format('YYYY-MM-DD HH:mm:ss'),
                 };
                 conn.send(JSON.stringify(data));

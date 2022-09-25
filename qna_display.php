@@ -286,7 +286,7 @@
             $(document).ready(function(){
                 var port = '8082'
                 // var conn = new WebSocket('ws://localhost:'+port);
-                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:13818');
+                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:11801');
                 conn.onopen = function(e) {
                     console.log("Connection established!");
                 };
@@ -298,72 +298,69 @@
 
                     var data1 = JSON.parse(e.data);
                     console.log(data1)
+                    if (data1.sesiId === sesi_id1) {
+                        if (data1.asal === 'admin') {
+                            $.ajax({
+                                url: './get_nama_participant.php',
+                                type: 'POST',
+                                data: {
+                                    id_participant: data1.userId,
+                                },
+                                success: function (data, textStatus, xhr) {
+                                    let list_data = ''
+                                    let dataResult = JSON.parse(data)
+                                    let nama = dataResult.nama
 
-                    if(data1.asal === 'admin')
-                    {
-                        $.ajax({
-                            url: './get_nama_participant.php',
-                            type: 'POST',
-                            data: {
-                                id_participant: data1.userId,
-                            },
-                            success: function(data, textStatus, xhr) {
-                                let list_data = ''
-                                let dataResult = JSON.parse(data)
-                                let nama = dataResult.nama
-
-                                if( data1.sesiId === sesi_id1 )
-                                {
-                                    list_data =
-                                        `<div id="carousel-item-${data1.mId}" class="carousel-item">
+                                    if (data1.sesiId === sesi_id1) {
+                                        list_data =
+                                            `<div id="carousel-item-${data1.mId}" class="carousel-item">
                                             <div class="container  px-5" >
                                                 <h3 class="card-title text-dark mx-3 px-5">${escapeHtml(data1.msg)}</h3>
                                                 <hr class=" mt-5 mx-5 ">
                                                 <h3 id="nama-cust-${data1.mId}" class="nama-${data1.userId} mx-3 px-5 fw-bold">${nama}</h3S>
                                             </div>
                                         </div>`
+                                    }
+
+                                    $('#qna_display').append(list_data);
+
+                                },
+                                complete: function (data) {
+                                    // $('#carousel-pertanyaan').carousel($('#carousel-item-'+data1.mId).index())
+
+                                    setTimeout(function () {
+                                        $('#nama-cust-' + data1.mId).append(`<span id="badge-baru" class="small ms-2 badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Terbaru</span>`)
+                                    }, 500)
+                                    counter()
                                 }
-
-                                $('#qna_display').append(list_data);
-
-                            },
-                            complete: function (data) {
-                                // $('#carousel-pertanyaan').carousel($('#carousel-item-'+data1.mId).index())
-
-                                setTimeout(function () {
-                                    $('#nama-cust-'+data1.mId).append(`<span id="badge-baru" class="small ms-2 badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Terbaru</span>`)
-                                },500)
-                                counter()
+                            })
+                        } else if (data1.asal === 'admin-terpilih' || data1.asal === 'user-delete' || data1.asal === 'moderator-terpilih') {
+                            let id_active = 'carousel-item-' + data1.mId
+                            console.log(id_active)
+                            if ($('#carousel-pertanyaan').find('.active').attr('id') === id_active) {
+                                $('#carousel-pertanyaan').carousel('next')
                             }
-                        })
-                    }
-                    else if(data1.asal === 'admin-terpilih' || data1.asal === 'user-delete')
-                    {
-                        let id_active = 'carousel-item-'+data1.mId
-                        console.log(id_active)
-                        if($('#carousel-pertanyaan').find('.active').attr('id') === id_active) {
-                            $('#carousel-pertanyaan').carousel('next')
-                        }
-                        $('#carousel-item-' + data1.mId).remove();
-                        counter()
-                    }
-                    else if(data1.asal === 'user-profil'){
-                        console.log(data1.userId + ' '+ data1.namaUser)
-                        $(".nama-"+data1.userId).text(data1.namaUser)
-                        counter()
-                    }
-                    else if(data1.asal === 'admin-presentasi'){
-                        console.log(data1.mId + ' '+ data1.userId)
-                        $('#carousel-pertanyaan').carousel($("#carousel-item-"+data1.mId).index())
-                        counter()
-                    }
-                    else if(data1.asal === 'admin-navigasi'){
-                        console.log(data1.msg + ' '+ data1.sesiId)
-                        if(data1.sesiId === sesi_id1) {
-                            console.log(data1.msg)
+                            $('#carousel-item-' + data1.mId).remove();
                             counter()
+                        } else if (data1.asal === 'user-profil') {
+                            console.log(data1.userId + ' ' + data1.namaUser)
+                            $(".nama-" + data1.userId).text(data1.namaUser)
+                            counter()
+                        } else if (data1.asal === 'admin-presentasi' || data1.asal === 'moderator-presentasi') {
+                            console.log(data1.mId + ' ' + data1.userId)
+                            $('#carousel-pertanyaan').carousel($("#carousel-item-" + data1.mId).index())
+                            counter()
+                        } else if (data1.asal === 'admin-navigasi') {
+                            console.log(data1.msg + ' ' + data1.sesiId)
+                            if(data1.msg == 'off') {
+                                $('.carousel-control-prev, .carousel-control-next').hide()
+                            }
+                            else if(data1.msg == 'on') {
+                            }
+                            $('.carousel-control-prev, .carousel-control-next').show()
                         }
                     }
+
                 };
 
             });

@@ -528,9 +528,9 @@
 
         // Koneksi Websocket
         let i = <?php echo $i ?>;
-        let user_id = $('#login_user_id').val();;
+        let user_id = $('#login_user_id').val();
         // var conn = new WebSocket('ws://localhost:8082'); //dibuat dinamis
-        var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:17379'); //dibuat dinamis
+        var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:11801'); //dibuat dinamis
         conn.onopen = function (e) {
             console.log("Connection established!");
         };
@@ -668,6 +668,7 @@
                         let id_sesi = $('#login_id_sesi').val();
                         let dataWebsocket = {
                             asal: 'user-delete',
+                            sesiId: id_sesi,
                             mId: idm,
                             msg: cust_message,
                             date: moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -799,8 +800,10 @@
                                 },4000)
 
                                 // Proses Pengiriman Pesan
+                                let id_sesi = $('#login_id_sesi').val();
                                 let data = {
                                     asal: 'user-profil',
+                                    sesiId: id_sesi,
                                     userId: id_user,
                                     namaUser: nama_edited,
                                     date: moment().format('YYYY-MM-DD HH:mm:ss'),

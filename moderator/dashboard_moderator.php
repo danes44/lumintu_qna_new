@@ -6,10 +6,10 @@
     // panggil fungsi enkripsi
     include("../crypt.php");
 
-    if (!isset($_SESSION['is_login'])) {
-      echo "<script>document.location.href='index.php';</script>";
-      die();
-    }
+//    if (!isset($_SESSION['is_login'])) {
+//      echo "<script>document.location.href='index.php';</script>";
+//      die();
+//    }
 
     $chat_object = new ChatRooms;
     $chat_data = $chat_object->get_all_chat_data();
@@ -22,9 +22,12 @@
     $status_all = 0;
     $status_live = 1;
 
-    //encrypt id sesi
-    $hasil_hash_id = mycrypt("encrypt", "id_session=".$_GET["id_session"]);
-//    var_dump($_GET['id_session']);
+    $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+    $hasilHash = mycrypt("decrypt", $uri_path);
+    $arrayHasil = explode("&", $hasilHash);
+    $arr_sesi_id = explode("=",$arrayHasil[0]);
+    $sesi_id = $arr_sesi_id[1];
+    //    var_dump($_GET['id_session']);
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +55,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 
         <!-- Custom styles for this template -->
-        <link href="../css-js/style.css" rel="stylesheet">
+        <link href="../css-js/styleModerator.css" rel="stylesheet">
 
         <!-- Bootstrap Icons -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
@@ -60,7 +63,7 @@
 
     <body>
         <!-- Toast -->
-        <div id="container-toast" class="toast-container bottom-0 end-0 p-3">
+        <div id="container-toast" class="toast-container position-fixed top-0 end-0 p-3 mt-5">
             <!--toast copy-->
             <div id="toast-copy" class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
                 <div class="d-flex">
@@ -171,265 +174,299 @@
             </div>
         </div>
 
-        <div class="text-center mb-4 position-sticky-top">
-            <p id="event-name" class="fw-bold mb-0"></p>
-            <h6 id="date-time" class="mb-0"></h6>
-        </div>
-
         <!-- sidebar -->
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasInfo" aria-labelledby="offcanvasInfoLabel">
             <div class="offcanvas-header justify-content-start ">
-                <button type="button" class="btn-close my-0 me-0" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
+                <button type="button" class="btn-close my-0 me-0" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body text-center">
                 <p class="align-middle fs-1 fw-bold mb-4 ">QnA</p>
-                <img src="assets/Logo QnA.svg" class="img-fluid text-center" width="35%" alt="...">
-                <p id="event-name" class="text-truncate fw-bold mb-0 mt-4"></p>
-                <h6 id="date-time" class="mb-0"></h6>
+                <img src="../assets/Logo QnA.svg" class="img-fluid text-center" width="35%" alt="...">
+                <p id="event-name-offcanvas" class="text-truncate fw-bold mb-0 mt-4"></p>
+                <p id="date" class=" mb-0 mt-4"></p>
+                <p id="time" class="mb-0 mt-2"></p>
             </div>
         </div>
 
         <!-- navbar -->
         <div id="navbar" class="border-0 fixed-top px-3 py-2 text-dark border-bottom" style="background-color: #FFFFFF;">
-            <div class="d-flex align-items-center justify-content-between">
-                <button class="btn fs-3 p-0 me-0" data-bs-toggle="offcanvas" data-bs-target="#offcanvasInfo"
+            <div class="d-flex align-items-center justify-content-between position-relative">
+                <button class="btn border-0 fs-3 p-0 me-0" data-bs-toggle="offcanvas" data-bs-target="#offcanvasInfo"
                         aria-controls="offcanvasInfo">
                     <i class="bi bi-list text-black"></i>
                 </button>
-                <p id="event-name" class="small text-truncate fw-bold mb-0 mt-4">memuat...</p>
+                <div class="position-absolute start-50 translate-middle-x text-center small">
+                    <p id="event-name-navbar" class="text-truncate fw-bold mb-0"></p>
+                    <p id="event-code" class="text-truncate mb-0 small"></p>
+                </div>
+                <div class="d-flex align-items-center">
+                    <button class="small border-0 rounded-pill ms-0 text-white fw-bold" style="width: 2rem; height: 2rem; background-color: rgb(240, 241, 242);" disabled>
+                        <span class="moderator-avatar" style="color: rgb(27, 27, 27);"><i class="bi bi-person"></i></span>
+                    </button>
+                    <p id="moderator" class="ms-2 fw-bold mb-0 small">Moderator</p>
+                </div>
             </div>
         </div>
 
-        <!-- Pertanyaan2 -->
-        <div class="container pt-4 px-0" style="max-width: 540px;overflow-y: overlay;">
+        <!--  list pertanyaan -->
+        <div id="conversation-container" class="container g-0 position-absolute start-50 translate-middle-x px-3" style="max-width: 540px;margin-top: 70px">
+            <div class="d-flex align-items-center mb-2 mt-3">
+                <p class="fw-bold mb-0" data-bs-toggle="tooltip" data-bs-title="Daftar pertanyaan yang tertampil di presentasi">
+                    Pertanyaan
+                </p>
+                <i class="ms-2 bi bi-question-circle" style="font-size: .8em" data-bs-toggle="tooltip" data-bs-title="Daftar pertanyaan yang tertampil di presentasi"></i>
+                <span class="ms-2 badge rounded-pill text-bg-danger"><i class="bi bi-circle-fill me-2 blink"></i>Live</span>
+                <h6 id="jumlah-pertanyaan-terpilih" class="ms-auto mb-0"></h6>
+                <h6 id="jumlah-pertanyaan-favorit" class="ms-auto mb-0 d-none"></h6>
+            </div>
+            <div class="input-group input-group-sm mb-4" >
+                <input type="text" id="search-pertanyaan-terpilih" class="form-control border border-1 border-end-0 px-2 rounded-start" placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan..." aria-describedby="search-addon-terpilih" style="background-color: white; border-radius: .5rem 0 0 .5rem;">
+                <button class="input-group-text border border-1 border-start-0 rounded-end" disabled id="search-addon-terpilih" style="background-color: white; ">
+                    <span id="badge-terbaru-live" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .8em">Terbaru
+                    </span>
+                    <span id="badge-favorit" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .8em">Favorit
+                    </span>
+                    <i class="ms-2 bi bi-search"></i>
+                </button>
+                <div class="dropdown">
+                    <button class="input-group-text py-2 border border-1 rounded ms-3" data-bs-toggle="dropdown" id="btn-filter-live" style="background-color: white; ">
+                        <i class="bi bi-filter"></i>
+                    </button>
+                    <ul class="dropdown-menu shadow">
+                        <li>
+                            <p class="text-muted small ms-2 mb-2">Urutkan dari yang</p>
+                        </li>
+                        <li>
+                            <div class="dropdown-item small">
+                                <input class="form-check-input" type="radio" name="radio-filter-live" id="radio-terbaru-live" value="terbaru">
+                                <label class="form-check-label ms-2"  for="radio-terbaru-live">
+                                    Terbaru
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="dropdown-item small">
+                                <input class="form-check-input" type="radio" name="radio-filter-live" id="radio-terlama-live" value="terlama" checked>
+                                <label class="form-check-label ms-2" for="radio-terlama-live">
+                                    Terlama (Default)
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <p class="text-muted small ms-2 my-2">Filter</p>
+                        </li>
+                        <li>
+                            <div class="dropdown-item small">
+                                <input class="form-check-input" type="checkbox" name="checkbox-favorit-live" id="checkbox-favorit-live">
+                                <label class="form-check-label ms-2" for="checkbox-favorit-live">
+                                    Favorit
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="conversation" class="position-absolute start-50 translate-middle-x w-100 pb-4 px-3" style="overflow: overlay; ">
+                <!-- pesan terpilih-->
+                <div class="rounded-3 sortable list-pertanyaan" id="container-pesan-terpilih" style="overflow-y: overlay;">
+                    <?php
+                    $j = 0;
+                    $last = count($chat_data);
+                    foreach($chat_data as $chat){
+                        $str1 = str_split($chat["waktu_pengiriman"], 10);
+                        $jam_pesan = str_split($str1[1], 6);
 
-<!--            <div class="row pt-1" >-->
-                <div class="position-absolute start-50 translate-middle-x w-100" style="max-width: 540px; overflow-y: overlay;">
-                    <div class="d-flex align-items-center mb-2">
-                        <h5 class="fw-bold mb-0" title="Daftar pertanyaan yang tertampil di presentasi">
-                            Daftar Pertanyaan
-                        </h5>
-                        <i class="ms-2 bi bi-question-circle" style="font-size: .8em" title="Daftar pertanyaan yang tertampil di presentasi"></i>
-                        <span class="ms-2 badge rounded-pill text-bg-danger"><i class="bi bi-circle-fill me-2 blink" style="font-size: 0.8em"></i>Live</span>
-                        <h6 id="jumlah-pertanyaan-terpilih" class="ms-auto mb-0"></h6>
-                        <h6 id="jumlah-pertanyaan-favorit" class="ms-auto mb-0 d-none"></h6>
-                    </div>
-                    <div class="input-group input-group-sm">
-                        <input type="text" id="search-pertanyaan-terpilih" class="form-control border border-1 border-end-0 px-2 rounded-start" placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan..." aria-describedby="search-addon-terpilih" style="background-color: white; border-radius: .5rem 0 0 .5rem;">
-                        <button class="input-group-text border border-1 border-start-0 rounded-end" disabled id="search-addon-terpilih" style="background-color: white; ">
-                            <span id="badge-terbaru-live" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .8em">Terbaru
-                            </span>
-                            <span id="badge-favorit" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .8em">Favorit
-                            </span>
-                            <i class="ms-2 bi bi-search"></i>
-                        </button>
-                        <div class="dropdown">
-                            <button class="input-group-text py-2 border border-1 rounded ms-3" data-bs-toggle="dropdown" id="btn-filter-live" style="background-color: white; ">
-                                <i class="bi bi-filter"></i>
-                            </button>
-                            <ul class="dropdown-menu shadow">
-                                <li>
-                                    <p class="text-muted small ms-2 mb-2">Urutkan dari yang</p>
-                                </li>
-                                <li>
-                                    <div class="dropdown-item small">
-                                        <input class="form-check-input" type="radio" name="radio-filter-live" id="radio-terbaru-live" value="terbaru">
-                                        <label class="form-check-label ms-2"  for="radio-terbaru-live">
-                                            Terbaru
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="dropdown-item small">
-                                        <input class="form-check-input" type="radio" name="radio-filter-live" id="radio-terlama-live" value="terlama" checked>
-                                        <label class="form-check-label ms-2" for="radio-terlama-live">
-                                            Terlama (Default)
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <p class="text-muted small ms-2 my-2">Filter</p>
-                                </li>
-                                <li>
-                                    <div class="dropdown-item small">
-                                        <input class="form-check-input" type="checkbox" name="checkbox-favorit-live" id="checkbox-favorit-live">
-                                        <label class="form-check-label ms-2" for="checkbox-favorit-live">
-                                            Favorit
-                                        </label>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- pesan terpilih-->
-                    <div class="rounded-3 sortable list-pertanyaan " id="container-pesan-terpilih" style="max-height: 540px !important;">
-                      <?php
-                        $j = 0;
-                        $last = count($chat_data);
-                        foreach($chat_data as $chat){
-                            $str1 = str_split($chat["waktu_pengiriman"], 10);
-                            $jam_pesan = str_split($str1[1], 6);
+                        if ($chat["id_chat"] == $sesi_id && ($chat["status"]==1 || $chat["status"]==4 || $chat["status"]==5 || $chat["status"]==6)){
+                            $nama_peserta = get_nama($chat["id_pengirim"]);
+                            $id = $chat["id_message"];
+                            $huruf_depan = $nama_peserta[0];
+                            $j_x_waktu[$j] = $chat["waktu_pengiriman"];
 
-                            if ($chat["id_chat"] == $_GET["id_session"] && ($chat["status"]==1 || $chat["status"]==4 || $chat["status"]==5 || $chat["status"]==6)){
-                                $nama_peserta = get_nama($chat["id_pengirim"]);
-                                $id = $chat["id_message"];
-                                $huruf_depan = $nama_peserta[0];
-                                $j_x_waktu[$j] = $chat["waktu_pengiriman"];
-
-                                echo '
-                                    <div id="container-pesan-'.$chat["id_message"].'" class="p-3 pesan-terpilih rounded-3 my-4 ';
-                                    if($chat["status"]==5 || $chat["status"]==6){
-                                        echo 'border border-2 border-orange';
+                            echo '
+                                <div id="container-pesan-'.$chat["id_message"].'" class="p-4 rounded-3 mb-3 pesan-terpilih ';
+                                if($chat["status"]==5 || $chat["status"]==6){
+                                    echo 'border border-2 border-orange';
+                                }
+                                else{
+                                    echo 'border border-1';
+                                }
+                                echo ' " ';
+                                if($chat["status"]==4 || $chat["status"]==6){
+                                    echo 'style="background-color:rgba(255,65,123,0.1)"';
+                                }
+                                echo '>
+                                    <div class="d-flex">
+                                        <p id="pesan-'.$chat["id_message"].'" class="mb-0 isi-pesan flex-grow-1">'.$chat["pesan"].'
+                                        ';
+                                    if($chat["is_edited"]==1){
+                                        echo '<span class="badge-edited small mb-0 text-muted"> (edited)</span>';
                                     }
-                                    else{
-                                        echo 'border border-1';
-                                    }
-                                    echo ' " ';
-                                    if($chat["status"]==4 || $chat["status"]==6){
-                                        echo 'style="background-color:rgba(255,65,123,0.1)"';
-                                    }
-                                    echo '>
-                                        <div class="d-flex">
-                                            <p id="pesan-'.$chat["id_message"].'" class="mb-0 small isi-pesan flex-grow-1">'.$chat["pesan"].'
-                                            ';
-                                                if($chat["is_edited"]==1){
-                                                    echo '<span class="badge-edited small mb-0 text-muted"> (edited)</span>';
+                                    echo '
+                                        </p>
+                                    </div>
+                    
+                                    <div class="card-footer bg-transparent mt-4">
+                                        <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                            <div class="d-flex align-items-center ">
+                                                <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                                    <span>'.$huruf_depan.'</span>
+                                                </button>
+                                                <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
+                                                    <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0" data-bs-toggle="tooltip" data-bs-title="'.$nama_peserta.'" style="max-width: 130px">'.$nama_peserta.'</p>
+                                                    <p id="jam-pesan-j'.$j.'" class="jam text-black-50 small mb-0 ">'.$jam_pesan[0].'</p>
+                                                    
+                                                    <p class="waktu-kirim d-none" id="waktu_pengiriman_j_'. $j .'" >'.$chat["waktu_pengiriman"].'</p>
+                                                    
+                                                </div>
+                                            </div>
+                                        
+                                            <div id="container-btn-'.$chat["id_message"]. '" class="container-btn">
+                                                <button id="btn-love-'.$j.'" class="btn btn-love text-danger bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  data-bs-toggle="tooltip" data-bs-title="Favoritkan pertanyaan" style="color: #FF417B; font-size:1.2rem">
+                                                    ';
+                                                if($chat["status"]==4 || $chat["status"]==6){
+                                                    echo '<i class="bi bi-heart-fill" ></i>';
                                                 }
-                                            echo '
-                                            </p>
-                                        </div>
-                        
-                                        <div class="card-footer bg-transparent">
-                                            <div class="d-flex justify-content-between align-items-center mt-3 ">
-                                                <div class="d-flex align-items-center ">
-                                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                                        <span>'.$huruf_depan.'</span>
-                                                    </button>
-                                                    <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
-                                                        <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0">'.$nama_peserta.'</p>
-                                                        <p id="jam-pesan-j'.$j.'" class="jam text-black-50 small mb-0 ">'.$jam_pesan[0].'</p>
-                                                        
-                                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_j_'. $j .'" >'.$chat["waktu_pengiriman"].'</p>
-                                                        
-                                                    </div>
-                                                </div>
-                                            
-                                                <div id="container-btn-'.$chat["id_message"]. '" class="container-btn">
-                                                    <button id="btn-love-'.$j.'" class="btn btn-love text-danger bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
-                                                        ';
-                                                        if($chat["status"]==4 || $chat["status"]==6){
-                                                            echo '<i class="bi bi-heart-fill" ></i>';
-                                                        }
-                                                        else{
-                                                            echo '<i class="bi bi-heart" ></i>';
-                                                        }
-                                                        echo '
-                                                    </button>
-                                                    <button id="btn-presentasi-'.$j.'" class="btn btn-presentasi bg-transparent border-0 rounded-3 py-1 px-1 ms-1 bg-opacity-10" style="color: #FF6641" title="Tampilkan di presentasi">
-                                                        ';
-                                                        if($chat["status"]==5 || $chat["status"]==6){
-                                                            echo '<i class="bi bi-easel-fill me-1"></i>';
-                                                        }
-                                                        else{
-                                                            echo '<i class="bi bi-easel me-1"></i>';
-                                                        }
-                                                        echo '
-                                                    </button>                              
-                                                    <button id="btn-terjawab-'.$j.'" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-2"  title="Tandai sebagai terjawab" >
-                                                        <i class="bi bi-check-lg text-white"></i>
-                                                    </button>
-                                                </div>
+                                                else{
+                                                    echo '<i class="bi bi-heart" ></i>';
+                                                }
+                                                echo '
+                                                </button>
+                                                <button id="btn-presentasi-'.$j.'" class="btn btn-presentasi bg-transparent border-0 rounded-3 py-1 px-1 ms-1 bg-opacity-10" style="color: #FF6641;font-size:1.2rem" data-bs-toggle="tooltip" data-bs-title="Tampilkan di presentasi">
+                                                ';
+                                                if($chat["status"]==5 || $chat["status"]==6){
+                                                    echo '<i class="bi bi-easel-fill me-1"></i>';
+                                                }
+                                                else{
+                                                    echo '<i class="bi bi-easel me-1"></i>';
+                                                }
+                                                echo '
+                                                </button>                              
+                                                <button id="btn-terjawab-'.$j.'" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-2"  data-bs-toggle="tooltip" data-bs-title="Tandai sebagai terjawab" >
+                                                    <i class="bi bi-check-lg text-white"></i>
+                                                </button>
                                             </div>
                                         </div>
-                                    </div>';
-                                $j++;
-                            }
+                                    </div>
+                                </div>';
+                            $j++;
                         }
-                      ?>
+                    }
+                    ?>
+                </div>
+
+                <!-- pesan favorit-->
+                <div class="border border-1 rounded-3 sortable list-pertanyaan d-none" id="container-pesan-favorit" style="overflow-y: overlay;">
+                    <?php
+                    $l = 0;
+                    $last = count($chat_data);
+                    foreach($chat_data as $chat){
+                        $str1 = str_split($chat["waktu_pengiriman"], 10);
+                        $jam_pesan = str_split($str1[1], 6);
+
+                        if ($chat["id_chat"] == $sesi_id && ($chat["status"]==4 || $chat["status"]==6)){
+                            $nama_peserta = get_nama($chat["id_pengirim"]);
+                            $id = $chat["id_message"];
+                            $huruf_depan = $nama_peserta[0];
+                            $l_x_waktu[$l] = $chat["waktu_pengiriman"];
+
+                            echo '
+                                <div id="container-pesan-favorit-'.$chat["id_message"].'" class="p-3 pesan-favorit ';
+                                if($chat["status"]==6){
+                                    echo 'border border-2 border-orange';
+                                }
+                                else{
+                                    echo 'border-top border-bottom';
+                                }
+                                echo ' " style="background-color:rgba(255,65,123,0.1)"> 
+                                    <div class="d-flex">
+                                        <p id="pesan-'.$chat["id_message"].'" class="mb-0 small isi-pesan flex-grow-1">'.$chat["pesan"].'
+                                        ';
+                                        if($chat["is_edited"]==1){
+                                            echo '<span class="badge-edited small mb-0 text-muted"> (edited)</span>';
+                                        }
+                                        echo '
+                                        </p>
+                                    </div>
+                    
+                                    <div class="card-footer bg-transparent">
+                                        <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                            <div class="d-flex align-items-center ">
+                                                <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
+                                                    <span>'.$huruf_depan.'</span>
+                                                </button>
+                                                <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
+                                                    <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0">'.$nama_peserta.'</p>
+                                                    <p id="jam-pesan-l'.$l.'" class="jam text-black-50 small mb-0 ">'.$jam_pesan[0].'</p>
+                                                    
+                                                    <p class="waktu-kirim d-none" id="waktu_pengiriman_l_'. $l .'" >'.$chat["waktu_pengiriman"].'</p>
+                                                    
+                                                </div>
+                                            </div>
+                                        
+                                            <div id="container-btn-'.$chat["id_message"]. '" class="container-btn">
+                                                <button id="btn-love-'.$l.'" class="btn btn-love text-danger bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  data-bs-toggle="tooltip" data-bs-title="Favoritkan pertanyaan" style="color: #FF417B">
+                                                    <i class="bi bi-heart-fill" ></i>
+                                                </button>
+                                                <button id="btn-presentasi-'.$j.'" class="btn btn-presentasi bg-transparent border-0 rounded-3 py-1 px-1 ms-1 bg-opacity-10" style="color: #FF6641" data-bs-toggle="tooltip" data-bs-title="Tampilkan di presentasi">
+                                                ';
+                                                if($chat["status"]==6){
+                                                    echo '<i class="bi bi-easel-fill me-1"></i>';
+                                                }
+                                                else{
+                                                    echo '<i class="bi bi-easel me-1"></i>';
+                                                }
+                                                echo '
+                                                </button> 
+                                                <button id="btn-terjawab-'.$l.'" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  data-bs-toggle="tooltip" data-bs-title="Tandai sebagai terjawab" >
+                                                    <i class="bi bi-check-lg text-white"></i>
+                                                </button>                                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>';
+                            $l++;
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Modal Terjawab-->
+        <div class="modal fade" id="modal-terjawab" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-create-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered justify-content-center">
+                <div class="modal-content py-2 px-4" style="width: auto">
+                    <div class="modal-header border-0 pb-0">
+                        <h6 class="modal-title fw-bold " id="staticBackdropLabel" >Apakah Anda sudah menjawab pertanyaan?</h6>
                     </div>
+                    <div class="modal-body pb-0">
+                        <p class="small text-muted">Dengan melakukan ini pertanyaan Anda akan dihapus dari daftar pertanyaan. Setelah dihapus, Anda <b>tidak dapat</b> mengembalikannya.</p>
+                    </div>
+                    <div class="modal-footer border-0 pt-0 px-3 justify-content-between">
+                        <button id="btn-confirm" type="submit" class="btn btn-confirm border-0 rounded-3 py-2 ms-0 me-0 text-white fw-bold btn-success flex-fill"  title="Simpan perubahan"  style="font-size: .875em">
+                            Sudah
+                        </button>
+                        <button id="timer-confirm" class="btn-confirm border-0 rounded-3 py-2 me-0 ms-0 text-white fw-bold bg-success bg-opacity-50 flex-fill" disabled title="Harap menunggu"  style="display:none;">
+                            <div  class=" spinner-border spinner-border-sm border-3 small" style="--bs-spinner-width: 0.8rem;--bs-spinner-height: 0.8rem;"></div>
+                            <span class="fw-normal small ms-2"> Tunggu...</span>
+                        </button>
 
-                    <!-- pesan favorit-->
-                    <div class="border border-1 rounded-3 sortable list-pertanyaan d-none" id="container-pesan-favorit" style="height: calc(100vh - 210px); overflow-y: overlay;">
-                        <?php
-                        $l = 0;
-                        $last = count($chat_data);
-                        foreach($chat_data as $chat){
-                            $str1 = str_split($chat["waktu_pengiriman"], 10);
-                            $jam_pesan = str_split($str1[1], 6);
-
-                            if ($chat["id_chat"] == $_GET["id_session"] && ($chat["status"]==4 || $chat["status"]==6)){
-                                $nama_peserta = get_nama($chat["id_pengirim"]);
-                                $id = $chat["id_message"];
-                                $huruf_depan = $nama_peserta[0];
-                                $l_x_waktu[$l] = $chat["waktu_pengiriman"];
-
-                                echo '
-                                    <div id="container-pesan-favorit-'.$chat["id_message"].'" class="p-3 pesan-favorit ';
-                                    if($chat["status"]==6){
-                                        echo 'border border-2 border-orange';
-                                    }
-                                    else{
-                                        echo 'border-top border-bottom';
-                                    }
-                                    echo ' " style="background-color:rgba(255,65,123,0.1)"> 
-                                        <div class="d-flex">
-                                            <p id="pesan-'.$chat["id_message"].'" class="mb-0 small isi-pesan flex-grow-1">'.$chat["pesan"].'
-                                            ';
-                                            if($chat["is_edited"]==1){
-                                                echo '<span class="badge-edited small mb-0 text-muted"> (edited)</span>';
-                                            }
-                                            echo '
-                                            </p>
-                                        </div>
-                        
-                                        <div class="card-footer bg-transparent">
-                                            <div class="d-flex justify-content-between align-items-center mt-3 ">
-                                                <div class="d-flex align-items-center ">
-                                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                                        <span>'.$huruf_depan.'</span>
-                                                    </button>
-                                                    <div id="container-nama-waktu-'.$chat["id_message"].'" class="small align-self-center ms-2">
-                                                        <p id="nama-peserta-form-'.$chat["id_pengirim"].'" class="nama text-truncate fw-bold mb-0">'.$nama_peserta.'</p>
-                                                        <p id="jam-pesan-l'.$l.'" class="jam text-black-50 small mb-0 ">'.$jam_pesan[0].'</p>
-                                                        
-                                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_l_'. $l .'" >'.$chat["waktu_pengiriman"].'</p>
-                                                        
-                                                    </div>
-                                                </div>
-                                            
-                                                <div id="container-btn-'.$chat["id_message"]. '" class="container-btn">
-                                                    <button id="btn-love-'.$l.'" class="btn btn-love text-danger bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
-                                                        <i class="bi bi-heart-fill" ></i>
-                                                    </button>
-                                                    <button id="btn-presentasi-'.$j.'" class="btn btn-presentasi bg-transparent border-0 rounded-3 py-1 px-1 ms-1 bg-opacity-10" style="color: #FF6641" title="Tampilkan di presentasi">
-                                                        ';
-                                                        if($chat["status"]==6){
-                                                            echo '<i class="bi bi-easel-fill me-1"></i>';
-                                                        }
-                                                        else{
-                                                            echo '<i class="bi bi-easel me-1"></i>';
-                                                        }
-                                                        echo '
-                                                    </button> 
-                                                    <button id="btn-terjawab-'.$l.'" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
-                                                        <i class="bi bi-check-lg text-white"></i>
-                                                    </button>                                        
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>';
-                                $l++;
-                            }
-                        }
-                        ?>
+                        <button id="btn-cancel" type="reset" class="btn btn-cancel border border-1 rounded-3 py-2 px-3 me-0 ms-3 text-muted fw-semibold flex-fill"  title="Batalkan hapus sesi" style="font-size: .875em">
+                            Batal
+                        </button>
                     </div>
                 </div>
-<!--            </div>-->
+            </div>
+        </div>
+
+
+        <div class="fixed-bottom">
+            <button id="fab-scroll" class="float-end btn border-0 rounded-circle bg-black bg-opacity-25 shadow mb-3 me-3 fw-bold" style="height: 60px; width: 60px;"><i class="bi bi-arrow-up text-white" style="font-size: 1.5rem"></i></button>
         </div>
 
         <?php
-          echo "<input type='hidden' name='login_id_sesi' id='login_id_sesi' value='".$_GET["id_session"]."'/>";
+          echo "<input type='hidden' name='login_id_sesi' id='login_id_sesi' value='".$sesi_id."'/>";
         ?>
 
         <script>
@@ -449,57 +486,27 @@
             // 99 = dihapus
         </script>
 
-        <!-- fungsi copy-->
-        <!--<script>
-            $("body").on("click", ".btn-copy-link", function() {
-                let pathname = window.location.pathname; // Returns path only (/path/example.html)
-                let url      = window.location.href;     // Returns full URL (https://example.com/path/example.html)
-                let origin   = window.location.origin;   // Returns base URL (https://example.com)
-                let pathname_arr = pathname.split('/')
-                console.log(pathname_arr)
+        <!-- fungsi scroll to top-->
+        <script>
+            window.scrollTo(0, 0);
+            $('#fab-scroll').css({'display':'none'})
+            // When the user scrolls down 20px from the top of the document, show the button
+            window.onscroll = function() {scrollFunction()};
 
-                /* Get the text field */
-                let copyText = '';
-                console.log($(this).attr('id'))
-                if($(this).attr('id') === 'btn-copy-link-moderator'){
-                    let copyText = '/moderator/dashboard_moderator.php?<?php /*echo $hasil_hash_id; */?>';
-                }
-                else if($(this).attr('id') === 'btn-copy-link-peserta') {
-                    let copyText = '/index_user.php?<?php /*echo $hasil_hash_id; */?>';
-                    /* Copy the text inside the text field */
-                }
-                navigator.clipboard.writeText(origin + "/" + pathname_arr[1] + copyText);
-
-                $('#toast-copy').show()
-                setTimeout(function () {
-                    $('#toast-copy').hide()
-                }, 3000)
-            })
-        </script>-->
-
-        <!-- fungsi on/off navigasi presentasi-->
-        <!--<script>
-            let navigasi = 'on';
-            $('input:checkbox[name="navigasi-presentasi"]').change(function() {
-                if ($(this).is(":checked") === true) {
-                    console.log('true Check')
-                    navigasi = 'on';
-                    console.log(navigasi)
+            function scrollFunction() {
+                if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
+                    $('#fab-scroll').css({'display':'block'})
                 } else {
-                    navigasi = 'off';
-                    console.log(navigasi)
+                    $('#fab-scroll').css({'display':'none'})
                 }
-                // Proses Pengiriman Pesan
-                let id_sesi = $('#login_id_sesi').val();
-                let data = {
-                    asal: 'admin-navigasi',
-                    sesiId: id_sesi,
-                    msg: navigasi,
-                    date: moment().format('YYYY-MM-DD HH:mm:ss'),
-                };
-                conn.send(JSON.stringify(data));
-            });
-        </script>-->
+            }
+
+            $("body").on("click", "#fab-scroll", function() {
+                // When the user clicks on the button, scroll to the top of the document
+                console.log($('body').offset().top)
+                window.scrollTo(0, 0);
+            })
+        </script>
 
         <!-- fungsi ganti background letter avatar-->
         <script>
@@ -530,17 +537,6 @@
                 $(".avatar > span:contains('J'), .avatar > span:contains('K')").parent().css({"background-color": warna2[8], "color": warna[8]});
                 $(".avatar>span:contains('L'), .avatar>span:contains('Z')").parent().css({"background-color": warna2[12], "color": warna[12]});
                 $(".avatar > span:contains('X'), .avatar > span:contains('C'), .avatar > span:contains('A'), .avatar > span:contains('S')").parent().css({"background-color": warna2[11], "color": warna[11]});
-
-                // $(".avatar>span:contains('Q'), .avatar>span:contains('W'), .avatar>span:contains('N'), .avatar>span:contains('M')").parent().css({"background-color": '#1abc9c'});
-                // $(".avatar > span:contains('E'), .avatar > span:contains('R')").parent().css({"background-color": '#2ecc71'});
-                // $(".avatar > span:contains('T'), .avatar > span:contains('Y')").parent().css({"background-color": '#3498db'});
-                // $(".avatar>span:contains('U'), .avatar>span:contains('I')").parent().css({"background-color": '#9b59b6'});
-                // $(".avatar > span:contains('O'), .avatar > span:contains('P')").parent().css({"background-color": '#34495e'});
-                // $(".avatar>span:contains('D'), .avatar>span:contains('F'), .avatar > span:contains('V'), .avatar > span:contains('B')").parent().css({"background-color": '#2980b9'});
-                // $(".avatar > span:contains('G'), .avatar > span:contains('H')").parent().css({"background-color": '#8e44ad'});
-                // $(".avatar > span:contains('J'), .avatar > span:contains('K')").parent().css({"background-color": '#f1c40f'});
-                // $(".avatar>span:contains('L'), .avatar>span:contains('Z')").parent().css({"background-color": '#e67e22'});
-                // $(".avatar > span:contains('X'), .avatar > span:contains('C'), .avatar > span:contains('A'), .avatar > span:contains('S')").parent().css({"background-color": '#e74c3c'});
             }
             $(document).ready(function() {
                 ubahWarnaAvatar();
@@ -755,11 +751,11 @@
             // Koneksi Websocket
             var port = '8082'
             // var conn = new WebSocket('ws://localhost:'+port);
-            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:17379');
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:11801');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
-            let i= <?php echo $j; ?>;
+            let j= <?php echo $j; ?>;
             $(document).ready(function(){
                 conn.onmessage = function(e) {
                     console.log("websocket:" +e.data);
@@ -769,7 +765,7 @@
 
                     console.log(data1)
 
-                    if(data1.asal === 'user'){
+                    if(data1.asal === 'admin'){
                         console.log(data1.userId)
                         $.ajax({
                             url: '../get_nama_participant.php',
@@ -790,49 +786,46 @@
                                 if( data1.sesiId === sesi_id1 )
                                 {
                                     list_data =
-                                    `<div id="container-pesan-${data1.mId}" class="p-3 pesan border-top border-bottom">
+                                    `<div id="container-pesan-${data1.mId}" class="p-4 rounded-3 mb-3 pesan-terpilih border border-1">
                                         <div class="d-flex">
-                                            <p id="pesan-${data1.mId}" class="mb-0 small isi-pesan flex-grow-1">${escapeHtml(data1.msg)}</p>
-                                            <div class="dropdown">
-                                                <button id="btn-options" class="bg-transparent border-0" data-bs-toggle="dropdown" style="height: fit-content">
-                                                    <i class="bi bi-three-dots text-muted"></i>
-                                                </button>
-                                                <ul class="dropdown-menu shadow">
-                                                    <li>
-                                                        <button id="btn-edit-${data1.mId}" class="dropdown-item small btn-edit" type="button">
-                                                            <i class="bi bi-pencil me-3 text-primary"></i>Edit
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                            <p id="pesan-${data1.mId}" class="mb-0 small isi-pesan flex-grow-1">
+                                                ${data1.msg}
+                                            </p>
                                         </div>
 
-                                        <div class="card-footer bg-transparent">
+                                        <div class="card-footer bg-transparent mt-4">
                                             <div class="d-flex justify-content-between align-items-center mt-3 ">
                                                 <div class="d-flex align-items-center ">
-                                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                                        <span>${nama_depan}</span>
-                                                    </button>
+                                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled><span>${nama_depan}</span></button>
                                                     <div id="container-nama-waktu-${data1.mId}" class="small align-self-center ms-2">
                                                         <p id="nama-peserta-form-${data1.userId}" class="nama text-truncate fw-bold mb-0">${nama}</p>
-                                                        <p id="jam-pesan-j${j}" class="jam text-black-50 small mb-0 ">${moment(data1.date).fromNow()}</p>
+                                                        <p id="jam-pesan-j${j}" class="jam text-black-50 small mb-0 ">
+                                                            ${moment(data1.date).fromNow()}
+                                                        </p>
                                                         <p class="waktu-kirim d-none" id="waktu_pengiriman_j_${j}">${data1.date}</p>
                                                     </div>
                                                 </div>
-                                                <div id="container-btn-${data1.mId}">
-                                                    <button id="btn-accept-${j}" class="btn btn-accept bg-success  bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted" title="Setujui pertanyaan"  style="width: 50px;">
-                                                        <i class="bi bi-check-lg text-success "></i>
+
+                                                <div id="container-btn-${data1.mId}" class="container-btn">
+                                                    <button id="btn-revert-${j}" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
+                                                        <i class="bi bi-arrow-counterclockwise"></i>
                                                     </button>
-                                                    <button id="btn-decline-${j}" class="btn btn-decline bg-danger bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted"  title="Tolak pertanyaan"  style="width: 50px;">
-                                                        <i class="bi bi-x-lg text-danger "></i>
+                                                    <button id="btn-love-${j}" class="btn btn-love bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
+                                                        <i class="bi bi-heart" ></i>
+                                                    </button>
+                                                    <button id="btn-presentasi-${j}" class="btn btn-presentasi bg-transparent border-0 rounded-3 py-1 px-1 ms-1 bg-opacity-10" style="color: #FF6641" title="Tampilkan di presentasi"><i class="bi bi-easel me-1"></i>
+                                                    </button>
+                                                    <button id="btn-terjawab-${j}" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
+                                                        <i class="bi bi-check-lg text-white"></i>
                                                     </button>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>`
 
-                                    $('#container-pesan').append(list_data);
-                                    i=i+1
+                                    $('#container-pesan-terpilih').append(list_data);
+                                    j=j+1
                                 }
 
 
@@ -842,19 +835,22 @@
                                     $('#badge-baru').remove()
                                     ubahWarnaAvatar();
 
-                                    jam_i[jam_i.length] = data1.date
-                                    if ($('#radio-terbaru').is(':checked')) {
-                                        $('#container-pesan .pesan').sort(sortTerbaru).appendTo('#container-pesan')
-                                    } else if ($('#radio-terlama').is(':checked')) {
-                                        $('#container-pesan .pesan').sort(sortTerlama).appendTo('#container-pesan')
+                                    jam_j[jam_j.length] = data1.dat
+                                    if( $('#radio-terbaru-live').is(':checked') ){
+                                        $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerbaru).appendTo('#container-pesan-terpilih')
+                                        console.log("terbaru")
+                                    }
+                                    else if ($('#radio-terlama-live').is(':checked')){
+                                        $('#container-pesan-terpilih .pesan-terpilih').sort(sortTerlama).appendTo('#container-pesan-terpilih')
+                                        console.log("terlama")
                                     }
 
                                     setTimeout(function() {
                                         setFormatJam()
                                         counter()
                                         //scroll ke pesan terbaru
-                                        $('#container-pesan').animate({
-                                            scrollTop: $('#container-pesan-'+data1.mId).offset().top - $('#container-pesan').offset().top + $('#container-pesan').scrollTop()
+                                        $('#container-pesan-terpilih').animate({
+                                            scrollTop: $('#container-pesan-'+data1.mId).offset().top - $('#container-pesan-terpilih').offset().top + $('#container-pesan-terpilih').scrollTop()
                                         }, 500);
                                     }, 100);
 
@@ -865,6 +861,25 @@
 
                                         $('#pesan-'+data1.mId).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
 
+                                        // nambah badge edited
+                                        $.ajax({
+                                            url: "../get_is_edited_messages.php",
+                                            type: 'POST',
+                                            cache: false,
+                                            dataType: 'json',
+                                            data:{
+                                                id_message: data1.mId,
+                                            },
+                                            success: function(data, textStatus, xhr) {
+                                                console.log(typeof data[0].is_edited)
+                                                if( data[0].is_edited === '1' ){
+                                                    console.log(data[0].is_edited)
+                                                    if($('#pesan-'+data1.mId).children().hasClass('badge-edited') === false) {
+                                                        $('#pesan-' + data1.mId).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
+                                                    }
+                                                }
+                                            }
+                                        })
                                     },500)
 
                                     setTimeout(function () {
@@ -887,7 +902,7 @@
                         })
 
                     }
-                    else if(data1.asal === 'user-delete'){
+                    else if(data1.asal === 'user-delete'|| data1.asal === 'admin-terpilih'){
                         $('#container-pesan-'+data1.mId).remove()
                     }
                     else if(data1.asal === 'user-profil'){
@@ -935,34 +950,8 @@
 
         <!-- get data events-->
         <script>
-            //get events data waktu
-            // var id_tiket = 1;
-            // var id_tiket_session = 1;
-            //
-            // $.ajax({
-            //     url: kel1_api+'/items/ticket?fields=ticket_id,ticket_type,ticket_x_session.session_id.*,ticket_x_day.day_id.*',
-            //     type: 'GET',
-            //     dataType: 'json',
-            //     success: function(data, textStatus, xhr) {
-            //             let nama = data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.session_desc
-            //             let time_start = new Date(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.start_time)
-            //             let time_finish = new Date(data.data[id_tiket-1].ticket_x_session[id_tiket_session-1].session_id.finish_time)
-            //
-            //             let day = moment(time_start).format('dddd')
-            //             let time_begin = moment(time_start).format('HH:mm')
-            //             let time_end = moment(time_finish).format('HH:mm')
-            //             let date = moment(time_start).format('LL')
-            //
-            //             $('#event-name').text(nama)
-            //             $('#date-time').text(day+", "+date+" | "+time_begin+" - "+time_end+" WIB")
-            //             // $('#time').text(time_begin+" - "+time_end)
-            //     },
-            //     error: function(xhr, textStatus, errorThrown) {
-            //         console.log('Error in Database');
-            //     }
-            // })
             $.ajax({
-                url: '../get_events.php',
+                url: '../get_events_public.php',
                 type: 'GET',
                 dataType: 'json',
                 // dataType: 'jsonp',
@@ -991,8 +980,10 @@
                             let date = moment(time_start).format('LL')
                             console.log(day + ' ' + date + ' ' + time_begin + ' ' + time_end)
 
-                            $('p#event-name').text(nama_event+" #"+data[i].unique_code.toUpperCase())
-                            $('#date-time').text(day + ", " + date + ' | '+ time_begin + " - " + time_end + " WIB")
+                            $('p#event-name-offcanvas, p#event-name-navbar').text(nama_event)
+                            $('p#event-code').text("#"+data[i].unique_code.toUpperCase())
+                            $('p#date').text(day + ", " + date)
+                            $('p#time').text(time_begin + " - " + time_end + " WIB")
 
                         }
                     }
@@ -1005,6 +996,10 @@
 
         <!-- fungsi pindah pertanyaan   -->
         <script>
+            $("body").on("click", ".btn-cancel", function() {
+                $('#modal-terjawab').modal('hide');
+            })
+
             //fungsi button terjawab
             $("body").on("click", ".btn-terjawab", function() {
                 $('#badge-baru').remove()
@@ -1015,21 +1010,21 @@
 
                 let parent_element = $('#container-pesan-'+idm);
 
-                $.ajax({
-                    url: "../update.php",
-                    type: "POST",
-                    cache: false,
-                    data:{
-                        status: '2',
-                        id_message: idm,
-                    },
-                    success: function(dataResult){
-                        var dataResult = JSON.parse(dataResult);
-                        if(dataResult.statusCode==200){
-                            console.log('Data updated successfully ! '+idm+' apa');
-                        }
-                    }
-                });
+                // $.ajax({
+                //     url: "../update.php",
+                //     type: "POST",
+                //     cache: false,
+                //     data:{
+                //         status: '2',
+                //         id_message: idm,
+                //     },
+                //     success: function(dataResult){
+                //         var dataResult = JSON.parse(dataResult);
+                //         if(dataResult.statusCode==200){
+                //             console.log('Data updated successfully ! '+idm+' apa');
+                //         }
+                //     }
+                // });
 
                 // get id user
                 let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');
@@ -1048,114 +1043,43 @@
                 let jam_pesan = $('#jam-pesan-j'+id_k[2]).text();
                 let jam_pesan_hidden = $('#waktu_pengiriman_j_'+id_k[2]).text();
 
-                console.log(id_k[2])
+                $('#modal-terjawab').modal('show');
 
-                let elements=
-                    `<div id="container-pesan-ditolak-terjawab-${idm}" class="p-3 pesan-ditolak-terjawab border-top border-bottom ">
-                        <div class="d-flex">
-                            <p id="pesan-ditolak-terjawab-${idm}" class="mb-0 small isi-pesan flex-grow-1">
-                                ${cust_message}
-                            </p>
+                $("body").on("click", "#btn-confirm", function() {
+                    console.log(id_k[2])
 
-                        </div>
+                    console.log("udah pindah")
+                    parent_element.remove()
+                    $("#timer-confirm").show();
+                    $("#btn-confirm").hide();
 
-                        <div class="card-footer bg-transparent">
-                            <div class="d-flex justify-content-between align-items-center mt-3 ">
-                                <div class="d-flex align-items-center ">
-                                    <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                                        <span>${cust_nama_depan}</span>
-                                    </button>
-                                    <div id="container-nama-waktu-${idm}" class="small align-self-center ms-2">
-                                        <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
-                                        <p id="jam-pesan-k${k}" class="jam text-black-50 small mb-0 ">
-                                            ${jam_pesan}
-                                        </p>
-                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_k_${k}">${jam_pesan_hidden}</p>
-                                    </div>
-                                    <i class="bi bi-patch-check text-success ms-2 align-self-end" title="Pertanyaan Terjawab"></i>
-                                </div>
+                    setTimeout(function () {
+                        $("#timer-confirm").hide();
+                        $("#btn-confirm").show();
+                        $('#toast-answer').show()
+                        // Proses Pengiriman Pesan
+                        var id_sesi = $('#login_id_sesi').val();
+                        var data = {
+                            asal: 'moderator-terpilih',
+                            userId: id_user,
+                            mId: idm,
+                            msg: cust_message,
+                            sesiId: id_sesi,
+                            date: jam_pesan_hidden,
+                        };
+                        conn.send(JSON.stringify(data));
+                    }, 2500)
+                    setTimeout(function () {
+                        $('#modal-terjawab').modal('hide');
+                        // window.location.reload();
+                    }, 3500)
+                    setTimeout(function () {
+                        $('#toast-answer').hide()
+                    }, 5000)
 
-                                <div id="container-btn-${idm}">
-                                    <button id="btn-revert-${k}" class="btn btn-revert bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
-                                        <i class="bi bi-arrow-counterclockwise"></i>
-                                    </button>
-                                </div>
 
-                            </div>
-                        </div>
-                    </div>`
 
-                console.log("udah pindah")
-                $("#container-pesan-ditolak-terjawab").append(elements);
-
-                ubahWarnaAvatar();
-
-                jam_k[jam_k.length] = jam_pesan_hidden
-
-                parent_element.remove()
-
-                setTimeout(function() {
-                    setFormatJam()
-                    counter()
-                    // scroll ke pesan terbaru
-                    $('#container-pesan-ditolak-terjawab').animate({
-                        scrollTop: $('#container-pesan-ditolak-terjawab-'+idm).offset().top - $('#container-pesan-ditolak-terjawab').offset().top + $('#container-pesan-ditolak-terjawab').scrollTop()
-                    }, 500);
-                    //
-                }, 100);
-
-                setTimeout(function () {
-                    $('#container-pesan-ditolak-terjawab-'+idm).css({
-                        "background-color" : 'rgba(25,135,84,0.1)',
-                    });
-                    $('#pesan-ditolak-terjawab-'+idm).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
-
-                    // nambah badge edited
-                    $.ajax({
-                        url: "../get_is_edited_messages.php",
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'json',
-                        data:{
-                            id_message: idm,
-                        },
-                        success: function(data, textStatus, xhr) {
-                            console.log(typeof data[0].is_edited)
-                            if( data[0].is_edited === '1' ){
-                                console.log(data[0].is_edited)
-                                if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
-                                    $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
-                                }
-                            }
-                        }
-                    })
-                },500)
-
-                setTimeout(function () {
-                    $('#container-pesan-ditolak-terjawab-'+idm).css({
-                        "background-color" : 'white',
-                    });
-                    console.log("ganti warna")
-                },1500)
-
-                //show toast
-                $('#toast-answer').show()
-                setTimeout(function () {
-                    $('#toast-answer').hide()
-                },5000)
-
-                k=k+1;
-                // Proses Pengiriman Pesan
-                var id_sesi = $('#login_id_sesi').val();
-                var data = {
-                    asal: 'admin-terpilih',
-                    userId: id_user,
-                    mId: idm,
-                    msg: cust_message,
-                    sesiId: id_sesi,
-                    date: jam_pesan_hidden,
-                };
-                conn.send(JSON.stringify(data));
+                })
             })
 
             //fungsi favorit pertanyaan
@@ -1209,15 +1133,12 @@
                                 </div>
 
                                 <div id="container-btn-${idm}" class="container-btn">
-                                    <button id="btn-revert-${l}" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
-                                        <i class="bi bi-arrow-counterclockwise"></i>
-                                    </button>
-                                    <button id="btn-love-${l}" class="btn btn-love text-danger bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
+                                    <button id="btn-love-${l}" class="btn btn-love text-danger bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  data-bs-toggle="tooltip" data-bs-title="Favoritkan pertanyaan" style="color: #FF417B">
                                         <i class="bi bi-heart-fill"></i>
                                     </button>
-                                    <button id="btn-presentasi-${l}" class="btn btn-presentasi bg-transparent border-0 rounded-3 py-1 px-1 ms-1 bg-opacity-10" style="color: #FF6641" title="Tampilkan di presentasi"><i class="bi bi-easel me-1"></i>
+                                    <button id="btn-presentasi-${l}" class="btn btn-presentasi bg-transparent border-0 rounded-3 py-1 px-1 ms-1 bg-opacity-10" style="color: #FF6641" data-bs-toggle="tooltip" data-bs-title="Tampilkan di presentasi"><i class="bi bi-easel me-1"></i>
                                     </button>
-                                    <button id="btn-terjawab-${l}" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
+                                    <button id="btn-terjawab-${l}" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  data-bs-toggle="tooltip" data-bs-title="Tandai sebagai terjawab" >
                                         <i class="bi bi-check-lg text-white"></i>
                                     </button>
                                 </div>
@@ -1281,58 +1202,61 @@
 
                 console.log(status_pesan)
 
-                $.ajax({
-                    url: "../update.php",
-                    type: "POST",
-                    cache: false,
-                    data:{
-                        status: status_pesan,
-                        id_message: idm,
-                    },
-                    success: function(dataResult){
-                        var dataResult = JSON.parse(dataResult);
-                        if(dataResult.statusCode==200){
-                            console.log('Data updated successfully ! '+idm+' apa');
-                        }
-                    }
-                });
+                // update
+                // $.ajax({
+                //     url: "../update.php",
+                //     type: "POST",
+                //     cache: false,
+                //     data:{
+                //         status: status_pesan,
+                //         id_message: idm,
+                //     },
+                //     success: function(dataResult){
+                //         var dataResult = JSON.parse(dataResult);
+                //         if(dataResult.statusCode==200){
+                //             console.log('Data updated successfully ! '+idm+' apa');
+                //         }
+                //     }
+                // });
 
                 // nambah badge edited
-                $.ajax({
-                    url: "../get_is_edited_messages.php",
-                    type: 'POST',
-                    cache: false,
-                    dataType: 'json',
-                    data:{
-                        id_message: idm,
-                    },
-                    success: function(data, textStatus, xhr) {
-                        console.log(typeof data[0].is_edited)
-                        if( data[0].is_edited === '1' ){
-                            console.log(data[0].is_edited)
-                            if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
-                                $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
-                            }
-                            else if($('#container-pesan-favorit-'+ idm).find('#pesan-' + idm).children().hasClass('badge-edited') === false){
-                                $('#container-pesan-favorit-'+ idm).find('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
-                            }
-                        }
-                    }
-                })
+                // $.ajax({
+                //     url: "../get_is_edited_messages.php",
+                //     type: 'POST',
+                //     cache: false,
+                //     dataType: 'json',
+                //     data:{
+                //         id_message: idm,
+                //     },
+                //     success: function(data, textStatus, xhr) {
+                //         console.log(typeof data[0].is_edited)
+                //         if( data[0].is_edited === '1' ){
+                //             console.log(data[0].is_edited)
+                //             if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
+                //                 $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
+                //             }
+                //             else if($('#container-pesan-favorit-'+ idm).find('#pesan-' + idm).children().hasClass('badge-edited') === false){
+                //                 $('#container-pesan-favorit-'+ idm).find('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
+                //             }
+                //         }
+                //     }
+                // })
+
                 // jam_i[jam_i.length] = jam_pesan_hidden
                 // parent_element.remove()
                 // i=i+1;
+
                 // Proses Pengiriman Pesan
-                // var id_sesi = $('#login_id_sesi').val();
-                // var data = {
-                //     asal: 'admin-terpilih',
-                //     userId: id_user,
-                //     mId: idm,
-                //     msg: cust_message,
-                //     sesiId: id_sesi,
-                //     date: jam_pesan_hidden,
-                // };
-                // conn.send(JSON.stringify(data));
+                var id_sesi = $('#login_id_sesi').val();
+                var data = {
+                    asal: 'moderator-favorit',
+                    userId: id_user,
+                    mId: idm,
+                    msg: cust_message,
+                    sesiId: id_sesi,
+                    date: jam_pesan_hidden,
+                };
+                conn.send(JSON.stringify(data));
             })
 
             //fungsi presentasi pertanyaan
@@ -1364,40 +1288,6 @@
 
                 let element_icon= `<i class="bi bi-easel me-1"></i>`;
                 let element_icon_fill= `<i class="bi bi-easel-fill me-1"></i>`;
-                // let element = `
-                //     <div id="container-pesan-favorit-${idm}" class="p-3 pesan-favorit border-top border-bottom " style="background-color:rgba(255,65,123,0.1)">
-                //         <div class="d-flex">
-                //             <p id="pesan-${idm}" class="mb-0 small isi-pesan flex-grow-1">${cust_message}</p>
-                //         </div>
-                //
-                //         <div class="card-footer bg-transparent">
-                //             <div class="d-flex justify-content-between align-items-center mt-3 ">
-                //                 <div class="d-flex align-items-center ">
-                //                     <button class="avatar small border-0 rounded-pill ms-0 text-white bg-primary fw-bold" style="width: 2rem; height:2rem;" disabled>
-                //                         <span>${cust_nama_depan}</span>
-                //                     </button>
-                //                     <div id="container-nama-waktu-'${idm}" class="small align-self-center ms-2">
-                //                         <p id="nama-peserta-form-${id_user}" class="nama text-truncate fw-bold mb-0">${cust_name}</p>
-                //                         <p id="jam-pesan-l${l}" class="jam text-black-50 small mb-0 ">${jam_pesan}</p>
-                //                         <p class="waktu-kirim d-none" id="waktu_pengiriman_l_${l}" >${jam_pesan_hidden}</p>
-                //                     </div>
-                //                 </div>
-                //
-                //                 <div id="container-btn-${idm}" class="container-btn">
-                //                     <button id="btn-revert-${l}" class="btn btn-revert-terpilih bg-transparent border-0 rounded-3 py-1 px-1 me-0 text-muted"  title="Batal pilih pertanyaan">
-                //                         <i class="bi bi-arrow-counterclockwise"></i>
-                //                     </button>
-                //                     <button id="btn-love-${l}" class="btn btn-love text-danger bg-transparent border-0 rounded-3 py-1 px-1 ms-1"  title="Favoritkan pertanyaan" style="color: #FF417B">
-                //                         <i class="bi bi-heart-fill"></i>
-                //                     </button>
-                //                     <button id="btn-terjawab-${l}" class="btn btn-terjawab bg-success border-0 rounded-3 py-1 px-3 ms-1"  title="Tandai sebagai terjawab" >
-                //                         <i class="bi bi-check-lg text-white"></i>
-                //                     </button>
-                //                 </div>
-                //             </div>
-                //         </div>
-                //     </div>
-                // `
 
                 let status_pesan = 5;
 
@@ -1489,78 +1379,29 @@
                     $('#toast-presentasi').hide()
                 },5000)
 
-                // if($(this).children().hasClass('bi-easel-fill')==false)
-                // {
-                    // if($(this).children().hasClass('bi-heart-fill')){
-                    //     status_pesan = 4;
-                    // }
-                    //
-                    // $('#btn-presentasi-' + id_j[2]).children('.bi-easel-fill').remove()
-                    // $('#btn-presentasi-' + id_j[2]).append(element_icon)
-                    //
-                    // //show toast
-                    // setTimeout(function () {
-                    //     // $('#toast-unlove').hide()
-                    //     $('#toast-presentasi-hide').show()
-                    // },500)
-                    // setTimeout(function () {
-                    //     $('#toast-presentasi-hide').hide()
-                    // },5000)
-                    //
-                    // status_pesan = 1;
-                // }
-                // else
-                // {
-                //     if($(this).children().hasClass('bi-heart-fill')){
-                //         status_pesan = 6;
-                //     }
-                //     $('#container-pesan-'+idm).removeClass('border-top')
-                //     $('#container-pesan-'+idm).removeClass('border-bottom')
-                //     $('#container-pesan-'+idm).addClass('border')
-                //     $('#container-pesan-'+idm).addClass('border-2')
-                //     $('#container-pesan-'+idm).addClass('border-orange')
-                //
-                //     console.log($('#btn-presentasi-' + id_j[2]).children())
-                //     $('#btn-presentasi-' + id_j[2]).children('.bi-easel').remove()
-                //     $('#btn-presentasi-' + id_j[2]).append(element_icon_fill)
-                //
-                //     //show toast
-                //     setTimeout(function () {
-                //         // $('#toast-love').hide()
-                //         $('#toast-presentasi').show()
-                //     },500)
-                //     setTimeout(function () {
-                //         $('#toast-presentasi').hide()
-                //     },5000)
-                // }
-
                 console.log(status_pesan)
                 /* nambah badge dipresentasikan dan */
 
-                $.ajax({
-                    url: "../update.php",
-                    type: "POST",
-                    cache: false,
-                    data:{
-                        status: status_pesan,
-                        id_message: idm,
-                    },
-                    success: function(data){
-                        let dataResult = JSON.parse(data);
-                        if(dataResult.statusCode==200){
-                            console.log(idm+' dipresentasikan');
-                        }
-                    }
-                });
-
-                // jam_i[jam_i.length] = jam_pesan_hidden
-                // parent_element.remove()
-                // i=i+1;
+                // $.ajax({
+                //     url: "../update.php",
+                //     type: "POST",
+                //     cache: false,
+                //     data:{
+                //         status: status_pesan,
+                //         id_message: idm,
+                //     },
+                //     success: function(data){
+                //         let dataResult = JSON.parse(data);
+                //         if(dataResult.statusCode==200){
+                //             console.log(idm+' dipresentasikan');
+                //         }
+                //     }
+                // });
 
                 // Proses Pengiriman Pesan
                 var id_sesi = $('#login_id_sesi').val();
                 var data = {
-                    asal: 'admin-presentasi',
+                    asal: 'moderator-presentasi',
                     userId: id_user,
                     mId: idm,
                     msg: cust_message,
@@ -1571,197 +1412,12 @@
                 conn.send(JSON.stringify(data));
             })
 
-
-
-            // fungsi edit
-            let edit_idm = 0
-            $("body").on("click", ".btn-edit", function() {
-                $('#modal-edit').modal('show');
-
-                let id_element = $(this).attr('id');
-                let id_numb = id_element.split("-");
-                edit_idm = id_numb[2]
-                let parent_element = $('#container-pesan-'+edit_idm);
-
-                // get id user
-                // let id_user_element = $('#container-nama-waktu-'+edit_idm).children('p.nama').attr('id');
-                // let id_user_arr = id_user_element.split("-");
-                // let id_user = id_user_arr[3];
-                // console.log(edit_idm)
-
-                // get message
-                let cust_message = $.trim($('#pesan-'+edit_idm).clone().children().remove().end().text());
-
-                // get jam pesan
-                // let element_i = $('#container-btn-'+edit_idm).children('.btn-accept').attr('id')
-                // let id_i = element_i.split("-");
-                // console.log(id_i[2])
-
-                $('#input-edit').val(cust_message)
-                charCounter()
-
-                $("#input-edit").on('keyup', function(e) {
-                    if($('#input-edit').val() !== ''){
-                        $('.btn-save').removeAttr('disabled')
-                    }
-                    else{
-                        $('.btn-save').attr('disabled','true')
-                    }
-                });
-            })
-            // fungsi save edit
-            $("body").on("click", ".btn-save", function() {
-                // get message
-                let cust_message = $.trim($('#pesan-'+edit_idm).clone().children().remove().end().text());
-                let edited_message = $.trim($('#input-edit').val())
-
-                console.log(edited_message + ' edit '+ edit_idm)
-                console.log(cust_message+ ' asli '+ edit_idm)
-
-                if(cust_message === edited_message){
-                    $('#input-edit').val('')
-                    $('#modal-edit').modal('hide');
-                }
-                else{
-                $('#pesan-'+edit_idm).text(edited_message);
-
-                if($('#pesan-'+edit_idm).children().hasClass('badge-edited') === false) {
-                    $('#pesan-' + edit_idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
-                }
-                console.log("xhr.status");
-                $.ajax({
-                    url: "../update_messages.php",
-                    type: "POST",
-                    cache: false,
-                    data:{
-                        id_message: edit_idm,
-                        pesan : edited_message,
-                        is_edited: 1,
-                    },
-                    success: function(dataResult){
-                        console.log(this.data)
-                        var dataResult = JSON.parse(dataResult);
-                        if(dataResult.statusCode===200){
-                            console.log('Data updated successfully ! '+edit_idm+' apa');
-                        }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        console.log(xhr.status);
-                        console.log(thrownError);
-                    }
-                });
-
-                //show toast
-                setTimeout(function () {
-                    $('#toast-edit').show()
-                    $('#modal-edit').modal('hide');
-                },500)
-
-                setTimeout(function () {
-                    $('#toast-edit').hide()
-                },4000)
-
-                // Proses Pengiriman Pesan
-                let id_sesi = $('#login_id_sesi').val();
-                let data = {
-                    asal: 'admin-edit',
-                    mId: edit_idm,
-                    msg: edited_message,
-                    date: moment().format('YYYY-MM-DD HH:mm:ss'),
-                };
-                conn.send(JSON.stringify(data));
-
-                }
-            })
-            // fungsi cancel edit
-            $("body").on("click", ".btn-cancel", function() {
-                $('#input-edit').val('')
-                $('#modal-edit').modal('hide');
-            })
-
         </script>
 
-        <!--    function sortable-->
+        <!-- enable tooltips bootstrap-->
         <script>
-            // $("document").ready(function() {
-            //     $("#container-pesan, #container-pesan-terpilih" ).sortable({
-            //         revert: true,
-            //         connectWith: ".sortable",
-            //         cursor: "move",
-            //         handle: ".bi-grip-vertical",
-            //         start: function(e, ui) {
-            //             // creates a temporary attribute on the element with the old index
-            //             $(this).attr('data-previndex', ui.item.index());
-            //             console.log('apa ini :'+ui.item.attr('id'));
-            //         },
-            //         update: function(e, ui) {
-            //             // gets the new and old index then removes the temporary attribute
-            //             var newIndex = ui.item.index();
-            //             var oldIndex = $(this).attr('data-previndex');
-            //             console.log('new : '+newIndex);
-            //             console.log('old : '+oldIndex);
-            //             $(this).removeAttr('data-previndex');
-            //             // $.ajax({
-            //             //     url: "../update.php",
-            //             //     type: "POST",
-            //             //     cache: false,
-            //             //     data:{
-            //             //         status: '1',
-            //             //         id_message: idm,
-            //             //     },
-            //             //     success: function(dataResult){
-            //             //         var dataResult = JSON.parse(dataResult);
-            //             //         if(dataResult.statusCode==200){
-            //             //             console.log('Data updated successfully ! '+idm+' apa');
-            //             //         }
-            //             //         status_sort == 0
-            //             //     }
-            //             // });
-            //             console.log("udah pindah "+ui.item.attr('id'))
-            //             counter()
-            //         }
-            //     }).disableSelection();
-            //
-            //     $( "#container-pesan-terpilih" ).on( "sortreceive", function( event, ui ) {
-            //         console.log('apa ini :'+$(this).children().attr('id'));
-            //     } );
-            //
-            //     // $(".pesan").draggable({
-            //     //     connectToSortable: ".sortable",
-            //     //     revert: true,
-            //     //     cursor: "move",
-            //     //     handle: "i",
-            //     //     helpers: "original"
-            //     // });
-            //     // $(".pesan-terpilih").draggable({
-            //     //     connectToSortable: ".sortable",
-            //     //     revert: true,
-            //     //     cursor: "move",
-            //     //     handle: "i",
-            //     //     helpers: "original"
-            //     // });
-            //     //
-            //     // $("#container-pesan, #container-pesan-terpilih").droppable({
-            //     //     accept: '.pesan, .pesan-terpilih',
-            //     //     drop: function(event, ui) {
-            //     //         $(this).append($(ui.draggable));
-            //     //     }
-            //     // });
-            // });
-
-            // function allowDrop(ev) {
-            //     ev.preventDefault();
-            // }
-            //
-            // function drag(ev) {
-            //     ev.dataTransfer.setData("text", ev.target.id);
-            // }
-            //
-            // function drop(ev) {
-            //     ev.preventDefault();
-            //     var data = ev.dataTransfer.getData("text");
-            //     ev.target.appendChild(document.getElementById(data));
-            // }
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
         </script>
 
     </body>
