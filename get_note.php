@@ -1,16 +1,9 @@
 <?php
-
+    session_start();
     include 'database/connection.php';
-//    $status=!empty($_POST["status"]) ? $_POST["status"] : '';
+    $id_message = !empty($_POST["id_message"]) ? $_POST["id_message"] : '';
 
-//    if($status == 3) {
-//        echo "all";
-    $sql = "SELECT * FROM messages ";
-//    }
-//    elseif ($status == 0 || $status == 1 || $status == 2) {
-//        echo "masuk else php".$status;
-//        $sql = "SELECT * FROM messages where status = '$status'";
-//    }
+    $sql = "SELECT messages.*, note.* FROM `messages` JOIN note ON messages.id_note = note.id_note WHERE message.id_message = '$id_message'";
 
     if (mysqli_query($conn, $sql)) {
         $array_values = array();
@@ -22,6 +15,9 @@
         echo json_encode($array_values);
     }
     else {
+        echo json_encode(array(
+            "statusCode" => 201,
+            "statusMessage" => $conn->connect_error));
         die("Connection failed: " . $conn->connect_error);
     }
     mysqli_close($conn);

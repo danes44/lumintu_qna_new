@@ -152,6 +152,9 @@ class ChatRooms
         $query = "
 		SELECT * FROM messages
 		";
+//        $query = "
+//		SELECT messages.*, note.* FROM `messages` LEFT JOIN note ON messages.id_note = note.id_note
+//		";
 
         $statement = $this->connect->prepare($query);
 

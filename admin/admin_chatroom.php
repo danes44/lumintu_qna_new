@@ -185,12 +185,15 @@
                     <h6 id="date-time" class="mb-0"></h6>
                 </div>
                 <div class="d-flex justify-content-start align-items-center">
+                    <button id="btn-catatan" class="btn btn-sm me-3 my-0 p-2 px-3 rounded bg-opacity-10 me-2 fw-semibold" title="Lihat Daftar Catatan" style="background-color: rgba(255,102,65,0.1); color:#FF6641">
+                        <i class="bi bi-stickies"></i>
+                    </button>
                     <div class="dropdown">
-                        <a id="btn-share" class="btn btn-sm dropdown-toggle fw-semibold text-decoration-none border-0 rounded my-0 p-2 px-3 bg-opacity-10 me-3" style="background-color: rgba(255,102,65,0.1); color:#FF6641" role="button" data-bs-toggle="dropdown">
+                        <a id="btn-share" class="btn btn-sm dropdown-toggle fw-semibold text-decoration-none rounded my-0 p-2 px-3 bg-opacity-10 me-3" style="background-color: rgba(255,102,65,0.1); color:#FF6641" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-share me-1 small"></i>
                             Bagikan
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end mt-2 shadow">
+                        <ul class="dropdown-menu mt-2 shadow">
                             <li>
                                 <p class="text-muted small ms-3 my-2">Peserta</p>
                             </li>
@@ -277,7 +280,9 @@
                         <button class="input-group-text border border-1 border-start-0 rounded-end " disabled id="search-addon" style="background-color: white; ">
                             <span id="badge-terbaru" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .8em">Terbaru
                             </span>
-                            <span id="badge-ditolak-terjawab" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .8em">Ditolak/Terjawab
+                            <span id="badge-terjawab" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .8em">Terjawab
+                            </span>
+                            <span id="badge-ditolak" class="me-1 badge bg-primary rounded-pill text-primary bg-opacity-10 d-none" style="height: fit-content; font-size: .8em">Ditolak
                             </span>
                             <i class="ms-2 bi bi-search"></i>
                         </button>
@@ -286,36 +291,44 @@
                               <i class="bi bi-filter"></i>
                             </button>
                             <ul class="dropdown-menu shadow">
-                              <li>
-                                  <p class="text-muted small ms-2 mb-2">Urutkan dari yang</p>
-                              </li>
-                              <li>
-                                  <div class="dropdown-item small">
-                                      <input class="form-check-input" type="radio" name="radio-filter" id="radio-terbaru" value="terbaru" >
-                                      <label class="form-check-label ms-2"  for="radio-terbaru">
-                                          Terbaru
-                                      </label>
-                                  </div>
-                              </li>
-                              <li>
-                                  <div class="dropdown-item small">
-                                      <input class="form-check-input" type="radio" name="radio-filter" id="radio-terlama" value="terlama" checked>
-                                      <label class="form-check-label ms-2" for="radio-terlama">
-                                          Terlama (Default)
-                                      </label>
-                                  </div>
-                              </li>
-                              <li>
-                                  <p class="text-muted small ms-2 my-2">Filter</p>
-                              </li>
-                              <li>
-                                  <div class="dropdown-item small">
-                                      <input class="form-check-input" type="checkbox" name="checkbox-terjawab" id="checkbox-terjawab">
-                                      <label class="form-check-label ms-2" for="checkbox-terjawab">
-                                          Terjawab atau Ditolak
-                                      </label>
-                                  </div>
-                              </li>
+                                <li>
+                                    <p class="text-muted small ms-2 mb-2">Urutkan dari yang</p>
+                                </li>
+                                <li>
+                                    <div class="dropdown-item small">
+                                        <input class="form-check-input" type="radio" name="radio-filter" id="radio-terbaru" value="terbaru" >
+                                        <label class="form-check-label ms-2"  for="radio-terbaru">
+                                            Terbaru
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="dropdown-item small">
+                                        <input class="form-check-input" type="radio" name="radio-filter" id="radio-terlama" value="terlama" checked>
+                                        <label class="form-check-label ms-2" for="radio-terlama">
+                                              Terlama (Default)
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <p class="text-muted small ms-2 my-2">Filter</p>
+                                </li>
+                                <li>
+                                    <div class="dropdown-item small">
+                                        <input class="form-check-input" type="checkbox" name="checkbox-terjawab" id="checkbox-terjawab">
+                                        <label class="form-check-label ms-2" for="checkbox-terjawab">
+                                            Terjawab
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="dropdown-item small">
+                                        <input class="form-check-input" type="checkbox" name="checkbox-ditolak" id="checkbox-ditolak">
+                                        <label class="form-check-label ms-2" for="checkbox-ditolak">
+                                            Ditolak
+                                        </label>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -406,10 +419,10 @@
                                     <h5 class="modal-title fw-bold " id="staticBackdropLabel">Edit Pertanyaan</h5>
                                 </div>
                                 <div class="modal-body ">
-                                    <textarea id="input-edit" type="text" class="form-control border border-1 py-2 px-3 rounded-start" style="height:200px;font-size: .875em;resize: none" maxlength="400" required></textarea>
+                                    <textarea id="input-edit" type="text" class="form-control border border-1 py-2 px-3 rounded-start" style="height:200px;font-size: .875em;resize: none" maxlength="200" required></textarea>
                                 </div>
                                 <div class="modal-footer border-0">
-                                    <span id="char-counter" class="small text-mute me-auto" style="font-size: 12px">400</span>
+                                    <span id="char-counter" class="small text-mute me-auto" style="font-size: 12px">200</span>
 
                                     <button id="btn-save" class="btn btn-save border-0 rounded-3 py-2 px-3 me-0 text-white fw-bold"  title="Simpan perubahan"  style="background-color: #FF6641;font-size: .875em">
                                         Simpan
@@ -587,7 +600,11 @@
                                             echo '
                                             </p>
                                         </div>
-                        
+                                        ';
+                                        /*if($chat["id_note"]!=null){
+                                            echo '<p id="note-'.$chat["id_note"].'" class="note mt-2 small text-muted">'.$chat["isi_note"].'</p>';
+                                        }*/
+                                        echo '                        
                                         <div class="card-footer bg-transparent">
                                             <div class="d-flex justify-content-between align-items-center mt-3 ">
                                                 <div class="d-flex align-items-center ">
@@ -720,6 +737,31 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Modal Catatan-->
+            <div class="modal fade" id="modal-catatan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-catatan-label" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <h5 class="modal-title fw-bold " id="staticBackdropLabel">Daftar Catatan</h5>
+                        </div>
+                        <div class="modal-body ">
+                            <textarea id="input-edit" type="text" class="form-control border border-1 py-2 px-3 rounded-start" style="height:200px;font-size: .875em;resize: none" maxlength="400" required></textarea>
+                        </div>
+                        <div class="modal-footer border-0">
+                            <span id="char-counter" class="small text-mute me-auto" style="font-size: 12px">400</span>
+
+                            <button id="btn-kirim" class="btn btn-save border-0 rounded-3 py-2 px-3 me-0 text-white fw-bold"  title="Kirim catatan"  style="background-color: #FF6641;font-size: .875em">
+                                Kirim
+                            </button>
+
+                            <button id="btn-cancel" class="btn btn-cancel border border-1 rounded-3 py-2 px-3 me-0 text-muted fw-semibold"  title="Batalkan perubahan" style="font-size: .875em">
+                                Batal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <?php
@@ -741,6 +783,99 @@
             // 5 = dipresentasikan
             // 6 = favorit + dipresentasikan
             // 99 = dihapus
+        </script>
+
+        <!-- fungsi note-->
+        <script>
+            // fungsi edit
+            let edit_idm = 0
+            $("body").on("click", "#btn-catatan", function() {
+                $('#modal-catatan').modal('show');
+                // get message
+                let cust_message = $.trim($('#pesan-'+edit_idm).clone().children().remove().end().text());
+
+                $('#input-edit').val(cust_message)
+                charCounter()
+
+                $("#input-edit").on('keyup', function(e) {
+                    if($('#input-edit').val() !== ''){
+                        $('#btn-kirim').removeAttr('disabled')
+                    }
+                    else{
+                        $('#btn-kirim').attr('disabled','true')
+                    }
+                });
+            })
+            // fungsi save edit
+            $("body").on("click", "#btn-kirim", function() {
+                // get message
+                let cust_message = $.trim($('#pesan-'+edit_idm).clone().children().remove().end().text());
+                let edited_message = $.trim($('#input-edit').val())
+
+                console.log(edited_message + ' edit '+ edit_idm)
+                console.log(cust_message+ ' asli '+ edit_idm)
+
+                if(cust_message === edited_message){
+                    $('#input-edit').val('')
+                    $('#modal-edit').modal('hide');
+                }
+                else{
+                    $('#pesan-'+edit_idm).text(edited_message);
+
+                    if($('#pesan-'+edit_idm).children().hasClass('badge-edited') === false) {
+                        $('#pesan-' + edit_idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
+                    }
+                    console.log("xhr.status");
+                    $.ajax({
+                        url: "../update_messages.php",
+                        type: "POST",
+                        cache: false,
+                        data:{
+                            id_message: edit_idm,
+                            pesan : edited_message,
+                            is_edited: 1,
+                        },
+                        success: function(dataResult){
+                            console.log(this.data)
+                            var dataResult = JSON.parse(dataResult);
+                            if(dataResult.statusCode===200){
+                                console.log('Data updated successfully ! '+edit_idm+' apa');
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            console.log(xhr.status);
+                            console.log(thrownError);
+                        }
+                    });
+
+                    //show toast
+                    setTimeout(function () {
+                        $('#toast-edit').show()
+                        $('#modal-edit').modal('hide');
+                    },500)
+
+                    setTimeout(function () {
+                        $('#toast-edit').hide()
+                    },4000)
+
+                    // Proses Pengiriman Pesan
+                    let id_sesi = $('#login_id_sesi').val();
+                    let data = {
+                        asal: 'admin-edit',
+                        mId: edit_idm,
+                        msg: edited_message,
+                        sesiId: id_sesi,
+                        date: moment().format('YYYY-MM-DD HH:mm:ss'),
+                    };
+                    conn.send(JSON.stringify(data));
+
+                }
+            })
+            // fungsi cancel edit
+            $("body").on("click", ".btn-cancel", function() {
+                $('#input-edit').val('')
+                $('#modal-catatan').modal('hide');
+            })
         </script>
 
         <!-- fungsi copy-->
@@ -952,32 +1087,112 @@
                 }
             });
 
-            // fungsi filter terjawab-ditolak
+            // fungsi filter TERJAWAB
             $('input:checkbox[name="checkbox-terjawab"]').change(function() {
                 if ($(this).is(":checked") === true) {
-                    console.log('true Check')
+                    console.log('true terjawab 1')
                     // show pertanyaan ditolak terjawab - hide pertanyaan all
                     $('#container-pesan-ditolak-terjawab').removeClass('d-none')
                     $('#container-pesan').addClass('d-none')
+                    $('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').find('.bi-patch-check').parent().parent().parent().parent().show() //show yang terjawab
+
                     // show jumlah pertanyaan ditolak terjawab - hide jumlah pertanyaan all
                     $('#jumlah-pertanyaan-ditolak-terjawab').removeClass('d-none')
                     $('#jumlah-pertanyaan').addClass('d-none')
+
+                    if ($('input:checkbox[name="checkbox-ditolak"]').is(":checked") === true) {
+                        $('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').find('.bi-file-earmark-x').parent().parent().parent().parent().show() //show yang ditolak
+                        // hitung semua pertanyaan
+                        $('#jumlah-pertanyaan-ditolak-terjawab').text("Jumlah : " +$('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').length)
+                        console.log('true terjawab 21')
+                    }
+                    else{
+                        $('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').find('.bi-file-earmark-x').parent().parent().parent().parent().hide() //hide yang ditolak
+                        // hitung ulang pertanyaan yang punya icon terjawab
+                        $('#jumlah-pertanyaan-ditolak-terjawab').text("Jumlah : " +$('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').find('.bi-patch-check').length)
+                        console.log('true terjawab 22')
+                    }
+
                     // show badge
-                    $('#badge-ditolak-terjawab').removeClass('d-none')
+                    $('#badge-terjawab').removeClass('d-none')
                     // reset search
                     $("#search-pertanyaan").val('')
                 } else {
                     console.log('else')
-                    // show pertanyaan all - hide pertanyaan ditolak terjawab
-                    $('#container-pesan-ditolak-terjawab').addClass('d-none')
-                    $('#container-pesan').removeClass('d-none')
-                    // show jumlah pertanyaan ditolak terjawab - hide jumlah pertanyaan all
-                    $('#jumlah-pertanyaan-ditolak-terjawab').addClass('d-none')
-                    $('#jumlah-pertanyaan').removeClass('d-none')
+                    if ($('input:checkbox[name="checkbox-ditolak"]').is(":checked") === false) {
+                        // show pertanyaan all - hide pertanyaan ditolak terjawab
+                        $('#container-pesan-ditolak-terjawab').addClass('d-none')
+                        $('#container-pesan').removeClass('d-none')
+                        // show jumlah pertanyaan ditolak terjawab - hide jumlah pertanyaan all
+                        $('#jumlah-pertanyaan-ditolak-terjawab').addClass('d-none')
+                        $('#jumlah-pertanyaan').removeClass('d-none')
+                        // reset search
+                        $("#search-pertanyaan").val('')
+                        console.log('else 1')
+                    }
+                    else{
+                        $('#jumlah-pertanyaan-ditolak-terjawab').text("Jumlah : " +$('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').find('.bi-file-earmark-x').length)
+                        $('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').find('.bi-file-earmark-x').parent().parent().parent().parent().show() //show yang ditolak
+                        console.log('else 2')
+                    }
+                    //hide yang terjawab
+                    $('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').find('.bi-patch-check').parent().parent().parent().parent().hide()
                     // hide badge
-                    $('#badge-ditolak-terjawab').addClass('d-none')
+                    $('#badge-terjawab').addClass('d-none')
+                }
+            });
+            // fungsi filter DITOLAK
+            $('input:checkbox[name="checkbox-ditolak"]').change(function() {
+                if ($(this).is(":checked") === true) {
+                    console.log('true ditolak 1')
+                    // show pertanyaan ditolak terjawab - hide pertanyaan all
+                    $('#container-pesan-ditolak-terjawab').removeClass('d-none')
+                    $('#container-pesan').addClass('d-none')
+                    $('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').find('.bi-file-earmark-x').parent().parent().parent().parent().show() //show yang ditolak
+
+                    // show jumlah pertanyaan ditolak terjawab - hide jumlah pertanyaan all
+                    $('#jumlah-pertanyaan-ditolak-terjawab').removeClass('d-none')
+                    $('#jumlah-pertanyaan').addClass('d-none')
+
+                    if ($('input:checkbox[name="checkbox-terjawab"]').is(":checked") === true) {
+                        $('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').find('.bi-patch-check').parent().parent().parent().parent().show() //show yang terjawab
+                        // hitung semua pertanyaan
+                        $('#jumlah-pertanyaan-ditolak-terjawab').text("Jumlah : " +$('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').length)
+                        console.log('true ditolak 21')
+                    }
+                    else{
+                        $('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').find('.bi-patch-check').parent().parent().parent().parent().hide() //hide yang terjawab
+                        // hitung ulang pertanyaan yang punya icon ditolak
+                        $('#jumlah-pertanyaan-ditolak-terjawab').text("Jumlah : " +$('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').find('.bi-file-earmark-x').length)
+                        console.log('true ditolak 22')
+                    }
+
+                    // show badge
+                    $('#badge-ditolak').removeClass('d-none')
                     // reset search
                     $("#search-pertanyaan").val('')
+                } else {
+                    console.log('else')
+                    if ($('input:checkbox[name="checkbox-terjawab"]').is(":checked") === false) {
+                        // show pertanyaan all - hide pertanyaan ditolak terjawab
+                        $('#container-pesan-ditolak-terjawab').addClass('d-none')
+                        $('#container-pesan').removeClass('d-none')
+                        // show jumlah pertanyaan ditolak terjawab - hide jumlah pertanyaan all
+                        $('#jumlah-pertanyaan-ditolak-terjawab').addClass('d-none')
+                        $('#jumlah-pertanyaan').removeClass('d-none')
+                        // reset search
+                        $("#search-pertanyaan").val('')
+                        console.log('else 1')
+                    }
+                    else{
+                        $('#jumlah-pertanyaan-ditolak-terjawab').text("Jumlah : " +$('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').find('.bi-patch-check').length)
+                        $('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').find('.bi-patch-check').parent().parent().parent().parent().show() //show yang terjawab
+                        console.log('else 2')
+                    }
+                    //hide yang ditolak
+                    $('#container-pesan-ditolak-terjawab .pesan-ditolak-terjawab').find('.bi-file-earmark-x').parent().parent().parent().parent().hide()
+                    // hide badge
+                    $('#badge-ditolak').addClass('d-none')
                 }
             });
 
@@ -995,7 +1210,8 @@
                     $('#badge-favorit').removeClass('d-none')
                     // reset search
                     $("#search-pertanyaan-terpilih").val('')
-                } else {
+                }
+                else {
                     console.log('else')
                     // show pertanyaan all - hide pertanyaan ditolak terjawab
                     $('#container-pesan-favorit').addClass('d-none')
@@ -1023,7 +1239,7 @@
         </script>
         <script>
             function charCounter() {
-                let maxChar = 400
+                let maxChar = 200
                 let count = $("#input-edit").val().length
                 let remaining = maxChar - count
 
@@ -1049,7 +1265,7 @@
             // Koneksi Websocket
             var port = '8082'
             // var conn = new WebSocket('ws://localhost:'+port);
-            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:11801');
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14114');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
@@ -2701,7 +2917,6 @@
                 $('#input-edit').val('')
                 $('#modal-edit').modal('hide');
             })
-
         </script>
 
         <!--    function sortable-->

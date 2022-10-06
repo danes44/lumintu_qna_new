@@ -286,7 +286,7 @@
             $(document).ready(function(){
                 var port = '8082'
                 // var conn = new WebSocket('ws://localhost:'+port);
-                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:11801');
+                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14114');
                 conn.onopen = function(e) {
                     console.log("Connection established!");
                 };

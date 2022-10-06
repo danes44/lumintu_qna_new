@@ -6,6 +6,7 @@
         die();
     }
 
+
 //    var_dump($_SESSION);
 //    $bytes = random_bytes(3);
 //    var_dump(bin2hex($bytes));
@@ -42,6 +43,37 @@
                 <a id="btn-signout" class="text-decoration-none text-black fw-bold align-content-center " role="button" href="logout.php" onclick="return confirm('Apakah anda yakin ingin keluar ?')">
                     <i class="bi bi-box-arrow-left me-3 "></i>Sign Out
                 </a>
+                <div class="d-flex align-items-center">
+                    <button class="small border-0 rounded-pill ms-0 text-white fw-bold" style="width: 2rem; height: 2rem; background-color: rgb(240, 241, 242);" disabled>
+                        <span class="moderator-avatar" style="color: rgb(27, 27, 27);"><i class="bi bi-person"></i></span>
+                    </button>
+                    <p id="moderator" class="ms-2 fw-bold mb-0 small">Moderator</p>
+                    <div id="dropdownProfile" class="dropdown">
+                        <button class="small border-0 rounded-pill ms-0 text-white bg-primary fw-bold"
+                                style="width: 2rem; height:2rem;" data-bs-toggle="dropdown">
+                            <span class="avatar"><?php $huruf_depan = $nama_peserta[0];echo $huruf_depan;?></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" style="min-width: max-content">
+                            <li class="d-flex justify-content-between ">
+                                <span class="nama-user small dropdown-item-text align-self-center fw-bold"><?php echo $nama_peserta; ?></span>
+                                <a href="#" class="small btn-edit-profil align-self-center border-0 bg-transparent text-decoration-none me-3">
+                                    Edit
+                                </a>
+                            </li>
+                            <li>
+                                <span class="email-user dropdown-item-text text-muted small pt-0"><?php echo $email;?></span>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="btn-logout small dropdown-item justify-content-between" role="button" href="logoutUser.php?id_session=<?php echo $sesi_id[1];?>" onclick="return confirm('Apakah anda yakin ingin keluar ?')">
+                                    <i class="bi bi-box-arrow-right me-3"></i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <div class="d-flex">
                     <img src="../assets/Logo QnA.svg" class="img-fluid " width="40px" alt="..." style="margin-right: 10px;"/>
                     <h3 class="fw-bold mb-0 flex-grow-1 text-center">Daftar Sesi</h3>
@@ -272,6 +304,16 @@
                     <div id="text-error-upload" class="toast-body">
                         <i class="bi bi-x-circle me-3"></i>
                         Error
+                    </div>
+                    <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
+                </div>
+            </div>
+            <!--toast cannot delete-->
+            <div id="toast-cannot-delete" class="toast align-items-center text-danger border-1 border-danger" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #fbeaec">
+                <div class="d-flex">
+                    <div id="text-error-upload" class="toast-body">
+                        <i class="bi bi-x-circle me-3"></i>
+                        Maaf, Anda tidak bisa menghapus sesi yang akan mulai atau yang sedang berjalan
                     </div>
                     <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
                 </div>
@@ -624,49 +666,57 @@
 
             // delete
             $("body").on("click", ".btn-delete", function() {
-                let id_button = ''
-                let id_numb = ''
-                let ide = ''
-                // get id event
-                id_button = $(this).attr('id')
-                id_numb = id_button.split("-")
-                ide = id_numb[2]
+                if($(this).parent().parent().parent().siblings('.badge').html() === 'Sedang berjalan' || $(this).parent().parent().parent().siblings('.badge').html() === 'Sesaat lagi'){
+                    $('#toast-cannot-delete').show()
+                    setTimeout(function () {
+                        $('#toast-cannot-delete').hide()
+                    }, 5000)
+                }
+                else{
+                    let id_button = ''
+                    let id_numb = ''
+                    let ide = ''
+                    // get id event
+                    id_button = $(this).attr('id')
+                    id_numb = id_button.split("-")
+                    ide = id_numb[2]
 
-                $('#modal-delete').modal('show');
+                    $('#modal-delete').modal('show');
 
-                $("body").on("click", "#btn-confirm", function() {
-                    $.ajax({
-                        url: "../delete_events.php",
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'json',
-                        data: {
-                            id_admin: $('#login_id_admin').val(),
-                            id_event: ide,
-                        },
-                        success: function (data, textStatus, xhr) {
-                            console.log(data)
+                    $("body").on("click", "#btn-confirm", function() {
+                        $.ajax({
+                            url: "../delete_events.php",
+                            type: 'POST',
+                            cache: false,
+                            dataType: 'json',
+                            data: {
+                                id_admin: $('#login_id_admin').val(),
+                                id_event: ide,
+                            },
+                            success: function (data, textStatus, xhr) {
+                                console.log(data)
 
-                            $('#toast-delete').show()
-                            $("#timer-confirm").show();
-                            $("#btn-confirm").hide();
-                            setTimeout(function () {
-                                $('#toast-delete').hide()
-                                $("#timer-confirm").hide();
-                                $("#btn-confirm").show();
-                            }, 3000)
-                            setTimeout(function () {
-                                $('#modal-delete').modal('hide');
-                                window.location.reload();
-                            }, 3500)
-                        },
-                        error: function (textStatus, xhr, errorThrown) {
-                            console.log(xhr)
-                        },
-                        complete: function (data) {
-                        }
+                                $('#toast-delete').show()
+                                $("#timer-confirm").show();
+                                $("#btn-confirm").hide();
+                                setTimeout(function () {
+                                    $('#toast-delete').hide()
+                                    $("#timer-confirm").hide();
+                                    $("#btn-confirm").show();
+                                }, 3000)
+                                setTimeout(function () {
+                                    $('#modal-delete').modal('hide');
+                                    window.location.reload();
+                                }, 3500)
+                            },
+                            error: function (textStatus, xhr, errorThrown) {
+                                console.log(xhr)
+                            },
+                            complete: function (data) {
+                            }
+                        })
                     })
-                })
+                }
             })
 
 
