@@ -179,12 +179,38 @@
             <div class="offcanvas-header justify-content-start ">
                 <button type="button" class="btn-close my-0 me-0" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <div class="offcanvas-body text-center">
-                <p class="align-middle fs-1 fw-bold mb-4 ">QnA</p>
-                <img src="../assets/Logo QnA.svg" class="img-fluid text-center" width="35%" alt="...">
+            <div class="offcanvas-body px-0 text-center">
+                <div class="d-flex justify-content-center align-items-center">
+                    <img src="../assets/Logo QnA.svg" class="img-fluid text-center" width="20%" alt="...">
+                    <p class="align-middle fs-1 fw-bold ms-2 mb-0">QnA</p>
+                </div>
                 <p id="event-name-offcanvas" class="text-truncate fw-bold mb-0 mt-4"></p>
                 <p id="date" class=" mb-0 mt-4"></p>
                 <p id="time" class="mb-0 mt-2"></p>
+                <hr class="mt-5 mb-0">
+                <div class="list-group">
+                    <a id="sidebar-pertanyaan" href="#" class="list-group-item list-group-item-action active border-0 py-3 rounded-0">
+                        <div class="d-flex w-100 align-items-center">
+                            <i class="bi bi-question-octagon me-3"></i>
+                            <p class="mb-0 me-auto fw-semibold">Pertanyaan</p>
+                            <span id="badge-note" class="badge bg-primary rounded-pill">Pertanyaan Baru</span>
+                        </div>
+                    </a>
+                    <a id="sidebar-catatan" href="#" class="list-group-item list-group-item-action border-0 py-3 rounded-0">
+                        <div class="d-flex w-100 align-items-center">
+                            <i class="bi bi-chat-left me-3"></i>
+                            <p class="mb-0 me-auto fw-semibold">Pesan Admin</p>
+                            <span id="badge-note" class="badge bg-primary rounded-pill">10</span>
+                        </div>
+                    </a>
+                    <a id="sidebar-catatan" href="#" class="list-group-item list-group-item-action border-0 py-3 rounded-0">
+                        <div class="d-flex w-100 align-items-center">
+                            <i class="bi bi-sticky me-3"></i>
+                            <p class="mb-0 me-auto fw-semibold">Catatan</p>
+                            <span id="badge-note" class="badge bg-primary rounded-pill">10</span>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -432,6 +458,8 @@
             </div>
 
         </div>
+
+
 
         <!-- Modal Terjawab-->
         <div class="modal fade" id="modal-terjawab" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-create-label" aria-hidden="true">
@@ -751,7 +779,7 @@
             // Koneksi Websocket
             var port = '8082'
             // var conn = new WebSocket('ws://localhost:'+port);
-            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14114');
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14440');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };

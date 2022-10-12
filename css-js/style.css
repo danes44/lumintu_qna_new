@@ -106,7 +106,7 @@ body{
     left: -35px;
 }
 
-#btn-display:hover, #btn-save:hover{
+#btn-display:hover, #btn-save:hover, #btn-kirim:hover{
     background-color: rgba(255, 102, 65, 0.7) !important;
 }
 .btn-presentasi:hover{

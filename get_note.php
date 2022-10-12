@@ -1,9 +1,8 @@
 <?php
     session_start();
     include 'database/connection.php';
-    $id_message = !empty($_POST["id_message"]) ? $_POST["id_message"] : '';
 
-    $sql = "SELECT messages.*, note.* FROM `messages` JOIN note ON messages.id_note = note.id_note WHERE message.id_message = '$id_message'";
+    $sql = "SELECT * FROM note";
 
     if (mysqli_query($conn, $sql)) {
         $array_values = array();

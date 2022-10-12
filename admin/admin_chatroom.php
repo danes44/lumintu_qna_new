@@ -740,24 +740,33 @@
 
             <!-- Modal Catatan-->
             <div class="modal fade" id="modal-catatan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-catatan-label" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header border-0">
-                            <h5 class="modal-title fw-bold " id="staticBackdropLabel">Daftar Catatan</h5>
+                <div class="modal-dialog modal-xl modal-dialog-centered">
+                    <div class="modal-content p-4">
+                        <div class="modal-header border-0 position-relative">
+                            <h5 class="modal-title fw-bold text-center position-absolute top-50 start-50 translate-middle" id="staticBackdropLabel">Catatan Kepada Moderator</h5>
+                            <button id="btn-cancel-catatan" class="btn btn-close border-0 rounded-3 py-2 px-3 me-0 text-muted fw-semibold "  title="Batalkan perubahan" style="font-size: .875em"></button>
                         </div>
-                        <div class="modal-body ">
-                            <textarea id="input-edit" type="text" class="form-control border border-1 py-2 px-3 rounded-start" style="height:200px;font-size: .875em;resize: none" maxlength="400" required></textarea>
-                        </div>
-                        <div class="modal-footer border-0">
-                            <span id="char-counter" class="small text-mute me-auto" style="font-size: 12px">400</span>
+                        <div class="modal-body row">
+                            <div class="col-6">
+                                <p class="mb-2">Daftar Catatan</p>
+                                <div class="border border-1 rounded-3 list-pesan-note" id="container-pesan-note" style="height: calc(100vh - 270px); overflow-y: overlay;">
 
-                            <button id="btn-kirim" class="btn btn-save border-0 rounded-3 py-2 px-3 me-0 text-white fw-bold"  title="Kirim catatan"  style="background-color: #FF6641;font-size: .875em">
-                                Kirim
-                            </button>
-
-                            <button id="btn-cancel" class="btn btn-cancel border border-1 rounded-3 py-2 px-3 me-0 text-muted fw-semibold"  title="Batalkan perubahan" style="font-size: .875em">
-                                Batal
-                            </button>
+                                </div>
+                            </div>
+                            <div class="col-6 ">
+                                <label for="input-note" class="mb-2">Pesan</label>
+                                <div class="position-relative">
+                                    <textarea id="input-note" type="text" class="form-control border border-1 py-2 px-3 rounded-start" style="height:200px;font-size: .875em;resize: none" maxlength="400" required></textarea>
+                                    <span id="char-counter-note" class="mb-2 me-3 small text-mute position-absolute bottom-0 end-0" style="font-size: 12px">400</span>
+                                </div>
+                                <button id="btn-kirim" class="btn btn-kirim border-0 rounded-3 py-2 px-3 float-end mt-3 text-white fw-bold"  title="Kirim catatan"  style="background-color: #FF6641;font-size: .875em" disabled>
+                                    Kirim
+                                </button>
+                                <button id="timer-kirim" class="btn timer-kirim border-0 rounded-3 py-2 px-3 float-end mt-3 text-white fw-bold" disabled title="Harap menunggu"  style="background-color: #FF6641;display:none;  font-size: .875em">
+                                    <span  class=" spinner-border spinner-border-sm border-3 small" ></span>
+                                    <span class="fw-normal ms-2"> Tunggu...</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -787,18 +796,82 @@
 
         <!-- fungsi note-->
         <script>
-            // fungsi edit
-            let edit_idm = 0
+            let n = 0;
+            let n_x_waktu = [];
+            function get_note() {
+                $.ajax({
+                    url: '../get_note.php',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data1, textStatus, xhr) {
+                        let list_data = ''
+                        console.log(data1)
+                        let sesi_id = $('#login_id_sesi').val();
+
+                        for (let i=0;i<data1.length;i++) {
+                            console.log(data1[i])
+                            if( data1[i].id_event == sesi_id && data1[i].is_deleted == 0)
+                            {
+                                console.log(data1[i])
+                                list_data =
+                                    `
+                                     <div id="container-pesan-note-${data1[i].id_note}" class="p-3 note border-top border-bottom">
+                                        <div class="d-flex">
+                                            <p id="note-${data1[i].id_note}" class="mb-0 small isi-note flex-grow-1">
+                                                ${escapeHtml(data1[i].isi_note)}
+                                            </p>
+                                        </div>
+
+                                        <div class="card-footer bg-transparent">
+                                            <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                                <div class="d-flex align-items-center ">
+                                                    <div id="container-nama-waktu-note" class="small align-self-center">
+                                                        <p id="jam-note-n${n}" class="jam-note text-black-50 small mb-0 ">${moment(data1[i].date).fromNow()}</p>
+                                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_n_${n}">${data1[i].date}</p>
+                                                    </div>
+                                                </div>
+
+                                                <div id="container-btn-note-${data1[i].id_note}">
+                                                    <button id="btn-delete-note-${data1[i].id_note}" class="btn btn-delete-note bg-danger bg-opacity-10 border-0 rounded-3 py-1 px-3 me-0 text-muted" title="Hapus pesan">
+                                                        <i class="bi bi-trash3 text-danger "></i>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    `
+
+                                $('#container-pesan-note').append(list_data);
+                                n_x_waktu.push(data1[i].date);
+                                n=n+1
+                            }
+                        }
+
+
+                    },
+                    complete: function (data) {
+                    },
+                    error: function(data, textStatus, xhr){
+                        console.log(xhr)
+                    }
+                })
+            }
+            get_note()
+
             $("body").on("click", "#btn-catatan", function() {
                 $('#modal-catatan').modal('show');
-                // get message
-                let cust_message = $.trim($('#pesan-'+edit_idm).clone().children().remove().end().text());
 
-                $('#input-edit').val(cust_message)
-                charCounter()
+                let maxChar = 400
+                let count = 0
+                let remaining = 0
 
-                $("#input-edit").on('keyup', function(e) {
-                    if($('#input-edit').val() !== ''){
+                $("#input-note").on('keyup', function(e) {
+                    count = $("#input-note").val().length
+                    remaining = maxChar - count
+                    $("#char-counter-note").text(remaining)
+
+                    if($('#input-note').val() !== ''){
                         $('#btn-kirim').removeAttr('disabled')
                     }
                     else{
@@ -806,74 +879,91 @@
                     }
                 });
             })
-            // fungsi save edit
+            // fungsi kirim pesan
             $("body").on("click", "#btn-kirim", function() {
                 // get message
-                let cust_message = $.trim($('#pesan-'+edit_idm).clone().children().remove().end().text());
-                let edited_message = $.trim($('#input-edit').val())
+                let isi_note = $.trim($('#input-note').val())
 
-                console.log(edited_message + ' edit '+ edit_idm)
-                console.log(cust_message+ ' asli '+ edit_idm)
+                console.log(isi_note)
 
-                if(cust_message === edited_message){
-                    $('#input-edit').val('')
-                    $('#modal-edit').modal('hide');
-                }
-                else{
-                    $('#pesan-'+edit_idm).text(edited_message);
+                $.ajax({
+                    url: "../insert_note.php",
+                    type: "POST",
+                    cache: false,
+                    data:{
+                        isi_note: isi_note,
+                        id_event : $('#login_id_sesi').val(),
+                    },
+                    success: function(dataResult){
+                        console.log(this.data)
+                        var dataResult = JSON.parse(dataResult);
+                        if(dataResult.statusCode===200){
+                            console.log('Data updated successfully ! '+dataResult.id);
+                            let elements=
+                                `
+                                <div id="container-pesan-note-${dataResult.id}" class="p-3 note border-top border-bottom">
+                                    <div class="d-flex">
+                                        <p id="note-${dataResult.id}" class="mb-0 small isi-note flex-grow-1">
+                                            ${escapeHtml(isi_note)}
+                                        </p>
+                                    </div>
 
-                    if($('#pesan-'+edit_idm).children().hasClass('badge-edited') === false) {
-                        $('#pesan-' + edit_idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
-                    }
-                    console.log("xhr.status");
-                    $.ajax({
-                        url: "../update_messages.php",
-                        type: "POST",
-                        cache: false,
-                        data:{
-                            id_message: edit_idm,
-                            pesan : edited_message,
-                            is_edited: 1,
-                        },
-                        success: function(dataResult){
-                            console.log(this.data)
-                            var dataResult = JSON.parse(dataResult);
-                            if(dataResult.statusCode===200){
-                                console.log('Data updated successfully ! '+edit_idm+' apa');
-                            }
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            console.log(xhr.status);
-                            console.log(thrownError);
+                                    <div class="card-footer bg-transparent">
+                                        <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                            <div class="d-flex align-items-center ">
+                                                <div id="container-nama-waktu-note" class="small align-self-center">
+                                                    <p id="jam-note-n${n}" class="jam-note text-black-50 small mb-0 ">${moment().fromNow()}</p>
+                                                    <p class="waktu-kirim d-none" id="waktu_pengiriman_n_${n}">${moment().format('YYYY-MM-DD HH:mm:ss')}</p>
+                                                </div>
+                                            </div>
+
+                                            <div id="container-btn-note-${dataResult.id}">
+                                                <button id="btn-delete-note-${dataResult.id}" class="btn btn-delete-note bg-danger bg-opacity-10 border-0 rounded-3 py-1 px-3 me-0 text-muted" title="Hapus pesan">
+                                                    <i class="bi bi-trash3 text-danger "></i>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                `
+
+                            $("#container-pesan-note").append(elements);
+                            n_x_waktu.push(moment().format('YYYY-MM-DD HH:mm:ss'));
+                            n=n+1
                         }
-                    });
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log(xhr.status);
+                        console.log(thrownError);
+                    }
+                });
 
-                    //show toast
-                    setTimeout(function () {
-                        $('#toast-edit').show()
-                        $('#modal-edit').modal('hide');
-                    },500)
+                $("#timer-kirim").show();
+                $("#btn-kirim").hide();
 
-                    setTimeout(function () {
-                        $('#toast-edit').hide()
-                    },4000)
+                // $('#toast-create').show()
+                setTimeout(function () {
+                    $("#timer-kirim").hide();
+                    $("#btn-kirim").show();
 
-                    // Proses Pengiriman Pesan
-                    let id_sesi = $('#login_id_sesi').val();
-                    let data = {
-                        asal: 'admin-edit',
-                        mId: edit_idm,
-                        msg: edited_message,
-                        sesiId: id_sesi,
-                        date: moment().format('YYYY-MM-DD HH:mm:ss'),
-                    };
-                    conn.send(JSON.stringify(data));
+                    // $('#toast-create').hide()
+                }, 3000)
 
-                }
+                // Proses Pengiriman Pesan   TERAKHIR NGEDIT INI YAAA
+                let id_sesi = $('#login_id_sesi').val();
+                let data = {
+                    asal: 'admin-note',
+                    msg: isi_note,
+                    sesiId: id_sesi,
+                    date: moment().format('YYYY-MM-DD HH:mm:ss'),
+                };
+                conn.send(JSON.stringify(data));
+
             })
-            // fungsi cancel edit
-            $("body").on("click", ".btn-cancel", function() {
-                $('#input-edit').val('')
+            // fungsi cancel note
+            $("body").on("click", "#btn-cancel-catatan", function() {
+                $('#input-note').val('')
                 $('#modal-catatan').modal('hide');
             })
         </script>
@@ -995,9 +1085,10 @@
             var jam_j = <?php echo json_encode($j_x_waktu); ?>;
             var jam_k = <?php echo json_encode($k_x_waktu); ?>;
             var jam_l = <?php echo json_encode($l_x_waktu); ?>;
+            let jam_n = n_x_waktu;
 
             function setFormatJam() {
-                console.log(jam_j)
+                console.log(jam_n)
                 for(let i=0; i<jam_i.length; i++){
                     let status_jam_i = moment(jam_i[i]).fromNow();
                     $("#jam-pesan-i"+i).text(status_jam_i)
@@ -1013,6 +1104,10 @@
                 for(let l=0; l<jam_l.length; l++){
                     let status_jam_l = moment(jam_l[l]).fromNow();
                     $("#jam-pesan-l"+l).text(status_jam_l)
+                }
+                for(let n=0; n<jam_n.length; n++){
+                    let status_jam_n = moment(jam_n[n]).fromNow();
+                    $("#jam-note-n"+n).text(status_jam_n)
                 }
             }
             setFormatJam()
@@ -1265,7 +1360,7 @@
             // Koneksi Websocket
             var port = '8082'
             // var conn = new WebSocket('ws://localhost:'+port);
-            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14114');
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14440');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
