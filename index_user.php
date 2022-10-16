@@ -82,15 +82,15 @@
                         <div class="mt-3 position-relative">
                             <label for="input-nama" class="form-label nama ">Nama</label>
                             <input type="text" class="form-control" id="input-nama" name="input-nama" placeholder="John Doe" required/>
-                            <div class="invalid-tooltip end-0">Nama tidak valid</div>
+                            <div class="invalid-tooltip end-0">Nama harus diisi</div>
                         </div>
                         <div class="mt-3 position-relative">
                             <label for="input-email" class="form-label email ">Email</label>
-                            <input type="email" class="form-control" id="input-email" name="input-email" placeholder="john@example.com" required/>
-                            <div class="invalid-tooltip end-0">Email tidak valid</div>
+                            <input type="text" class="form-control" id="input-email" name="input-email" placeholder="john@example.com" required/>
+                            <div class="invalid-tooltip end-0">Email harus diisi</div>
                         </div>
                         <div class="mt-5 mb-3">
-                            <button id="btn-login" type="submit" class="btn text-white text-center" name="login" style="background-color: #FF6641; width:100%;">
+                            <button id="btn-login" type="submit" class="btn text-white text-center" name="login" style="background-color: #FF6641; width:100%;" disabled>
                               <b>Simpan</b>
                             </button>
                             <button id="timer-login" class="btn rounded-3 text-white text-center" disabled title="Harap menunggu"  style="background-color: #FF6641; width:100%;display: none">
@@ -135,6 +135,16 @@
                     <div class="toast-body">
                         <i class="bi bi-exclamation-circle me-3"></i>
                         Sesi tidak ditemukan.
+                    </div>
+                    <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
+                </div>
+            </div>
+            <!--toast gagal email invalid-->
+            <div id="toast-failed-email" class="toast align-items-center text-danger border-1 border-danger" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #fbeaec">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-exclamation-circle me-3"></i>
+                        Email harus mengandung @ dan domain (cth: example@domain.com)
                     </div>
                     <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
                 </div>
@@ -200,6 +210,18 @@
                 $("#container-unique-code").removeClass('d-none');
                 $("#container-profil").addClass('d-none');
             })
+
+
+            $("#input-nama").on('keyup', function(e) {
+                if($('#input-nama').val()!='' && $('#input-email').val()!=''){
+                    $('#btn-login').removeAttr('disabled')
+                }
+            });
+            $("#input-email").on('keyup', function(e) {
+                if($('#input-nama').val()!='' && $('#input-email').val()!=''){
+                    $('#btn-login').removeAttr('disabled')
+                }
+            });
 
             // button submit event
             $("form#form-unique-code").on('submit', function (e) {
@@ -284,36 +306,56 @@
                 let unique_code= $('#input-kode-sesi').val();
                 console.log(unique_code)
 
-                $.ajax({
-                    url: actionUrl,
-                    type: 'POST',
-                    cache: false,
-                    dataType: 'json',
-                    data: {
-                        id_sesi: id_sesi,
-                        input_nama: $('#input-nama').val(),
-                        input_email: $('#input-email').val()
-                    },
-                    success: function (data, textStatus, xhr) {
-                        console.log(data)
-                        if(data.statusCode == 200) {
-                            $("#timer-login").show();
-                            $("#btn-login").hide();
-                            setTimeout(function () {
-                                $("#timer-login").hide();
-                                $("#btn-login").show();
-                            }, 2000)
-                            setTimeout(function () {
-                                $('#toast-success-login').show()
-                            }, 2500)
-                            setTimeout(function () {
-                                $('#toast-success-login').hide()
-                                // window.location.reload();
-                                let location = 'user_chatroom.php?'+data.hasilHash
-                                document.location.href=location
-                            }, 4500)
-                        }
-                        else if(data.statusCode == 201){
+                let regexEmail = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+
+                if(regexEmail.test($('#input-email').val())){
+                    $.ajax({
+                        url: actionUrl,
+                        type: 'POST',
+                        cache: false,
+                        dataType: 'json',
+                        data: {
+                            id_sesi: id_sesi,
+                            input_nama: $('#input-nama').val(),
+                            input_email: $('#input-email').val()
+                        },
+                        success: function (data, textStatus, xhr) {
+                            console.log(data)
+                            if (data.statusCode == 200) {
+                                $("#timer-login").show();
+                                $("#btn-login").hide();
+                                setTimeout(function () {
+                                    $("#timer-login").hide();
+                                    $("#btn-login").show();
+                                }, 2000)
+                                setTimeout(function () {
+                                    $('#toast-success-login').show()
+                                }, 2500)
+                                setTimeout(function () {
+                                    $('#toast-success-login').hide()
+                                    // window.location.reload();
+                                    let location = 'user_chatroom.php?' + data.hasilHash
+                                    document.location.href = location
+                                }, 4500)
+                            } else if (data.statusCode == 201) {
+                                $("#timer-login").show();
+                                $("#btn-login").hide();
+                                setTimeout(function () {
+                                    $("#timer-login").hide();
+                                    $("#btn-login").show();
+                                }, 2000)
+                                setTimeout(function () {
+                                    $('#toast-failed').show()
+                                }, 2500)
+                                setTimeout(function () {
+                                    $('#toast-failed').hide()
+                                    // window.location.reload();
+                                }, 4500)
+                            }
+                        },
+                        error: function (textStatus, xhr, errorThrown) {
+                            console.log(errorThrown)
+
                             $("#timer-login").show();
                             $("#btn-login").hide();
                             setTimeout(function () {
@@ -327,26 +369,17 @@
                                 $('#toast-failed').hide()
                                 // window.location.reload();
                             }, 4500)
-                        }
-                    },
-                    error: function (textStatus, xhr, errorThrown) {
-                        console.log(errorThrown)
-
-                        $("#timer-login").show();
-                        $("#btn-login").hide();
-                        setTimeout(function () {
-                            $("#timer-login").hide();
-                            $("#btn-login").show();
-                        }, 2000)
-                        setTimeout(function () {
-                            $('#toast-failed').show()
-                        }, 2500)
-                        setTimeout(function () {
-                            $('#toast-failed').hide()
-                            // window.location.reload();
-                        }, 4500)
-                    },
-                })
+                        },
+                    })
+                    console.log(unique_code)
+                }
+                else {
+                    $('#toast-failed-email').show()
+                    setTimeout(function () {
+                        $('#toast-failed-email').hide()
+                    }, 4000)
+                    console.log('unique_code')
+                }
             })
 
             // button anonim

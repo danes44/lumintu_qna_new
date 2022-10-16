@@ -530,7 +530,7 @@
         let i = <?php echo $i ?>;
         let user_id = $('#login_user_id').val();
         // var conn = new WebSocket('ws://localhost:8082'); //dibuat dinamis
-        var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:18858'); //dibuat dinamis
+        var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:18488'); //dibuat dinamis
         conn.onopen = function (e) {
             console.log("Connection established!");
         };
