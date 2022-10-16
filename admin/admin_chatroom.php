@@ -186,7 +186,7 @@
                 </div>
                 <div class="d-flex justify-content-start align-items-center">
                     <button id="btn-catatan" class="btn btn-sm me-3 my-0 p-2 px-3 rounded bg-opacity-10 me-2 fw-semibold" title="Lihat Daftar Catatan" style="background-color: rgba(255,102,65,0.1); color:#FF6641">
-                        <i class="bi bi-stickies"></i>
+                        <i class="bi bi-chat-left-dots"></i>
                     </button>
                     <div class="dropdown">
                         <a id="btn-share" class="btn btn-sm dropdown-toggle fw-semibold text-decoration-none rounded my-0 p-2 px-3 bg-opacity-10 me-3" style="background-color: rgba(255,102,65,0.1); color:#FF6641" role="button" data-bs-toggle="dropdown">
@@ -774,7 +774,8 @@
         </div>
 
         <?php
-          echo "<input type='hidden' name='login_id_sesi' id='login_id_sesi' value='".$_GET["id_session"]."'/>";
+            echo "<input type='hidden' name='login_id_sesi' id='login_id_sesi' value='".$_GET["id_session"]."'/>";
+            echo "<input type='hidden' name='login_id_admin' id='login_id_admin' value='".$_SESSION['id_admin']."'/>";
         ?>
 
         <script>
@@ -800,25 +801,26 @@
             let n_x_waktu = [];
             function get_note() {
                 $.ajax({
-                    url: '../get_note.php',
+                    url: '../get_pesan_admin.php',
                     type: 'GET',
                     dataType: 'json',
                     success: function(data1, textStatus, xhr) {
                         let list_data = ''
                         console.log(data1)
                         let sesi_id = $('#login_id_sesi').val();
+                        let admin_id = $('#login_id_admin').val();
 
                         for (let i=0;i<data1.length;i++) {
-                            console.log(data1[i])
-                            if( data1[i].id_event == sesi_id && data1[i].is_deleted == 0)
+                            console.log(data1[i].is_deleted == 0)
+                            if( data1[i].id_event == sesi_id && data1[i].is_deleted == 0 && data1[i].id_admin == admin_id)
                             {
                                 console.log(data1[i])
                                 list_data =
                                     `
-                                     <div id="container-pesan-note-${data1[i].id_note}" class="p-3 note border-top border-bottom">
+                                     <div id="container-pesan-note-${data1[i].id_pesan}" class="p-3 note border-top border-bottom">
                                         <div class="d-flex">
-                                            <p id="note-${data1[i].id_note}" class="mb-0 small isi-note flex-grow-1">
-                                                ${escapeHtml(data1[i].isi_note)}
+                                            <p id="note-${data1[i].id_pesan}" class="mb-0 small isi-note flex-grow-1">
+                                                ${escapeHtml(data1[i].isi_pesan)}
                                             </p>
                                         </div>
 
@@ -831,8 +833,8 @@
                                                     </div>
                                                 </div>
 
-                                                <div id="container-btn-note-${data1[i].id_note}">
-                                                    <button id="btn-delete-note-${data1[i].id_note}" class="btn btn-delete-note bg-danger bg-opacity-10 border-0 rounded-3 py-1 px-3 me-0 text-muted" title="Hapus pesan">
+                                                <div id="container-btn-note-${data1[i].id_pesan}">
+                                                    <button id="btn-delete-note-${data1[i].id_pesan}" class="btn btn-delete-note bg-danger bg-opacity-10 border-0 rounded-3 py-1 px-3 me-0 text-muted" title="Hapus pesan">
                                                         <i class="bi bi-trash3 text-danger "></i>
                                                     </button>
                                                 </div>
@@ -882,17 +884,18 @@
             // fungsi kirim pesan
             $("body").on("click", "#btn-kirim", function() {
                 // get message
-                let isi_note = $.trim($('#input-note').val())
+                let isi_pesan = $.trim($('#input-note').val())
 
-                console.log(isi_note)
+                console.log(isi_pesan)
 
                 $.ajax({
-                    url: "../insert_note.php",
+                    url: "../insert_pesan_admin.php",
                     type: "POST",
                     cache: false,
                     data:{
-                        isi_note: isi_note,
+                        isi_pesan: isi_pesan,
                         id_event : $('#login_id_sesi').val(),
+                        id_admin : $('#login_id_admin').val(),
                     },
                     success: function(dataResult){
                         console.log(this.data)
@@ -904,7 +907,7 @@
                                 <div id="container-pesan-note-${dataResult.id}" class="p-3 note border-top border-bottom">
                                     <div class="d-flex">
                                         <p id="note-${dataResult.id}" class="mb-0 small isi-note flex-grow-1">
-                                            ${escapeHtml(isi_note)}
+                                            ${escapeHtml(isi_pesan)}
                                         </p>
                                     </div>
 
@@ -941,7 +944,7 @@
 
                 $("#timer-kirim").show();
                 $("#btn-kirim").hide();
-
+                $('#input-note').val('')
                 // $('#toast-create').show()
                 setTimeout(function () {
                     $("#timer-kirim").hide();
@@ -954,7 +957,7 @@
                 let id_sesi = $('#login_id_sesi').val();
                 let data = {
                     asal: 'admin-note',
-                    msg: isi_note,
+                    msg: isi_pesan,
                     sesiId: id_sesi,
                     date: moment().format('YYYY-MM-DD HH:mm:ss'),
                 };
@@ -1360,7 +1363,7 @@
             // Koneksi Websocket
             var port = '8082'
             // var conn = new WebSocket('ws://localhost:'+port);
-            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14440');
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:18858');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
@@ -1649,10 +1652,6 @@
                         }
                     }
                 });
-
-                // let id_waktu_kirim= $('#nama-peserta-form-'+idm).siblings('.waktu-kirim').attr('id');
-                // let i_split = id_waktu_kirim.split('_')
-                // let i = i_split[3];
 
                 // get id user
                 let id_user_element = $('#container-nama-waktu-'+idm).children('p.nama').attr('id');

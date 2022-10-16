@@ -69,7 +69,6 @@ class Chat implements MessageComponentInterface {
         }
         else if($data['asal'] == 'admin-navigasi'){
             $chat_object->setMessage($data['msg']);
-            $chat_object->setStatus($data['status']);
             $chat_object->setCreatedOn($data['date']);
             $chat_object->setChatId($data["sesiId"]);
         }

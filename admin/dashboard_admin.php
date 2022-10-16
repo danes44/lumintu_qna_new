@@ -43,37 +43,37 @@
                 <a id="btn-signout" class="text-decoration-none text-black fw-bold align-content-center " role="button" href="logout.php" onclick="return confirm('Apakah anda yakin ingin keluar ?')">
                     <i class="bi bi-box-arrow-left me-3 "></i>Sign Out
                 </a>
-                <div class="d-flex align-items-center">
-                    <button class="small border-0 rounded-pill ms-0 text-white fw-bold" style="width: 2rem; height: 2rem; background-color: rgb(240, 241, 242);" disabled>
-                        <span class="moderator-avatar" style="color: rgb(27, 27, 27);"><i class="bi bi-person"></i></span>
-                    </button>
-                    <p id="moderator" class="ms-2 fw-bold mb-0 small">Moderator</p>
-                    <div id="dropdownProfile" class="dropdown">
-                        <button class="small border-0 rounded-pill ms-0 text-white bg-primary fw-bold"
-                                style="width: 2rem; height:2rem;" data-bs-toggle="dropdown">
-                            <span class="avatar"><?php $huruf_depan = $nama_peserta[0];echo $huruf_depan;?></span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" style="min-width: max-content">
-                            <li class="d-flex justify-content-between ">
-                                <span class="nama-user small dropdown-item-text align-self-center fw-bold"><?php echo $nama_peserta; ?></span>
-                                <a href="#" class="small btn-edit-profil align-self-center border-0 bg-transparent text-decoration-none me-3">
-                                    Edit
-                                </a>
-                            </li>
-                            <li>
-                                <span class="email-user dropdown-item-text text-muted small pt-0"><?php echo $email;?></span>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li>
-                                <a class="btn-logout small dropdown-item justify-content-between" role="button" href="logoutUser.php?id_session=<?php echo $sesi_id[1];?>" onclick="return confirm('Apakah anda yakin ingin keluar ?')">
-                                    <i class="bi bi-box-arrow-right me-3"></i> Logout
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+<!--                <div class="d-flex align-items-center">-->
+<!--                    <button class="small border-0 rounded-pill ms-0 text-white fw-bold" style="width: 2rem; height: 2rem; background-color: rgb(240, 241, 242);" disabled>-->
+<!--                        <span class="moderator-avatar" style="color: rgb(27, 27, 27);"><i class="bi bi-person"></i></span>-->
+<!--                    </button>-->
+<!--                    <p id="moderator" class="ms-2 fw-bold mb-0 small">Moderator</p>-->
+<!--                    <div id="dropdownProfile" class="dropdown">-->
+<!--                        <button class="small border-0 rounded-pill ms-0 text-white bg-primary fw-bold"-->
+<!--                                style="width: 2rem; height:2rem;" data-bs-toggle="dropdown">-->
+<!--                            <span class="avatar">--><?php //$huruf_depan = $nama_peserta[0];echo $huruf_depan;?><!--</span>-->
+<!--                        </button>-->
+<!--                        <ul class="dropdown-menu dropdown-menu-end" style="min-width: max-content">-->
+<!--                            <li class="d-flex justify-content-between ">-->
+<!--                                <span class="nama-user small dropdown-item-text align-self-center fw-bold">--><?php //echo $nama_peserta; ?><!--</span>-->
+<!--                                <a href="#" class="small btn-edit-profil align-self-center border-0 bg-transparent text-decoration-none me-3">-->
+<!--                                    Edit-->
+<!--                                </a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <span class="email-user dropdown-item-text text-muted small pt-0">--><?php //echo $email;?><!--</span>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <hr class="dropdown-divider">-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a class="btn-logout small dropdown-item justify-content-between" role="button" href="logoutUser.php?id_session=--><?php //echo $sesi_id[1];?><!--" onclick="return confirm('Apakah anda yakin ingin keluar ?')">-->
+<!--                                    <i class="bi bi-box-arrow-right me-3"></i> Logout-->
+<!--                                </a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <div class="d-flex">
                     <img src="../assets/Logo QnA.svg" class="img-fluid " width="40px" alt="..." style="margin-right: 10px;"/>
                     <h3 class="fw-bold mb-0 flex-grow-1 text-center">Daftar Sesi</h3>

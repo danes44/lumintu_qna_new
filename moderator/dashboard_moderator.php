@@ -172,6 +172,15 @@
                     <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
                 </div>
             </div>
+            <div id="toast-pesan-admin" class="toast align-items-center text-primary border-1 border-primary" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e6f0ff">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-exclamation-circle me-3"></i>
+                        Ada pesan baru dari Admin
+                    </div>
+                    <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
+                </div>
+            </div>
         </div>
 
         <!-- sidebar -->
@@ -193,21 +202,24 @@
                         <div class="d-flex w-100 align-items-center">
                             <i class="bi bi-question-octagon me-3"></i>
                             <p class="mb-0 me-auto fw-semibold">Pertanyaan</p>
-                            <span id="badge-note" class="badge bg-primary rounded-pill">Pertanyaan Baru</span>
+                            <span id="badge-pertanyaan" class="badge bg-primary rounded-pill" style="display: none">
+                                <i class="bi bi-exclamation" style="font-size: 1rem;"></i>
+                            </span>
                         </div>
                     </a>
-                    <a id="sidebar-catatan" href="#" class="list-group-item list-group-item-action border-0 py-3 rounded-0">
+                    <a id="sidebar-pesan-admin" href="#" class="list-group-item list-group-item-action border-0 py-3 rounded-0">
                         <div class="d-flex w-100 align-items-center">
-                            <i class="bi bi-chat-left me-3"></i>
+                            <i class="bi bi-chat-left-dots me-3"></i>
                             <p class="mb-0 me-auto fw-semibold">Pesan Admin</p>
-                            <span id="badge-note" class="badge bg-primary rounded-pill">10</span>
+                            <span id="badge-pesan-admin" class="badge bg-primary rounded-pill" style="display: none">
+                                <i class="bi bi-exclamation" style="font-size: 1rem;"></i>
+                            </span>
                         </div>
                     </a>
                     <a id="sidebar-catatan" href="#" class="list-group-item list-group-item-action border-0 py-3 rounded-0">
                         <div class="d-flex w-100 align-items-center">
                             <i class="bi bi-sticky me-3"></i>
                             <p class="mb-0 me-auto fw-semibold">Catatan</p>
-                            <span id="badge-note" class="badge bg-primary rounded-pill">10</span>
                         </div>
                     </a>
                 </div>
@@ -459,6 +471,41 @@
 
         </div>
 
+        <!--  list pesan admin -->
+        <div id="pesan-admin-container" class="container g-0 position-absolute start-50 translate-middle-x px-3" style="max-width: 540px;margin-top: 70px; display: none">
+            <div class="d-flex align-items-center mb-2 mt-3">
+                <p class="fw-bold mb-0" data-bs-toggle="tooltip" data-bs-title="Daftar pesan dari admin ke moderator">
+                    Pesan Admin
+                </p>
+                <i class="ms-2 bi bi-question-circle" style="font-size: .8em" data-bs-toggle="tooltip" data-bs-title="Daftar pesan dari admin ke moderator"></i>
+                <h6 id="jumlah-pesan-admin" class="ms-auto mb-0"></h6>
+            </div>
+            <div id="pesan-admin" class="position-absolute start-50 translate-middle-x w-100 pb-4 px-3" style="overflow: overlay; ">
+                <!-- -->
+                <div class="rounded-3 sortable list-pesan-admin" id="container-pesan-admin" style="overflow-y: overlay;">
+
+                </div>
+            </div>
+
+        </div>
+
+        <!--  list note -->
+        <div id="catatan-container" class="container g-0 position-absolute start-50 translate-middle-x px-3" style="max-width: 540px;margin-top: 70px; display: none">
+            <div class="d-flex align-items-center mb-2 mt-3">
+                <p class="fw-bold mb-0" data-bs-toggle="tooltip" data-bs-title="Daftar catatan">
+                    Catatan
+                </p>
+                <i class="ms-2 bi bi-question-circle" style="font-size: .8em" data-bs-toggle="tooltip" data-bs-title="Daftar catatan"></i>
+            </div>
+            <div id="note" class="position-absolute start-50 translate-middle-x w-100 px-3" style="overflow: overlay; padding-bottom: 6.5rem !important;">
+                <!-- pesan terpilih-->
+                <div class="rounded-3 sortable list-note" id="container-note" style="overflow-y: overlay;">
+
+                </div>
+            </div>
+
+
+        </div>
 
 
         <!-- Modal Terjawab-->
@@ -490,11 +537,46 @@
 
 
         <div class="fixed-bottom">
-            <button id="fab-scroll" class="float-end btn border-0 rounded-circle bg-black bg-opacity-25 shadow mb-3 me-3 fw-bold" style="height: 60px; width: 60px;"><i class="bi bi-arrow-up text-white" style="font-size: 1.5rem"></i></button>
+            <button id="fab-scroll" class="float-end btn border-0 rounded-circle bg-black bg-opacity-25 shadow mb-3 me-3 fw-bold position-relative" style="height: 60px; width: 60px;"><i class="bi bi-arrow-up text-white" style="font-size: 1.5rem"></i></button>
+            <div id="footer-container" class="fixed-bottom mx-auto" style="z-index: 1020;max-width: 540px;display: none">
+                <div id="conversation-footer" class="mb-3 mx-3 bg-white border border-1 shadow rounded-3 px-3 py-2 "
+                     style="">
+                    <div id="container-btn" class="d-flex justify-content-between align-items-center py-2" >
+                        <p class="mb-0 small">Apa yang Anda pikirkan?</p>
+
+                        <button id="btn-tanya" class="btn rounded-lg text-white px-3 py-2" title="Tanyakan sesuatu"  style="background: #FF6641 ;">
+                            <span class="small fw-bold">Buat</span>
+                        </button>
+                    </div>
+
+                    <form method="post" id="chat_form" style="display: none">
+                        <div class="d-flex justify-content-between align-items-end mb-3">
+                            <div class="flex-grow-1 pe-3">
+                                <p class="fw-bold pt-2">Apa yang ingin Anda tanyakan?</p>
+                                <textarea class="chat-text-area p-0 form-control border-0 bg-light me-3 p-2 small" id="chat_message" name="chat_message" rows="1" style="overflow-y: hidden !important; font-size: 14px" placeholder="Tulis pertanyaan Anda..." maxlength="500" wrap="hard" required></textarea>
+                            </div>
+                        </div>
+
+                        <div id="container-btn" class="d-flex justify-content-between align-items-center py-2">
+                            <span id="char-counter" class="small text-mute" style="font-size: 12px">500</span>
+                            <button id="timer" class=" btn btn-send px-3 py-2 text-white fw-bold" disabled title="Harap menunggu"  style="background-color: #FF6641; display:none;">
+                                <div  class=" spinner-border spinner-border-sm border-3 small" ></div>
+                                <span class="fw-normal small ms-2"> Tunggu...</span>
+                            </button>
+                            <button type="submit" name="send" id="send" class=" btn btn-send px-3 py-2 text-white small fw-bold" title="Kirim pertanyaan"  style="background-color: #FF6641; " disabled>
+                                <span class="small fw-bold">Kirim</span>
+                            </button>
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
         </div>
 
         <?php
-          echo "<input type='hidden' name='login_id_sesi' id='login_id_sesi' value='".$sesi_id."'/>";
+            echo "<input type='hidden' name='login_id_sesi' id='login_id_sesi' value='".$sesi_id."'/>";
+            echo "<input type='hidden' name='login_id_admin' id='login_id_admin' value='".$_SESSION['id_admin']."'/>";
         ?>
 
         <script>
@@ -512,6 +594,294 @@
             // 5 = dipresentasikan
             // 6 = favorit + dipresentasikan
             // 99 = dihapus
+        </script>
+
+        <!-- fungsi tombol sidebar-->
+        <script>
+            $("body").on("click", "#sidebar-pertanyaan", function() {
+                $(this).parent().find('.active').removeClass('active')
+                $('#badge-pertanyaan').hide()
+                $(this).addClass('active')
+                $('#pesan-admin-container').hide();
+                $('#conversation-container').show();
+                $('#catatan-container').hide();
+                $('#footer-container').hide();
+            })
+            $("body").on("click", "#sidebar-pesan-admin", function() {
+                $(this).parent().find('.active').removeClass('active')
+                $('#badge-pesan-admin').hide()
+                $(this).addClass('active')
+                $('#pesan-admin-container').show();
+                $('#conversation-container').hide();
+                $('#catatan-container').hide();
+                $('#footer-container').hide();
+            })
+            $("body").on("click", "#sidebar-catatan", function() {
+                $(this).parent().find('.active').removeClass('active')
+                $(this).addClass('active')
+                $('#pesan-admin-container').hide();
+                $('#conversation-container').hide();
+                $('#catatan-container').show();
+                $('#footer-container').show();
+            })
+        </script>
+
+        <!-- fungsi pesan admin & note-->
+        <script>
+            let p = 0;
+            let p_x_waktu = [];
+            function get_pesan_admin() {
+                $.ajax({
+                    url: '../get_pesan_admin.php',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data1, textStatus, xhr) {
+                        let list_data = ''
+                        console.log(data1)
+                        let sesi_id = $('#login_id_sesi').val();
+                        let admin_id = $('#login_id_admin').val();
+
+                        for (let i=0;i<data1.length;i++) {
+                            console.log(data1[i].is_deleted == 0)
+                            if( data1[i].id_event == sesi_id && data1[i].is_deleted == 0)
+                            {
+                                console.log(data1[i])
+                                list_data =
+                                    `
+                                     <div id="container-pesan-admin-${data1[i].id_pesan}" class="p-4 rounded-3 pesan-admin border border-1 mb-3">
+                                        <div class="d-flex">
+                                            <p id="pesan-admin-${data1[i].id_pesan}" class="mb-0 isi-pesan-admin flex-grow-1">
+                                                ${escapeHtml(data1[i].isi_pesan)}
+                                            </p>
+                                        </div>
+
+                                        <div class="card-footer bg-transparent">
+                                            <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                                <div class="d-flex align-items-center ">
+                                                    <div id="container-nama-waktu-pesan-admin" class="small align-self-center">
+                                                        <p id="jam-pesan-admin-p${p}" class="jam-pesan-admin text-black-50 small mb-0 ">${moment(data1[i].date).fromNow()}</p>
+                                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_p_${p}">${data1[i].date}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    `
+
+                                $('#container-pesan-admin').append(list_data);
+                                p_x_waktu.push(data1[i].date);
+                                p=p+1
+                            }
+                        }
+
+
+                    },
+                    complete: function (data) {
+                    },
+                    error: function(data, textStatus, xhr){
+                        console.log(xhr)
+                    }
+                })
+            }
+            get_pesan_admin()
+
+            let n = 0;
+            let n_x_waktu = [];
+            function get_note() {
+                $.ajax({
+                    url: '../get_note.php',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data1, textStatus, xhr) {
+                        let list_data = ''
+                        console.log(data1)
+                        let sesi_id = $('#login_id_sesi').val();
+                        let admin_id = $('#login_id_admin').val();
+
+                        for (let i=0;i<data1.length;i++) {
+                            console.log(data1[i].is_deleted == 0)
+                            if( data1[i].id_event == sesi_id && data1[i].is_deleted == 0)
+                            {
+                                console.log(data1[i])
+                                list_data =
+                                    `
+                                     <div id="container-note-${data1[i].id_note}" class="p-4 rounded-3 note border border-1 mb-3">
+                                        <div class="d-flex">
+                                            <p id="note-${data1[i].id_note}" class="mb-0 isi-note flex-grow-1" style="">
+                                                ${escapeHtml(data1[i].isi_note)}
+                                            </p>
+                                        </div>
+
+                                        <div class="card-footer bg-transparent">
+                                            <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                                <div class="d-flex align-items-center ">
+                                                    <div id="container-nama-waktu-note" class="small align-self-center">
+                                                        <p id="jam-note-n${n}" class="jam-note text-black-50 small mb-0 ">${moment(data1[i].date).fromNow()}</p>
+                                                        <p class="waktu-kirim d-none" id="waktu_pengiriman_n_${n}">${data1[i].date}</p>
+                                                    </div>
+                                                </div>
+                                                <div id="container-btn-note-${data1[i].id_note}">
+                                                    <button id="btn-delete-note-${data1[i].id_note}" class="btn btn-delete-note bg-danger bg-opacity-10 border-0 rounded-3 py-1 px-3 me-0 text-muted" title="Hapus pesan">
+                                                        <i class="bi bi-trash3 text-danger "></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    `
+
+                                $('#container-note').append(list_data);
+                                n_x_waktu.push(data1[i].date);
+                                n=n+1
+                            }
+                        }
+
+
+                    },
+                    complete: function (data) {
+                    },
+                    error: function(data, textStatus, xhr){
+                        console.log(xhr)
+                    }
+                })
+            }
+            get_note()
+
+            $("#btn-tanya").click(function(){
+                $("#chat_form").show();
+                $("#container-btn").removeClass('d-flex')
+                $("#container-btn").hide()
+                charCounter()
+            });
+            //fungsi close ketika klik luar element
+            $(document).mouseup(function(e){
+                var container = $("#chat_form");
+
+                // if the target of the click isn't the container nor a descendant of the container
+                if (!container.is(e.target) && container.has(e.target).length === 0)
+                {
+                    container.hide();
+                    $("#container-btn").addClass('d-flex').show()
+                }
+            });
+
+            // function autogrow
+            $("#chat_message").on('keyup', function(e) {
+                let t = $("#chat_message");
+                if (t.val().trim() == "") {
+                    t.css('height', 'calc(1.5em + 0.75rem + 2px)');
+                } else {
+                    t.css('height', '0.1px');
+                    t.css('height', t[0].scrollHeight);
+                }
+                charCounter()
+
+                if($('#chat_message').val() !== ''){
+                    $('#send').removeAttr('disabled')
+                }
+                else{
+                    $('#send').attr('disabled','true')
+                }
+            });
+
+            // Proses Pengiriman Pesan
+            $('#chat_form').on('submit', function (event) {
+                event.preventDefault();
+                $('#badge-baru').remove()
+                // get message
+                // let isi_pesan = `<pre id="note-${data1[i].id_note}" class="mb-0 isi-note flex-grow-1" style="">${$('#chat_message').val()}</pre>`
+                let isi_pesan = $.trim($('#chat_message').val())
+
+                console.log(isi_pesan)
+
+                $.ajax({
+                    url: "../insert_note.php",
+                    type: "POST",
+                    cache: false,
+                    data:{
+                        isi_note: isi_pesan,
+                        id_event : $('#login_id_sesi').val(),
+                    },
+                    success: function(dataResult){
+                        console.log(this.data)
+                        var dataResult = JSON.parse(dataResult);
+                        if(dataResult.statusCode===200){
+                            console.log('Data updated successfully ! '+dataResult.id);
+                            let elements=
+                                `
+                                <div id="container-note-${dataResult.id}" class="p-4 rounded-3 note border border-1 mb-3">
+                                    <div class="d-flex">
+                                        <p id="note-${dataResult.id}" class="mb-0 isi-note flex-grow-1">
+                                            ${escapeHtml(isi_pesan)}
+                                        </p>
+                                    </div>
+
+                                    <div class="card-footer bg-transparent">
+                                        <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                            <div class="d-flex align-items-center ">
+                                                <div id="container-nama-waktu-note" class="small align-self-center">
+                                                    <p id="jam-note-n${n}" class="jam-note text-black-50 small mb-0 ">${moment().fromNow()}</p>
+                                                    <p class="waktu-kirim d-none" id="waktu_pengiriman_n_${n}">${moment().format('YYYY-MM-DD HH:mm:ss')}</p>
+                                                </div>
+                                            </div>
+                                            <div id="container-btn-note-${dataResult.id}">
+                                                <button id="btn-delete-note-${dataResult.id}" class="btn btn-delete-note bg-danger bg-opacity-10 border-0 rounded-3 py-1 px-3 me-0 text-muted" title="Hapus pesan">
+                                                    <i class="bi bi-trash3 text-danger "></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                `
+
+                            $("#container-note").append(elements);
+                            n_x_waktu.push(moment().format('YYYY-MM-DD HH:mm:ss'));
+                            n=n+1
+
+                            $("#timer-kirim").show();
+                            $("#btn-kirim").hide();
+
+                            $('#chat_message').val('')
+                            $("#chat_form").hide();
+                            $("#container-btn").addClass('d-flex').show()
+
+                            console.log(dataResult.id)
+                            // scroll
+                            window.scrollTo(0, $('#container-note-'+dataResult.id).offset().top - $('#container-note').offset().top + $('#container-note').scrollTop());
+
+                            setTimeout(function () {
+                                $('#container-note-'+dataResult.id).css({
+                                    "background-color" : 'rgba(25,135,84,0.1)',
+                                });
+
+                                $('#note-'+dataResult.id).parent().
+                                append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
+                            },500)
+
+                            setTimeout(function () {
+                                $('#container-note-'+dataResult.id).css({
+                                    "background-color" : 'white',
+                                });
+                                console.log("ganti warna")
+                            },1500)
+
+                            // $('#toast-create').show()
+                            setTimeout(function () {
+                                $("#timer-kirim").hide();
+                                $("#btn-kirim").show();
+                                // $('#toast-create').hide()
+                            }, 3000)
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log(xhr.status);
+                        console.log(thrownError);
+                    }
+
+                })
+
+
+            });
         </script>
 
         <!-- fungsi scroll to top-->
@@ -590,6 +960,8 @@
             var jam_j = <?php echo json_encode($j_x_waktu); ?>;
             var jam_k = <?php echo json_encode($k_x_waktu); ?>;
             var jam_l = <?php echo json_encode($l_x_waktu); ?>;
+            let jam_p = p_x_waktu;
+            let jam_n = n_x_waktu;
 
             function setFormatJam() {
                 console.log(jam_j)
@@ -608,6 +980,14 @@
                 for(let l=0; l<jam_l.length; l++){
                     let status_jam_l = moment(jam_l[l]).fromNow();
                     $("#jam-pesan-l"+l).text(status_jam_l)
+                }
+                for(let p=0; p<jam_p.length; p++){
+                    let status_jam_p = moment(jam_p[p]).fromNow();
+                    $("#jam-pesan-admin-p"+p).text(status_jam_p)
+                }
+                for(let n=0; n<jam_n.length; n++){
+                    let status_jam_n = moment(jam_n[n]).fromNow();
+                    $("#jam-pesan-admin-n"+n).text(status_jam_n)
                 }
             }
             setFormatJam()
@@ -753,15 +1133,15 @@
         </script>
         <script>
             function charCounter() {
-                let maxChar = 200
-                let count = $("#input-edit").val().length
+                let maxChar = 500
+                let count = $("#chat_message").val().length
                 let remaining = maxChar - count
 
                 $("#char-counter").text(remaining)
             }
 
             // function char counter dinamis
-            $("#input-edit").on('keyup', function(e) {
+            $("#chat_message").on('keyup', function(e) {
                 charCounter()
             });
         </script>
@@ -779,7 +1159,7 @@
             // Koneksi Websocket
             var port = '8082'
             // var conn = new WebSocket('ws://localhost:'+port);
-            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14440');
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:18858');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
@@ -813,6 +1193,7 @@
 
                                 if( data1.sesiId === sesi_id1 )
                                 {
+                                    $('#badge-pertanyaan').show()
                                     list_data =
                                     `<div id="container-pesan-${data1.mId}" class="p-4 rounded-3 mb-3 pesan-terpilih border border-1">
                                         <div class="d-flex">
@@ -861,6 +1242,7 @@
                             complete: function (data) {
                                 if( data1.sesiId === sesi_id1 ) {
                                     $('#badge-baru').remove()
+
                                     ubahWarnaAvatar();
 
                                     jam_j[jam_j.length] = data1.dat
@@ -938,6 +1320,44 @@
                         $("p#nama-peserta-form-"+data1.userId).text(data1.namaUser)
                         $("p#nama-peserta-form-"+data1.userId).parent().siblings('.avatar').children().text(data1.namaUser.charAt(0))
                         ubahWarnaAvatar();
+                    }
+                    else if(data1.asal === 'admin-note'){
+                        console.log(data1)
+
+                        if( data1.sesiId === sesi_id1 )
+                        {
+                            $('#badge-pesan-admin').hide()
+                            p=p+1
+                            list_data =
+                                `
+                                 <div id="container-pesan-admin-${data1.mId}" class="p-4 rounded-3 pesan-admin border border-1 mb-3">
+                                    <div class="d-flex">
+                                        <p id="pesan-admin-${data1.mId}" class="mb-0 isi-pesan-admin flex-grow-1">
+                                            ${escapeHtml(data1.msg)}
+                                        </p>
+                                    </div>
+
+                                    <div class="card-footer bg-transparent">
+                                        <div class="d-flex justify-content-between align-items-center mt-3 ">
+                                            <div class="d-flex align-items-center ">
+                                                <div id="container-nama-waktu-pesan-admin" class="small align-self-center">
+                                                    <p id="jam-pesan-admin-p${p}" class="jam-pesan-admin text-black-50 small mb-0 ">${moment(data1.date).fromNow()}</p>
+                                                    <p class="waktu-kirim d-none" id="waktu_pengiriman_p_${p}">${data1.date}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                `
+
+                            $('#container-pesan-admin').append(list_data);
+                            p_x_waktu.push(data1.date);
+
+                            $('#toast-pesan-admin').show()
+                            setTimeout(function () {
+                                $('#toast-pesan-admin').hide()
+                            },5000)
+                        }
                     }
                 };
 

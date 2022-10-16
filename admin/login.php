@@ -17,7 +17,7 @@ if (isset($_POST['login'])) {
 	$sql = mysqli_query($conn, "SELECT * FROM admins WHERE username ='$user' AND password='$pass'");
 	$cek = mysqli_num_rows($sql);
     $hasil_sesi = mysqli_fetch_array($sql);
-    var_dump($hasil_sesi['id_admin']);
+//    var_dump($hasil_sesi['id_admin']);
 	// apakah user tersebut ada 
 	if ($cek > 0) {
 		// buat session login
