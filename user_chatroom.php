@@ -499,16 +499,16 @@
                 $(".avatar").css({"color": '#1b1b1b'});
             }
 
-            $(".avatar:contains('Q'), .avatar:contains('W'), .avatar:contains('N'), .avatar:contains('M')").parent().css({"background-color": warna[0]});
-            $(".avatar:contains('E'), .avatar:contains('R')").parent().css({"background-color": warna[1]});
-            $(".avatar:contains('T'), .avatar:contains('Y')").parent().css({"background-color": warna[2]});
-            $(".avatar:contains('U'), .avatar:contains('I')").parent().css({"background-color": warna[3]});
-            $(".avatar:contains('O'), .avatar:contains('P')").parent().css({"background-color": warna[4]});
-            $(".avatar:contains('D'), .avatar:contains('F'), .avatar:contains('V'), .avatar:contains('B')").parent().css({"background-color": warna[7]});
-            $(".avatar:contains('G'), .avatar:contains('H')").parent().css({"background-color": warna[16]});
-            $(".avatar:contains('J'), .avatar:contains('K')").parent().css({"background-color": warna[8]});
-            $(".avatar:contains('L'), .avatar:contains('Z')").parent().css({"background-color": warna[12]});
-            $(".avatar:contains('X'), .avatar:contains('C'), .avatar:contains('A'), .avatar:contains('S')").parent().css({"background-color": warna[11]});
+            $(".avatar>span:contains('Q'), .avatar>span:contains('W'), .avatar>span:contains('N'), .avatar>span:contains('M'), .avatar>span:contains('1'), .avatar>span:contains('2'), .avatar>span:contains('n'), .avatar>span:contains('m')").parent().css({"background-color": warna2[0], "color": warna[0]});
+            $(".avatar>span:contains('E'), .avatar>span:contains('R'), .avatar>span:contains('e'), .avatar>span:contains('r')").parent().css({"background-color": warna2[1], "color": warna[1]});
+            $(".avatar>span:contains('T'), .avatar>span:contains('Y'), .avatar>span:contains('t'), .avatar>span:contains('y')").parent().css({"background-color": warna2[2], "color": warna[2]});
+            $(".avatar>span:contains('U'), .avatar>span:contains('I'), .avatar>span:contains('u'), .avatar>span:contains('i')").parent().css({"background-color": warna2[3], "color": warna[3]});
+            $(".avatar>span:contains('O'), .avatar>span:contains('P'), .avatar>span:contains('o'), .avatar>span:contains('p')").parent().css({"background-color": warna2[4], "color": warna[4]});
+            $(".avatar>span:contains('D'), .avatar>span:contains('F'), .avatar>span:contains('V'), .avatar>span:contains('B'), .avatar>span:contains('d'), .avatar>span:contains('f'), .avatar>span:contains('v'), .avatar>span:contains('b')").parent().css({"background-color": warna2[7], "color": warna[7]});
+            $(".avatar>span:contains('G'), .avatar>span:contains('H'), .avatar>span:contains('g'), .avatar>span:contains('h')").parent().css({"background-color": warna2[16], "color": warna[16]});
+            $(".avatar>span:contains('J'), .avatar>span:contains('K'), .avatar>span:contains('j'), .avatar>span:contains('k')").parent().css({"background-color": warna2[8], "color": warna[8]});
+            $(".avatar>span:contains('L'), .avatar>span:contains('Z'), .avatar>span:contains('l'), .avatar>span:contains('z')").parent().css({"background-color": warna2[12], "color": warna[12]});
+            $(".avatar>span:contains('X'), .avatar>span:contains('C'), .avatar>span:contains('A'), .avatar>span:contains('S'), .avatar>span:contains('x'), .avatar>span:contains('c'), .avatar>span:contains('a'), .avatar>span:contains('s')").parent().css({"background-color": warna2[11], "color": warna[11]});
         }
         $(document).ready(function() {
             ubahWarnaAvatar();
@@ -530,7 +530,7 @@
         let i = <?php echo $i ?>;
         let user_id = $('#login_user_id').val();
         // var conn = new WebSocket('ws://localhost:8082'); //dibuat dinamis
-        var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:18488'); //dibuat dinamis
+        var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:18024'); //dibuat dinamis
         conn.onopen = function (e) {
             console.log("Connection established!");
         };

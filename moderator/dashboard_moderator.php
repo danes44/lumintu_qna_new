@@ -651,7 +651,7 @@
                                      <div id="container-pesan-admin-${data1[i].id_pesan}" class="p-4 rounded-3 pesan-admin border border-1 mb-3">
                                         <div class="d-flex">
                                             <p id="pesan-admin-${data1[i].id_pesan}" class="mb-0 isi-pesan-admin flex-grow-1">
-                                                ${escapeHtml(data1[i].isi_pesan)}
+                                                ${data1[i].isi_pesan}
                                             </p>
                                         </div>
 
@@ -708,7 +708,7 @@
                                      <div id="container-note-${data1[i].id_note}" class="p-4 rounded-3 note border border-1 mb-3">
                                         <div class="d-flex">
                                             <p id="note-${data1[i].id_note}" class="mb-0 isi-note flex-grow-1" style="">
-                                                ${escapeHtml(data1[i].isi_note)}
+                                                ${data1[i].isi_note}
                                             </p>
                                         </div>
 
@@ -925,16 +925,16 @@
                 $(".avatar").siblings().children('.nama:contains("Anonim")').parent().siblings().css({"background-color": '#f0f1f2'});
                 $(".avatar").siblings().children('.nama:contains("Anonim")').parent().siblings().children().css({"color": '#1b1b1b'});
 
-                $(".avatar>span:contains('Q'), .avatar>span:contains('W'), .avatar>span:contains('N'), .avatar>span:contains('M')").parent().css({"background-color": warna2[0], "color": warna[0]});
-                $(".avatar > span:contains('E'), .avatar > span:contains('R')").parent().css({"background-color": warna2[1], "color": warna[1]});
-                $(".avatar > span:contains('T'), .avatar > span:contains('Y')").parent().css({"background-color": warna2[2], "color": warna[2]});
-                $(".avatar>span:contains('U'), .avatar>span:contains('I')").parent().css({"background-color": warna2[3], "color": warna[3]});
-                $(".avatar > span:contains('O'), .avatar > span:contains('P')").parent().css({"background-color": warna2[4], "color": warna[4]});
-                $(".avatar>span:contains('D'), .avatar>span:contains('F'), .avatar > span:contains('V'), .avatar > span:contains('B')").parent().css({"background-color": warna2[7], "color": warna[7]});
-                $(".avatar > span:contains('G'), .avatar > span:contains('H')").parent().css({"background-color": warna2[16], "color": warna[16]});
-                $(".avatar > span:contains('J'), .avatar > span:contains('K')").parent().css({"background-color": warna2[8], "color": warna[8]});
-                $(".avatar>span:contains('L'), .avatar>span:contains('Z')").parent().css({"background-color": warna2[12], "color": warna[12]});
-                $(".avatar > span:contains('X'), .avatar > span:contains('C'), .avatar > span:contains('A'), .avatar > span:contains('S')").parent().css({"background-color": warna2[11], "color": warna[11]});
+                $(".avatar>span:contains('Q'), .avatar>span:contains('W'), .avatar>span:contains('N'), .avatar>span:contains('M'), .avatar>span:contains('1'), .avatar>span:contains('2'), .avatar>span:contains('n'), .avatar>span:contains('m')").parent().css({"background-color": warna2[0], "color": warna[0]});
+                $(".avatar>span:contains('E'), .avatar>span:contains('R'), .avatar>span:contains('e'), .avatar>span:contains('r')").parent().css({"background-color": warna2[1], "color": warna[1]});
+                $(".avatar>span:contains('T'), .avatar>span:contains('Y'), .avatar>span:contains('t'), .avatar>span:contains('y')").parent().css({"background-color": warna2[2], "color": warna[2]});
+                $(".avatar>span:contains('U'), .avatar>span:contains('I'), .avatar>span:contains('u'), .avatar>span:contains('i')").parent().css({"background-color": warna2[3], "color": warna[3]});
+                $(".avatar>span:contains('O'), .avatar>span:contains('P'), .avatar>span:contains('o'), .avatar>span:contains('p')").parent().css({"background-color": warna2[4], "color": warna[4]});
+                $(".avatar>span:contains('D'), .avatar>span:contains('F'), .avatar>span:contains('V'), .avatar>span:contains('B'), .avatar>span:contains('d'), .avatar>span:contains('f'), .avatar>span:contains('v'), .avatar>span:contains('b')").parent().css({"background-color": warna2[7], "color": warna[7]});
+                $(".avatar>span:contains('G'), .avatar>span:contains('H'), .avatar>span:contains('g'), .avatar>span:contains('h')").parent().css({"background-color": warna2[16], "color": warna[16]});
+                $(".avatar>span:contains('J'), .avatar>span:contains('K'), .avatar>span:contains('j'), .avatar>span:contains('k')").parent().css({"background-color": warna2[8], "color": warna[8]});
+                $(".avatar>span:contains('L'), .avatar>span:contains('Z'), .avatar>span:contains('l'), .avatar>span:contains('z')").parent().css({"background-color": warna2[12], "color": warna[12]});
+                $(".avatar>span:contains('X'), .avatar>span:contains('C'), .avatar>span:contains('A'), .avatar>span:contains('S'), .avatar>span:contains('x'), .avatar>span:contains('c'), .avatar>span:contains('a'), .avatar>span:contains('s')").parent().css({"background-color": warna2[11], "color": warna[11]});
             }
             $(document).ready(function() {
                 ubahWarnaAvatar();
@@ -1159,7 +1159,7 @@
             // Koneksi Websocket
             var port = '8082'
             // var conn = new WebSocket('ws://localhost:'+port);
-            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:18488');
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:18024');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
@@ -1259,9 +1259,7 @@
                                         setFormatJam()
                                         counter()
                                         //scroll ke pesan terbaru
-                                        $('#container-pesan-terpilih').animate({
-                                            scrollTop: $('#container-pesan-'+data1.mId).offset().top - $('#container-pesan-terpilih').offset().top + $('#container-pesan-terpilih').scrollTop()
-                                        }, 500);
+                                        window.scrollTo(0, $('#container-pesan-'+data1.mId).offset().top - $('#container-pesan-terpilih').offset().top + $('#container-pesan-terpilih').scrollTop());
                                     }, 100);
 
                                     setTimeout(function () {
@@ -1326,6 +1324,7 @@
 
                         if( data1.sesiId === sesi_id1 )
                         {
+                            $('#badge-baru').remove()
                             $('#badge-pesan-admin').hide()
                             p=p+1
                             list_data =
@@ -1333,7 +1332,7 @@
                                  <div id="container-pesan-admin-${data1.mId}" class="p-4 rounded-3 pesan-admin border border-1 mb-3">
                                     <div class="d-flex">
                                         <p id="pesan-admin-${data1.mId}" class="mb-0 isi-pesan-admin flex-grow-1">
-                                            ${escapeHtml(data1.msg)}
+                                            ${data1.msg}
                                         </p>
                                     </div>
 
@@ -1352,11 +1351,38 @@
 
                             $('#container-pesan-admin').append(list_data);
                             p_x_waktu.push(data1.date);
+                            console.log(p_x_waktu)
+
+                            window.scrollTo(0, $('#container-pesan-admin-'+data1.mId).offset().top - $('#container-pesan-admin').offset().top + $('#container-pesan-admin').scrollTop());
+
+                            setTimeout(function () {
+                                $('#container-pesan-admin-'+data1.mId).css({
+                                    "background-color" : 'rgba(25,135,84,0.1)',
+                                });
+
+                                $('#pesan-admin-'+data1.mId).parent().
+                                append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
+                            },500)
+
+                            setTimeout(function () {
+                                $('#container-pesan-admin-'+data1.mId).css({
+                                    "background-color" : 'white',
+                                });
+                                console.log("ganti warna")
+                            },1500)
 
                             $('#toast-pesan-admin').show()
                             setTimeout(function () {
                                 $('#toast-pesan-admin').hide()
                             },5000)
+                        }
+                    }
+                    else if(data1.asal === 'admin-note-delete'){
+                        console.log(data1)
+
+                        if( data1.sesiId === sesi_id1 )
+                        {
+                            $('#container-pesan-admin-'+data1.msg).remove()
                         }
                     }
                 };

@@ -169,6 +169,16 @@
                     <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
                 </div>
             </div>
+            <!--toast delete-->
+            <div id="toast-delete" class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-check-circle me-3"></i>
+                        Berhasil menghapus pertanyaan.
+                    </div>
+                    <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
+                </div>
+            </div>
         </div>
 
         <!-- Pertanyaan2 -->
@@ -773,6 +783,34 @@
             </div>
         </div>
 
+        <!-- Modal Delete-->
+        <div class="modal fade" id="modal-delete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-create-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered justify-content-center">
+                <div class="modal-content py-2 px-4" style="width: auto">
+                    <div class="modal-header border-0 pb-0">
+                        <h6 class="modal-title fw-bold " id="staticBackdropLabel" >Apakah Anda yakin?</h6>
+                    </div>
+                    <div class="modal-body pb-0">
+                        <p class="small text-muted">Pesan Anda akan dihapus dari daftar pesan admin. Setelah dihapus, Anda <b>tidak dapat</b> mengembalikannya.</p>
+                    </div>
+                    <div class="modal-footer border-0 pt-0 px-3 justify-content-between">
+                        <button id="btn-confirm" type="submit" class="btn btn-confirm border-0 rounded-3 py-2 ms-0 me-0 text-white fw-bold btn-danger flex-fill"  title="Simpan perubahan"  style="font-size: .875em">
+                            Hapus
+                        </button>
+                        <button id="timer-confirm" class="btn-confirm border-0 rounded-3 py-2 me-0 ms-0 text-white fw-bold bg-danger bg-opacity-50 flex-fill" disabled title="Harap menunggu"  style="display:none;">
+                            <div  class=" spinner-border spinner-border-sm border-3 small" style="--bs-spinner-width: 0.8rem;--bs-spinner-height: 0.8rem;"></div>
+                            <span class="fw-normal small ms-2"> Tunggu...</span>
+                        </button>
+
+                        <button id="btn-cancel-delete" type="reset" class="btn btn-cancel border border-1 rounded-3 py-2 px-3 me-0 ms-3 text-muted fw-semibold flex-fill"  title="Batalkan hapus sesi" style="font-size: .875em">
+                            Batal
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <?php
             echo "<input type='hidden' name='login_id_sesi' id='login_id_sesi' value='".$_GET["id_session"]."'/>";
             echo "<input type='hidden' name='login_id_admin' id='login_id_admin' value='".$_SESSION['id_admin']."'/>";
@@ -820,7 +858,7 @@
                                      <div id="container-pesan-note-${data1[i].id_pesan}" class="p-3 note border-top border-bottom">
                                         <div class="d-flex">
                                             <p id="note-${data1[i].id_pesan}" class="mb-0 small isi-note flex-grow-1">
-                                                ${escapeHtml(data1[i].isi_pesan)}
+                                                ${data1[i].isi_pesan}
                                             </p>
                                         </div>
 
@@ -888,6 +926,8 @@
 
                 console.log(isi_pesan)
 
+                let id_pesan = 0;
+
                 $.ajax({
                     url: "../insert_pesan_admin.php",
                     type: "POST",
@@ -902,6 +942,7 @@
                         var dataResult = JSON.parse(dataResult);
                         if(dataResult.statusCode===200){
                             console.log('Data updated successfully ! '+dataResult.id);
+                            id_pesan = dataResult.id
                             let elements=
                                 `
                                 <div id="container-pesan-note-${dataResult.id}" class="p-3 note border-top border-bottom">
@@ -957,6 +998,7 @@
                 let id_sesi = $('#login_id_sesi').val();
                 let data = {
                     asal: 'admin-note',
+                    mId: id_pesan,
                     msg: isi_pesan,
                     sesiId: id_sesi,
                     date: moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -964,10 +1006,79 @@
                 conn.send(JSON.stringify(data));
 
             })
+
+            // button delete
+            $("body").on("click", ".btn-delete-note", function() {
+                let id_button = ''
+                let id_numb = ''
+                let idm = ''
+                // get id event
+                id_button = $(this).attr('id')
+                id_numb = id_button.split("-")
+                idm = id_numb[3]
+                console.log(id_button)
+
+                // let cust_message = $.trim($('#container-pesan-'+idm).children('.pertanyaan').text());
+                // console.log(cust_message)
+                $('#modal-delete').modal('show');
+                $('#modal-catatan').modal('hide');
+
+                $("body").on("click", "#btn-confirm", function() {
+                    $.ajax({
+                        url: "../delete_pesan_admin.php",
+                        type: 'POST',
+                        cache: false,
+                        dataType: 'json',
+                        data: {
+                            id_pesan_admin: idm,
+                        },
+                        success: function (data, textStatus, xhr) {
+                            console.log(data)
+
+                            $("#timer-confirm").show();
+                            $("#btn-confirm").hide();
+                            setTimeout(function () {
+                                $("#timer-confirm").hide();
+                                $("#btn-confirm").show();
+                            }, 2000)
+                            setTimeout(function () {
+                                $('#toast-delete').show()
+                            }, 2500)
+                            setTimeout(function () {
+                                $('#toast-delete').hide()
+
+                                $('#container-pesan-note-'+idm).remove()
+                                $('#modal-delete').modal('hide');
+                                $('#modal-catatan').modal('show');
+                                // window.location.reload();
+                            }, 3500)
+                        },
+                        error: function (textStatus, xhr, errorThrown) {
+                            console.log(xhr)
+                        },
+                        complete: function (data) {
+                            // Proses Pengiriman Pesan
+                            let id_sesi = $('#login_id_sesi').val();
+                            let dataWebsocket = {
+                                asal: 'admin-note-delete',
+                                sesiId: id_sesi,
+                                msg: idm,
+                                date: moment().format('YYYY-MM-DD HH:mm:ss'),
+                            };
+                            conn.send(JSON.stringify(dataWebsocket));
+                        }
+                    })
+                })
+            })
+
             // fungsi cancel note
             $("body").on("click", "#btn-cancel-catatan", function() {
                 $('#input-note').val('')
                 $('#modal-catatan').modal('hide');
+            })
+            $("body").on("click", "#btn-cancel-delete", function() {
+                $('#modal-delete').modal('hide');
+                $('#modal-catatan').modal('show');
             })
         </script>
 
@@ -1042,16 +1153,16 @@
                 $(".avatar").siblings().children('.nama:contains("Anonim")').parent().siblings().css({"background-color": '#f0f1f2'});
                 $(".avatar").siblings().children('.nama:contains("Anonim")').parent().siblings().children().css({"color": '#1b1b1b'});
 
-                $(".avatar>span:contains('Q'), .avatar>span:contains('W'), .avatar>span:contains('N'), .avatar>span:contains('M')").parent().css({"background-color": warna2[0], "color": warna[0]});
-                $(".avatar > span:contains('E'), .avatar > span:contains('R')").parent().css({"background-color": warna2[1], "color": warna[1]});
-                $(".avatar > span:contains('T'), .avatar > span:contains('Y')").parent().css({"background-color": warna2[2], "color": warna[2]});
-                $(".avatar>span:contains('U'), .avatar>span:contains('I')").parent().css({"background-color": warna2[3], "color": warna[3]});
-                $(".avatar > span:contains('O'), .avatar > span:contains('P')").parent().css({"background-color": warna2[4], "color": warna[4]});
-                $(".avatar>span:contains('D'), .avatar>span:contains('F'), .avatar > span:contains('V'), .avatar > span:contains('B')").parent().css({"background-color": warna2[7], "color": warna[7]});
-                $(".avatar > span:contains('G'), .avatar > span:contains('H')").parent().css({"background-color": warna2[16], "color": warna[16]});
-                $(".avatar > span:contains('J'), .avatar > span:contains('K')").parent().css({"background-color": warna2[8], "color": warna[8]});
-                $(".avatar>span:contains('L'), .avatar>span:contains('Z')").parent().css({"background-color": warna2[12], "color": warna[12]});
-                $(".avatar > span:contains('X'), .avatar > span:contains('C'), .avatar > span:contains('A'), .avatar > span:contains('S')").parent().css({"background-color": warna2[11], "color": warna[11]});
+                $(".avatar>span:contains('Q'), .avatar>span:contains('W'), .avatar>span:contains('N'), .avatar>span:contains('M'), .avatar>span:contains('1'), .avatar>span:contains('2'), .avatar>span:contains('n'), .avatar>span:contains('m')").parent().css({"background-color": warna2[0], "color": warna[0]});
+                $(".avatar>span:contains('E'), .avatar>span:contains('R'), .avatar>span:contains('e'), .avatar>span:contains('r')").parent().css({"background-color": warna2[1], "color": warna[1]});
+                $(".avatar>span:contains('T'), .avatar>span:contains('Y'), .avatar>span:contains('t'), .avatar>span:contains('y')").parent().css({"background-color": warna2[2], "color": warna[2]});
+                $(".avatar>span:contains('U'), .avatar>span:contains('I'), .avatar>span:contains('u'), .avatar>span:contains('i')").parent().css({"background-color": warna2[3], "color": warna[3]});
+                $(".avatar>span:contains('O'), .avatar>span:contains('P'), .avatar>span:contains('o'), .avatar>span:contains('p')").parent().css({"background-color": warna2[4], "color": warna[4]});
+                $(".avatar>span:contains('D'), .avatar>span:contains('F'), .avatar>span:contains('V'), .avatar>span:contains('B'), .avatar>span:contains('d'), .avatar>span:contains('f'), .avatar>span:contains('v'), .avatar>span:contains('b')").parent().css({"background-color": warna2[7], "color": warna[7]});
+                $(".avatar>span:contains('G'), .avatar>span:contains('H'), .avatar>span:contains('g'), .avatar>span:contains('h')").parent().css({"background-color": warna2[16], "color": warna[16]});
+                $(".avatar>span:contains('J'), .avatar>span:contains('K'), .avatar>span:contains('j'), .avatar>span:contains('k')").parent().css({"background-color": warna2[8], "color": warna[8]});
+                $(".avatar>span:contains('L'), .avatar>span:contains('Z'), .avatar>span:contains('l'), .avatar>span:contains('z')").parent().css({"background-color": warna2[12], "color": warna[12]});
+                $(".avatar>span:contains('X'), .avatar>span:contains('C'), .avatar>span:contains('A'), .avatar>span:contains('S'), .avatar>span:contains('x'), .avatar>span:contains('c'), .avatar>span:contains('a'), .avatar>span:contains('s')").parent().css({"background-color": warna2[11], "color": warna[11]});
 
                 // $(".avatar>span:contains('Q'), .avatar>span:contains('W'), .avatar>span:contains('N'), .avatar>span:contains('M')").parent().css({"background-color": '#1abc9c'});
                 // $(".avatar > span:contains('E'), .avatar > span:contains('R')").parent().css({"background-color": '#2ecc71'});
@@ -1363,7 +1474,7 @@
             // Koneksi Websocket
             var port = '8082'
             // var conn = new WebSocket('ws://localhost:'+port);
-            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:18488');
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:18024');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
