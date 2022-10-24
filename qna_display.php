@@ -14,7 +14,7 @@
     $arrayHasil = explode("&", $hasilHash);
     $arr_sesi_id = explode("=",$arrayHasil[0]);
     $sesi_id = $arr_sesi_id[1];
-//    var_dump($_GET);
+    var_dump($sesi_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +22,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title> Display QnA</title>
+        <title>Display QnA</title>
 
         <script src="api.js"></script>
         <!-- Bootstrap CSS -->
@@ -77,6 +77,7 @@
                         <div id="carousel-pertanyaan" class="carousel carousel-dark slide h-100" data-bs-interval="false" >
                             <div class="carousel-inner" id="qna_display">
                                 <?php
+                                var_dump((cek_qchoosen($sesi_id)));
                                 if ((cek_qchoosen($sesi_id)) != $sesi_id){
                                     echo '<div class="carousel-item active">
                                     <div class="container  px-5" >
@@ -117,6 +118,7 @@
                                             </div>
                                         </div>';
                                         }
+                                        var_dump($chat_data[$x]["id_message"]);
                                     }
                                 }
                                 ?>
@@ -170,7 +172,7 @@
                 width: 2500,
                 height: 2500,
                 // text: "http://localhost:8081/lumintu_qna/index_user.php?"+encrypted_url,
-                text: "http://bb9d-117-103-174-252.ap.ngrok.io/lumintu_qna/index_user.php?"+encrypted_url,
+                text: "http://70d5-2001-448a-404f-5e3e-945b-f785-eddc-46ed.ap.ngrok.io/lumintu_qna_new/index_user.php?"+encrypted_url,
                 colorDark : "#000000",
                 colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.H
@@ -286,7 +288,7 @@
             $(document).ready(function(){
                 var port = '8082'
                 // var conn = new WebSocket('ws://localhost:'+port);
-                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:18024');
+                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14409');
                 conn.onopen = function(e) {
                     console.log("Connection established!");
                 };

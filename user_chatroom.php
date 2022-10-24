@@ -486,12 +486,18 @@
 
     <!-- fungsi ganti background letter avatar-->
     <script>
-        let warna = ["#1abc9c", "#2ecc71", "#3498db", "#9b59b6", "#34495e", "#16a085", "#27ae60", "#2980b9", "#8e44ad", "#2c3e50", "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1", "#95a5a6", "#f39c12", "#d35400", "#c0392b", "#bdc3c7", "#7f8c8d"];
+        let warna = ["#1abc9c", "#2ecc71", "#3498db", "#9b59b6",
+            "#34495e", "#16a085", "#27ae60", "#2980b9",
+            "#8e44ad", "#2c3e50", "#f1c40f",
+            "#e67e22", "#e74c3c", "#ecf0f1",
+            "#95a5a6", "#f39c12", "#d35400", "#c0392b",
+            "#bdc3c7", "#7f8c8d"];
 
-        let warna2 = ["rgba(26,188,156,0.1)", "rgba(46,204,113,0.1)", "rgba(52,152,219,0.1)", "rgba(155,89,182,0.1)", "rgba(52,73,94,0.01)", "rgba(22,160,133,0.1)", "rgba(39,174,96,0.1)", "rgba(41,128,185,0.1)", "rgba(142,68,173,0.1)", "rgba(44,62,80,0.1)", "rgba(241,196,15,0.01)", "rgba(230,126,34,0.1)", "rgba(231,76,60,0.1)", "rgba(236,240,241,0.1)", "rgba(149,165,166,0.1)", "rgba(243,156,18,0.1)", "rgba(211,84,0,0.1)", "rgba(192,57,43,0.1)", "rgba(189,195,199,0.1)", "rgba(127,140,141,0.1)"];
+        let warna2 = ["rgba(26,188,156,0.1)", "rgba(46,204,113,0.1)", "rgba(52,152,219,0.1)", "rgba(155,89,182,0.1)", "rgba(52,73,94,0.1)", "rgba(22,160,133,0.1)", "rgba(39,174,96,0.1)", "rgba(41,128,185,0.1)", "rgba(142,68,173,0.1)", "rgba(44,62,80,0.1)", "rgba(241,196,15,0.1)", "rgba(230,126,34,0.1)", "rgba(231,76,60,0.1)", "rgba(236,240,241,0.1)", "rgba(149,165,166,0.1)", "rgba(243,156,18,0.1)", "rgba(211,84,0,0.1)", "rgba(192,57,43,0.1)", "rgba(189,195,199,0.1)", "rgba(127,140,141,0.1)"];
 
         function ubahWarnaAvatar() {
             $(".avatar").parent().removeClass('bg-primary');
+            $(".avatar").parent().removeClass('text-white');
 
             if($('#nama-peserta-form-dropdown').text()==='Anonim'){
                 $('.avatar').html('<i class="bi bi-person"></i>')
@@ -499,16 +505,16 @@
                 $(".avatar").css({"color": '#1b1b1b'});
             }
 
-            $(".avatar>span:contains('Q'), .avatar>span:contains('W'), .avatar>span:contains('N'), .avatar>span:contains('M'), .avatar>span:contains('1'), .avatar>span:contains('2'), .avatar>span:contains('n'), .avatar>span:contains('m')").parent().css({"background-color": warna2[0], "color": warna[0]});
-            $(".avatar>span:contains('E'), .avatar>span:contains('R'), .avatar>span:contains('e'), .avatar>span:contains('r')").parent().css({"background-color": warna2[1], "color": warna[1]});
-            $(".avatar>span:contains('T'), .avatar>span:contains('Y'), .avatar>span:contains('t'), .avatar>span:contains('y')").parent().css({"background-color": warna2[2], "color": warna[2]});
-            $(".avatar>span:contains('U'), .avatar>span:contains('I'), .avatar>span:contains('u'), .avatar>span:contains('i')").parent().css({"background-color": warna2[3], "color": warna[3]});
-            $(".avatar>span:contains('O'), .avatar>span:contains('P'), .avatar>span:contains('o'), .avatar>span:contains('p')").parent().css({"background-color": warna2[4], "color": warna[4]});
-            $(".avatar>span:contains('D'), .avatar>span:contains('F'), .avatar>span:contains('V'), .avatar>span:contains('B'), .avatar>span:contains('d'), .avatar>span:contains('f'), .avatar>span:contains('v'), .avatar>span:contains('b')").parent().css({"background-color": warna2[7], "color": warna[7]});
-            $(".avatar>span:contains('G'), .avatar>span:contains('H'), .avatar>span:contains('g'), .avatar>span:contains('h')").parent().css({"background-color": warna2[16], "color": warna[16]});
-            $(".avatar>span:contains('J'), .avatar>span:contains('K'), .avatar>span:contains('j'), .avatar>span:contains('k')").parent().css({"background-color": warna2[8], "color": warna[8]});
-            $(".avatar>span:contains('L'), .avatar>span:contains('Z'), .avatar>span:contains('l'), .avatar>span:contains('z')").parent().css({"background-color": warna2[12], "color": warna[12]});
-            $(".avatar>span:contains('X'), .avatar>span:contains('C'), .avatar>span:contains('A'), .avatar>span:contains('S'), .avatar>span:contains('x'), .avatar>span:contains('c'), .avatar>span:contains('a'), .avatar>span:contains('s')").parent().css({"background-color": warna2[11], "color": warna[11]});
+            $(".avatar:contains('Q'), .avatar:contains('W'), .avatar:contains('N'), .avatar:contains('M'), .avatar:contains('1'), .avatar:contains('2'), .avatar:contains('n'), .avatar:contains('m')").parent().css({"background-color": warna2[0], "color": warna[0]});
+            $(".avatar:contains('E'), .avatar:contains('R'), .avatar:contains('e'), .avatar:contains('r')").parent().css({"background-color": warna2[1], "color": warna[1]});
+            $(".avatar:contains('T'), .avatar:contains('Y'), .avatar:contains('t'), .avatar:contains('y')").parent().css({"background-color": warna2[2], "color": warna[2]});
+            $(".avatar:contains('U'), .avatar:contains('I'), .avatar:contains('u'), .avatar:contains('i')").parent().css({"background-color": warna2[3], "color": warna[3]});
+            $(".avatar:contains('O'), .avatar:contains('P'), .avatar:contains('o'), .avatar:contains('p')").parent().css({"background-color": warna2[4], "color": warna[4]});
+            $(".avatar:contains('D'), .avatar:contains('F'), .avatar:contains('V'), .avatar:contains('B'), .avatar:contains('d'), .avatar:contains('f'), .avatar:contains('v'), .avatar:contains('b')").parent().css({"background-color": warna2[7], "color": warna[7]});
+            $(".avatar:contains('G'), .avatar:contains('H'), .avatar:contains('g'), .avatar:contains('h')").parent().css({"background-color": warna2[16], "color": warna[16]});
+            $(".avatar:contains('J'), .avatar:contains('K'), .avatar:contains('j'), .avatar:contains('k')").parent().css({"background-color": warna2[8], "color": warna[8]});
+            $(".avatar:contains('L'), .avatar:contains('Z'), .avatar:contains('l'), .avatar:contains('z')").parent().css({"background-color": warna2[12], "color": warna[12]});
+            $(".avatar:contains('X'), .avatar:contains('C'), .avatar:contains('A'), .avatar:contains('S'), .avatar:contains('x'), .avatar:contains('c'), .avatar:contains('a'), .avatar:contains('s')").parent().css({"background-color": warna2[11], "color": warna[11]});
         }
         $(document).ready(function() {
             ubahWarnaAvatar();
@@ -530,7 +536,7 @@
         let i = <?php echo $i ?>;
         let user_id = $('#login_user_id').val();
         // var conn = new WebSocket('ws://localhost:8082'); //dibuat dinamis
-        var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:18024'); //dibuat dinamis
+        var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14409'); //dibuat dinamis
         conn.onopen = function (e) {
             console.log("Connection established!");
         };
@@ -546,7 +552,7 @@
                 let msg1 = escapeHtml(data.msg);
 
                 if (data.from == 'Me') {
-                    html_data = "<div id='container-pesan-" + data.mId + "' class='mb-3 mx-3 p-3 border border-1 rounded-3'><p class='mb-0 small'>" + msg1 + "</p><div class='d-flex justify-content-between align-items-center mt-3 '><p id='jam-pesan-" + i + "' class='text-black-50 small mb-0'>" + moment().fromNow() + "'</p><p class='waktu-kirim d-none' id='waktu_pengiriman_" + i + "'>" + data.date + "</p><button id='btn-delete-" + data.mId + "' class='btn btn-delete bg-danger bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted'  title='Hapus pertanyaan' style='width: 50px;'><i class='bi bi-trash3 text-danger'></i></button></div></div>"
+                    html_data = "<div id='container-pesan-" + data.mId + "' class='mb-3 mx-3 p-3 border border-1 rounded-3'><p class='mb-0 small pertanyaan'>" + msg1 + "</p><div class='d-flex justify-content-between align-items-center mt-3 '><p id='jam-pesan-" + i + "' class='text-black-50 small mb-0'>" + moment().fromNow() + "'</p><p class='waktu-kirim d-none' id='waktu_pengiriman_" + i + "'>" + data.date + "</p><button id='btn-delete-" + data.mId + "' class='btn btn-delete bg-danger bg-opacity-10 border-0 rounded-3 py-1 me-0 text-muted'  title='Hapus pertanyaan' style='width: 50px;'><i class='bi bi-trash3 text-danger'></i></button></div></div>"
                 }
 
                 jam_i[jam_i.length] = data.date

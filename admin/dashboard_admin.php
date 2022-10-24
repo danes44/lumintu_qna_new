@@ -423,6 +423,11 @@
                 }, 3000)
             })
 
+            $("body").on("click", "#btn-buat-sesi", function() {
+                $('#modal-create').modal('show');
+                $('#input-kode-sesi').val(generateId(6))
+            })
+
             $("body").on("click", "#btn-tambah", function() {
                 $('#modal-create').modal('show');
                 $('#input-kode-sesi').val(generateId(6))
@@ -943,7 +948,7 @@
                             <div class="align-self-center ms-5">
                                 <h1 class="text-muted fw-bold">Ooops...</h1>
                                 <p class="mb-0 text-muted">Belum ada sesi yang bisa ditampilkan</p>
-                                <p class="mb-0 text-muted">Silakan <a href="#">buat sesi</a></p>
+                                <p class="mb-0 text-muted">Silakan <a id="btn-buat-sesi" href="#">buat sesi</a></p>
                             </div>
                         </div>`
                     }
@@ -954,6 +959,7 @@
                 }
             })
         </script>
+
 
     </body>
 </html>

@@ -6,7 +6,6 @@
     $id_session = $_GET['id_session'];
     $sql = mysqli_query($conn, "SELECT * from chats WHERE id_chat='$id_chat' and id_session='$id_session'");
     $cek = mysqli_num_rows($sql);
-    var_dump($cek);
 
     $sql_events = mysqli_query($conn, "SELECT * FROM events WHERE id_event='$id_session'");
 
@@ -19,7 +18,10 @@
     $current_time = new DateTime("2021-12-01T11:00:00");
 
     if ($cek > 0) {
-        if ( $current_time >= new DateTime($jam_mulai) && $current_time < new DateTime($jam_selesai) ){ // SUDAH BERJALAN
+        /*if ( $current_time >= new DateTime($jam_mulai) && $current_time < new DateTime($jam_selesai) ){ // SUDAH BERJALAN
+            echo "<script>alert('Memasuki Chatroom!');document.location.href='../admin/admin_chatroom.php?id_session=".$id_chat."';</script>";
+        }*/
+        if ( $current_time < new DateTime($jam_selesai) ){ // SUDAH BERJALAN
             echo "<script>alert('Memasuki Chatroom!');document.location.href='../admin/admin_chatroom.php?id_session=".$id_chat."';</script>";
         }
         else { // SUDAH SELESAI
@@ -27,9 +29,9 @@
             echo "<script>alert('Sesi sudah selesai!');document.location.href='../error-page/error_jam_sudah.html';</script>";
         }
     }
-    else { // BELUM DIMULAI
+    /*else { // BELUM DIMULAI
         $sql1 = mysqli_query($conn, "INSERT into chats (id_chat, id_session, status) VALUES ($id_chat, $id_session, 0)");
 
         echo "<script>alert('Enter Chatroom!');document.location.href='../admin/admin_chatroom.php?id_session=".$id_chat."';</script>";
-    }
+    }*/
 ?>

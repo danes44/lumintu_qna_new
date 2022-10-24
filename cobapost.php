@@ -22,7 +22,7 @@
       $sesi_id = 1;
       echo "[sudah checkpoint] Enkripsi dari id_customer=1&id_session=1 jadinya :". mycrypt("encrypt", "id_session='$sesi_id'&id_customer='$id_customer'");
       echo "<br>";
-      echo "di decrypt ulang jadi ". mycrypt("decrypt", "QX8t9W9kmo+V3jQlVA+9n6FvUuYKjRMz19CfTRxhOlo=");
+      echo "di decrypt ulang jadi ". mycrypt("decrypt", "14ggiz8hTth0YjXACDRa4A==");
       echo "<br>";echo "<br>";
 
       echo "[sudah checkpoint] Enkripsi dari id_customer=9&id_session=1 jadinya :". mycrypt("encrypt", "id_customer=9&id_session=1");

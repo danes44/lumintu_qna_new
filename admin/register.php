@@ -6,7 +6,9 @@ session_start();
 include '../database/connection.php';
 
 // Check apakah terdapat post Login
-if (isset($_POST['register'])) {
+if (isset($_POST['email'])) {
+    // username
+    $email = htmlspecialchars($_POST['email']);
     // username
     $user = htmlspecialchars($_POST['user']);
     // password
@@ -14,24 +16,28 @@ if (isset($_POST['register'])) {
 
     // sql query
     // $id = intval($_GET['id']);
-    $sql = mysqli_query($conn, "INSERT INTO `admins`(`id_admin`, `email`, `password`, `username`) VALUES ([value-1],[value-2],[value-3],[value-4])");
-    $cek = mysqli_num_rows($sql);
-    $hasil_sesi = mysqli_fetch_array($sql);
-//    var_dump($hasil_sesi['id_admin']);
-    // apakah user tersebut ada
+    // check apakah sudah ada
+    $sql_get = "SELECT * FROM admins WHERE email = '$email' OR username = '$user'";
+    $cek = mysqli_num_rows(mysqli_query($conn,$sql_get));
     if ($cek > 0) {
-        // buat session login
-        $_SESSION['is_login'] = true;
-        $_SESSION['id_admin'] = $hasil_sesi['id_admin'];
-        $_SESSION['username'] = $hasil_sesi['username'];
-
-        // beri pesan dan dialihkan ke halaman admin
-        echo "<script>document.location.href='dashboard_admin.php';</script>";
+        echo json_encode(array(
+            "statusCode" => 202,
+            "sql" => $sql_get,
+            "statusMessage" => "Akun sudah dibuat sebelumnya."));
     }
     else{
-        // beri pesan dan dialihkan ke halaman login
-        echo "<script>alert('Username atau password salah. Coba lagi!')</script>";
-        echo "<script>document.location.href='index.php';</script>";
+        $sql = "INSERT INTO admins( email, password, username) VALUES ('$email','$pass','$user')";
+
+        if (mysqli_query($conn, $sql)) {
+            echo json_encode(array(
+                "statusCode" => 200,
+                "statusMessage" => $_POST));
+        } else {
+            echo json_encode(array(
+                "statusCode" => 201,
+                "sql" => $sql,
+                "statusMessage" => "Error: " . mysqli_error($conn)));
+        }
     }
 }
 
