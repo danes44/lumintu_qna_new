@@ -215,7 +215,7 @@
                             </li>
                             <li>
                                 <a id="btn-copy-link-peserta" class="btn-copy-link text-black text-decoration-none dropdown-item small py-2" href="#">
-                                    <i class="bi bi-clipboard me-4"></i>
+                                    <i class="bi bi-files me-4"></i>
                                     Salin link halaman peserta
                                 </a>
                             </li>
@@ -230,7 +230,7 @@
                             </li>
                             <li>
                                 <a id="btn-copy-link-moderator" class="btn-copy-link text-black text-decoration-none dropdown-item small py-2" href="#">
-                                    <i class="bi bi-clipboard me-4"></i>
+                                    <i class="bi bi-files me-4"></i>
                                     Salin link halaman moderator
                                 </a>
                             </li>
@@ -926,8 +926,6 @@
 
                 console.log(isi_pesan)
 
-                let id_pesan = 0;
-
                 $.ajax({
                     url: "../insert_pesan_admin.php",
                     type: "POST",
@@ -942,7 +940,6 @@
                         var dataResult = JSON.parse(dataResult);
                         if(dataResult.statusCode===200){
                             console.log('Data updated successfully ! '+dataResult.id);
-                            id_pesan = dataResult.id
                             let elements=
                                 `
                                 <div id="container-pesan-note-${dataResult.id}" class="p-3 note border-top border-bottom">
@@ -975,6 +972,17 @@
                             $("#container-pesan-note").append(elements);
                             n_x_waktu.push(moment().format('YYYY-MM-DD HH:mm:ss'));
                             n=n+1
+
+                            // Proses Pengiriman Pesan   TERAKHIR NGEDIT INI YAAA
+                            let id_sesi = $('#login_id_sesi').val();
+                            let data = {
+                                asal: 'admin-note',
+                                mId: dataResult.id,
+                                msg: isi_pesan,
+                                sesiId: id_sesi,
+                                date: moment().format('YYYY-MM-DD HH:mm:ss'),
+                            };
+                            conn.send(JSON.stringify(data));
                         }
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -994,17 +1002,6 @@
                     // $('#toast-create').hide()
                 }, 3000)
 
-                // Proses Pengiriman Pesan   TERAKHIR NGEDIT INI YAAA
-                let id_sesi = $('#login_id_sesi').val();
-                let data = {
-                    asal: 'admin-note',
-                    mId: id_pesan,
-                    msg: isi_pesan,
-                    sesiId: id_sesi,
-                    date: moment().format('YYYY-MM-DD HH:mm:ss'),
-                };
-                conn.send(JSON.stringify(data));
-
             })
 
             // button delete
@@ -1022,6 +1019,14 @@
                 // console.log(cust_message)
                 $('#modal-delete').modal('show');
                 $('#modal-catatan').modal('hide');
+
+                $("body").on("click", "#btn-cancel-delete", function() {
+                    $('#modal-delete').modal('hide');
+                    $('#modal-catatan').modal('show');
+                    id_button = ''
+                    id_numb = ''
+                    idm = ''
+                })
 
                 $("body").on("click", "#btn-confirm", function() {
                     $.ajax({
@@ -1076,10 +1081,7 @@
                 $('#input-note').val('')
                 $('#modal-catatan').modal('hide');
             })
-            $("body").on("click", "#btn-cancel-delete", function() {
-                $('#modal-delete').modal('hide');
-                $('#modal-catatan').modal('show');
-            })
+
         </script>
 
         <!-- fungsi copy-->
@@ -1474,7 +1476,7 @@
             // Koneksi Websocket
             var port = '8082'
             // var conn = new WebSocket('ws://localhost:'+port);
-            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14409');
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19145');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
@@ -1608,6 +1610,7 @@
                     }
                     else if(data1.asal === 'user-delete'){
                         $('#container-pesan-'+data1.mId).remove()
+                        counter()
                     }
                     else if(data1.asal === 'user-profil'){
                         console.log(data1.userId + ' '+ data1.namaUser)
@@ -1618,14 +1621,17 @@
                     else if(data1.asal === 'moderator-terpilih'){
                         console.log(data1)
                         $('#container-btn-'+data1.mId).children('.btn-terjawab').click()
+                        counter()
                     }
                     else if(data1.asal === 'moderator-presentasi'){
                         console.log(data1)
                         $('#container-btn-'+data1.mId).children('.btn-presentasi').click()
+                        counter()
                     }
                     else if(data1.asal === 'moderator-favorit'){
                         console.log(data1)
                         $('#container-btn-'+data1.mId).children('.btn-love').click()
+                        counter()
                     }
                 };
 

@@ -77,17 +77,14 @@
                         <div id="carousel-pertanyaan" class="carousel carousel-dark slide h-100" data-bs-interval="false" >
                             <div class="carousel-inner" id="qna_display">
                                 <?php
-                                var_dump((cek_qchoosen($sesi_id)));
-                                if ((cek_qchoosen($sesi_id)) != $sesi_id){
-                                    echo '<div class="carousel-item active">
-                                    <div class="container  px-5" >
-                                    <h3 class="card-title text-dark mx-3 px-5">
-                                    Belum ada pertanyaan.
-                                    </h3>
-                                    <hr class=" mt-5 mx-5 ">
-                                    <h3 class=" mx-3 px-5 fw-bold">silahkan menunggu</h3S>
-                                </div>
-                                </div>';
+                                if ((cek_qchoosen($sesi_id)) == 2){
+                                    echo '
+                                    <div class="carousel-item active">
+                                        <div class="container  px-5" >
+                                            <h3 class="card-title fw-bold text-dark mx-3 px-5">Belum ada pertanyaan.</h3>
+                                            <p class=" mx-3 px-5 ">Silakan scan QR Code untuk membuat pertanyaan.</p>
+                                        </div>
+                                    </div>';
                                 } else {
                                     /*echo '<div class="carousel-item active">
                                         <div class="container  px-5" >
@@ -118,7 +115,6 @@
                                             </div>
                                         </div>';
                                         }
-                                        var_dump($chat_data[$x]["id_message"]);
                                     }
                                 }
                                 ?>
@@ -288,7 +284,7 @@
             $(document).ready(function(){
                 var port = '8082'
                 // var conn = new WebSocket('ws://localhost:'+port);
-                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14409');
+                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19145');
                 conn.onopen = function(e) {
                     console.log("Connection established!");
                 };

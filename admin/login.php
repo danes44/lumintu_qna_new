@@ -24,15 +24,19 @@ if (isset($_POST['login'])) {
 		$_SESSION['is_login'] = true;
         $_SESSION['id_admin'] = $hasil_sesi['id_admin'];
         $_SESSION['username'] = $hasil_sesi['username'];
+        $_SESSION['email'] = $hasil_sesi['email'];
 
 		// beri pesan dan dialihkan ke halaman admin
 		echo "<script>document.location.href='dashboard_admin.php';</script>";
 	}
 	else{
 		// beri pesan dan dialihkan ke halaman login
-		echo "<script>alert('Username atau password salah. Coba lagi!')</script>";
-		echo "<script>document.location.href='index.php';</script>";
+        echo "<script>document.location.href='index.php?status=203';</script>";
+//        echo json_encode(array(
+//            "statusCode" => 203,
+//            "data" => $hasil_sesi));
 	}
 }
+mysqli_close($conn);
 
 ?>

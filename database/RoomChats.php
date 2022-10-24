@@ -22,10 +22,10 @@
             echo "<script>alert('Memasuki Chatroom!');document.location.href='../admin/admin_chatroom.php?id_session=".$id_chat."';</script>";
         }*/
         if ( $current_time < new DateTime($jam_selesai) ){ // SUDAH BERJALAN
-            echo "<script>alert('Memasuki Chatroom!');document.location.href='../admin/admin_chatroom.php?id_session=".$id_chat."';</script>";
+            echo "<script>document.location.href='../admin/admin_chatroom.php?id_session=".$id_chat."';</script>";
         }
         else { // SUDAH SELESAI
-            $sql2 = mysqli_query($conn, "UPDATE chats SET status='1' WHERE id_chat=$id_chat");
+//            $sql2 = mysqli_query($conn, "UPDATE chats SET status='1' WHERE id_chat=$id_chat");
             echo "<script>alert('Sesi sudah selesai!');document.location.href='../error-page/error_jam_sudah.html';</script>";
         }
     }

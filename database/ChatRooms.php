@@ -42,7 +42,7 @@ class ChatRooms
         return $this->asal;
     }
 
-    public function setMessageId($chat_id)
+    public function setMessageId($message_id)
     {
         $this->message_id = $message_id;
     }

@@ -64,6 +64,16 @@
     <body>
         <!-- Toast -->
         <div id="container-toast" class="toast-container position-fixed top-0 end-0 p-3 mt-5">
+            <!--toast delete-->
+            <div id="toast-delete" class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-check-circle me-3"></i>
+                        Berhasil menghapus pertanyaan.
+                    </div>
+                    <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
+                </div>
+            </div>
             <!--toast copy-->
             <div id="toast-copy" class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
                 <div class="d-flex">
@@ -534,6 +544,32 @@
                 </div>
             </div>
         </div>
+        <!-- Modal Delete-->
+        <div class="modal fade" id="modal-delete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-create-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered justify-content-center">
+                <div class="modal-content py-2 px-4" style="width: auto">
+                    <div class="modal-header border-0 pb-0">
+                        <h6 class="modal-title fw-bold " id="staticBackdropLabel" >Apakah Anda yakin?</h6>
+                    </div>
+                    <div class="modal-body pb-0">
+                        <p class="small text-muted">Catatan Anda akan dihapus dari daftar catatan. Setelah dihapus, Anda <b>tidak dapat</b> mengembalikannya.</p>
+                    </div>
+                    <div class="modal-footer border-0 pt-0 px-3 justify-content-between">
+                        <button id="btn-confirm-delete" type="submit" class="btn btn-confirm-delete border-0 rounded-3 py-2 ms-0 me-0 text-white fw-bold btn-danger flex-fill"  title="Simpan perubahan"  style="font-size: .875em">
+                            Hapus
+                        </button>
+                        <button id="timer-confirm-delete" class="btn-confirm border-0 rounded-3 py-2 me-0 ms-0 text-white fw-bold bg-danger bg-opacity-50 flex-fill" disabled title="Harap menunggu"  style="display:none;">
+                            <div  class=" spinner-border spinner-border-sm border-3 small" style="--bs-spinner-width: 0.8rem;--bs-spinner-height: 0.8rem;"></div>
+                            <span class="fw-normal small ms-2"> Tunggu...</span>
+                        </button>
+
+                        <button id="btn-cancel-delete" type="reset" class="btn btn-cancel border border-1 rounded-3 py-2 px-3 me-0 ms-3 text-muted fw-semibold flex-fill"  title="Batalkan hapus sesi" style="font-size: .875em">
+                            Batal
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
         <div class="fixed-bottom">
@@ -882,6 +918,67 @@
 
 
             });
+
+            // button delete
+            $("body").on("click", ".btn-delete-note", function() {
+                let id_button = ''
+                let id_numb = ''
+                let idm = ''
+                // get id event
+                id_button = $(this).attr('id')
+                id_numb = id_button.split("-")
+                idm = id_numb[3]
+                console.log(idm)
+
+                // let cust_message = $.trim($('#container-pesan-'+idm).children('.pertanyaan').text());
+                // console.log(cust_message)
+                $('#modal-delete').modal('show');
+
+                $("body").on("click", "#btn-cancel-delete", function() {
+                    $('#modal-delete').modal('hide');
+                    id_button = ''
+                    id_numb = ''
+                    idm = ''
+                })
+
+                $("body").on("click", "#btn-confirm-delete", function() {
+                    $.ajax({
+                        url: "../delete_note.php",
+                        type: 'POST',
+                        cache: false,
+                        dataType: 'json',
+                        data: {
+                            id_note: idm,
+                        },
+                        success: function (data, textStatus, xhr) {
+                            console.log(data)
+
+                            $("#timer-confirm-delete").show();
+                            $("#btn-confirm-delete").hide();
+                            $('#container-note-'+idm).remove()
+                            setTimeout(function () {
+                                $("#timer-confirm-delete").hide();
+                                $("#btn-confirm-delete").show();
+                            }, 2000)
+                            setTimeout(function () {
+                                $('#toast-delete').show()
+                                $('#modal-delete').modal('hide');
+                            }, 2500)
+                            setTimeout(function () {
+                                $('#toast-delete').hide()
+                                // window.location.reload();
+                            }, 6500)
+                        },
+                        error: function (textStatus, xhr, errorThrown) {
+                            console.log(xhr)
+                        },
+                        complete: function (data) {
+                        }
+                    })
+                })
+            })
+
+
         </script>
 
         <!-- fungsi scroll to top-->
@@ -1159,7 +1256,7 @@
             // Koneksi Websocket
             var port = '8082'
             // var conn = new WebSocket('ws://localhost:'+port);
-            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14409');
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19145');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };

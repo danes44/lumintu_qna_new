@@ -332,7 +332,7 @@
                             <span class="fw-normal small ms-2"> Tunggu...</span>
                         </button>
 
-                        <button id="btn-cancel" type="reset" class="btn btn-cancel border border-1 rounded-3 py-2 px-3 me-0 ms-3 text-muted fw-semibold flex-fill"  title="Batalkan hapus sesi" style="font-size: .875em">
+                        <button id="btn-cancel-delete" type="reset" class="btn border border-1 rounded-3 py-2 px-3 me-0 ms-3 text-muted fw-semibold flex-fill"  title="Batalkan hapus sesi" style="font-size: .875em">
                             Batal
                         </button>
                     </div>
@@ -388,6 +388,16 @@
                     <div id="text-error-upload" class="toast-body">
                         <i class="bi bi-x-circle me-3"></i>
                         Error
+                    </div>
+                    <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
+                </div>
+            </div>
+            <!--toast gagal akun sudah ada-->
+            <div id="toast-failed-account" class="toast align-items-center text-danger border-1 border-danger" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #fbeaec">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-exclamation-circle me-3"></i>
+                        Akun sudah ada. Gunakan nama/email lainnya.
                     </div>
                     <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
                 </div>
@@ -536,7 +546,7 @@
         let i = <?php echo $i ?>;
         let user_id = $('#login_user_id').val();
         // var conn = new WebSocket('ws://localhost:8082'); //dibuat dinamis
-        var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:14409'); //dibuat dinamis
+        var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19145'); //dibuat dinamis
         conn.onopen = function (e) {
             console.log("Connection established!");
         };
@@ -621,7 +631,6 @@
         // button cancel
         $("body").on("click", ".btn-cancel", function() {
             $('#modal-edit-profil').modal('hide');
-            $('#modal-delete').modal('hide');
         })
 
         // button delete
@@ -638,6 +647,13 @@
             let cust_message = $.trim($('#container-pesan-'+idm).children('.pertanyaan').text());
             console.log(cust_message)
             $('#modal-delete').modal('show');
+
+            $("body").on("click", "#btn-cancel-delete", function() {
+                $('#modal-delete').modal('hide');
+                id_button = ''
+                id_numb = ''
+                idm = ''
+            })
 
             $("body").on("click", "#btn-confirm", function() {
                 $.ajax({
@@ -778,15 +794,44 @@
                                         nama : nama_edited,
                                         email: email_edited,
                                     },
-                                    success: function(dataResult){
+                                    success: function(data){
                                         console.log(this.data)
-                                        var dataResult = JSON.parse(dataResult);
+                                        var dataResult = JSON.parse(data);
                                         if(dataResult.statusCode===200){
                                             console.log('Data updated successfully ! '+nama_edited+' apa');
 
                                             $('.nama-user').text(nama_edited);
                                             $('.avatar').text(nama_edited.charAt(0));
                                             ubahWarnaAvatar();
+
+                                            //show toast
+                                            setTimeout(function () {
+                                                $('#toast-edit-profil').show()
+                                                $('#modal-edit-profil').modal('hide');
+                                            },500)
+
+                                            setTimeout(function () {
+                                                $('#toast-edit-profil').hide()
+                                            },4000)
+
+                                            // Proses Pengiriman Pesan
+                                            let id_sesi = $('#login_id_sesi').val();
+                                            let data = {
+                                                asal: 'user-profil',
+                                                sesiId: id_sesi,
+                                                userId: id_user,
+                                                namaUser: nama_edited,
+                                                date: moment().format('YYYY-MM-DD HH:mm:ss'),
+                                            };
+                                            conn.send(JSON.stringify(data));
+                                        }
+                                        else if (dataResult.statusCode === 202) {
+                                            console.log(dataResult)
+                                            $('#toast-failed-account').show()
+                                            setTimeout(function () {
+                                                $('#toast-failed-account').hide()
+                                                // window.location.reload();
+                                            }, 6500)
                                         }
                                     },
                                     error: function (xhr, ajaxOptions, thrownError) {
@@ -794,27 +839,6 @@
                                         console.log(thrownError);
                                     }
                                 });
-
-                                //show toast
-                                setTimeout(function () {
-                                    $('#toast-edit-profil').show()
-                                    $('#modal-edit-profil').modal('hide');
-                                },500)
-
-                                setTimeout(function () {
-                                    $('#toast-edit-profil').hide()
-                                },4000)
-
-                                // Proses Pengiriman Pesan
-                                let id_sesi = $('#login_id_sesi').val();
-                                let data = {
-                                    asal: 'user-profil',
-                                    sesiId: id_sesi,
-                                    userId: id_user,
-                                    namaUser: nama_edited,
-                                    date: moment().format('YYYY-MM-DD HH:mm:ss'),
-                                };
-                                conn.send(JSON.stringify(data));
 
                             }
                         })

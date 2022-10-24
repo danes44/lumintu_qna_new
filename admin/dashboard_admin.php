@@ -5,9 +5,6 @@
         echo "<script>document.location.href='index.php';</script>";
         die();
     }
-
-
-//    var_dump($_SESSION);
 //    $bytes = random_bytes(3);
 //    var_dump(bin2hex($bytes));
 ?>
@@ -40,40 +37,30 @@
         <!--<div class="container"></div>-->
         <div class="container " style="height: auto;width: auto;margin-bottom: 30px;margin-top: 30px;position: relative;padding-bottom: 20px;">
             <div class="mx-3 d-flex justify-content-between align-self-center align-content-center align-items-center">
-                <a id="btn-signout" class="text-decoration-none text-black fw-bold align-content-center " role="button" href="logout.php" onclick="return confirm('Apakah anda yakin ingin keluar ?')">
-                    <i class="bi bi-box-arrow-left me-3 "></i>Sign Out
-                </a>
-<!--                <div class="d-flex align-items-center">-->
-<!--                    <button class="small border-0 rounded-pill ms-0 text-white fw-bold" style="width: 2rem; height: 2rem; background-color: rgb(240, 241, 242);" disabled>-->
-<!--                        <span class="moderator-avatar" style="color: rgb(27, 27, 27);"><i class="bi bi-person"></i></span>-->
-<!--                    </button>-->
-<!--                    <p id="moderator" class="ms-2 fw-bold mb-0 small">Moderator</p>-->
-<!--                    <div id="dropdownProfile" class="dropdown">-->
-<!--                        <button class="small border-0 rounded-pill ms-0 text-white bg-primary fw-bold"-->
-<!--                                style="width: 2rem; height:2rem;" data-bs-toggle="dropdown">-->
-<!--                            <span class="avatar">--><?php //$huruf_depan = $nama_peserta[0];echo $huruf_depan;?><!--</span>-->
-<!--                        </button>-->
-<!--                        <ul class="dropdown-menu dropdown-menu-end" style="min-width: max-content">-->
-<!--                            <li class="d-flex justify-content-between ">-->
-<!--                                <span class="nama-user small dropdown-item-text align-self-center fw-bold">--><?php //echo $nama_peserta; ?><!--</span>-->
-<!--                                <a href="#" class="small btn-edit-profil align-self-center border-0 bg-transparent text-decoration-none me-3">-->
-<!--                                    Edit-->
-<!--                                </a>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <span class="email-user dropdown-item-text text-muted small pt-0">--><?php //echo $email;?><!--</span>-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <hr class="dropdown-divider">-->
-<!--                            </li>-->
-<!--                            <li>-->
-<!--                                <a class="btn-logout small dropdown-item justify-content-between" role="button" href="logoutUser.php?id_session=--><?php //echo $sesi_id[1];?><!--" onclick="return confirm('Apakah anda yakin ingin keluar ?')">-->
-<!--                                    <i class="bi bi-box-arrow-right me-3"></i> Logout-->
-<!--                                </a>-->
-<!--                            </li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <div class="d-flex align-items-center">
+                    <div id="dropdownProfile" class="dropdown">
+                        <div class="d-flex align-items-center" data-bs-toggle="dropdown">
+                            <button class="small border-0 rounded-pill ms-0 text-white fw-bold" style="width: 2rem; height:2rem; background-color: rgb(240, 241, 242);" >
+                                <span class="avatar" style="color: rgb(27, 27, 27);"><i class="bi bi-person"></i></span>
+                            </button>
+                            <p id="admin" class="ms-2 fw-bold mb-0 small dropdown-toggle"><?php echo $_SESSION['username']; ?></p>
+                        </div>
+                        <ul class="dropdown-menu shadow" style="min-width: max-content">
+                            <span class="nama-user small dropdown-item-text align-self-center fw-bold"><?php echo $_SESSION['username']; ?></span>
+                            <li>
+                                <span class="email-user dropdown-item-text text-muted small pt-0"><?php echo $_SESSION['email'];?></span>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="btn-logout small dropdown-item justify-content-between" role="button" href="logout.php" onclick="return confirm('Apakah anda yakin ingin keluar ?')">
+                                    <i class="bi bi-box-arrow-right me-3"></i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <div class="d-flex">
                     <img src="../assets/Logo QnA.svg" class="img-fluid " width="40px" alt="..." style="margin-right: 10px;"/>
                     <h3 class="fw-bold mb-0 flex-grow-1 text-center">Daftar Sesi</h3>
@@ -248,7 +235,7 @@
                             <span class="fw-normal small ms-2"> Tunggu...</span>
                         </button>
 
-                        <button id="btn-cancel" type="reset" class="btn btn-cancel border border-1 rounded-3 py-2 px-3 me-0 ms-3 text-muted fw-semibold flex-fill"  title="Batalkan hapus sesi" style="font-size: .875em">
+                        <button id="btn-cancel-delete" type="reset" class="btn border border-1 rounded-3 py-2 px-3 me-0 ms-3 text-muted fw-semibold flex-fill"  title="Batalkan hapus sesi" style="font-size: .875em">
                             Batal
                         </button>
                     </div>
@@ -338,6 +325,10 @@
                 let element = $(this).parent().parent().attr('id')
                 $('#'+element).hide()
             })
+        </script>
+
+        <script>
+
         </script>
 
         <!-- handling modal create dan edit-->
@@ -435,7 +426,6 @@
 
             $("body").on("click", ".btn-cancel", function() {
                 $('#modal-create').modal('hide');
-                $('#modal-delete').modal('hide');
                 $('#form-sesi').removeClass('was-validated')
             })
 
@@ -688,6 +678,13 @@
 
                     $('#modal-delete').modal('show');
 
+                    $("body").on("click", "#btn-cancel-delete", function() {
+                        $('#modal-delete').modal('hide');
+                        id_button = ''
+                        id_numb = ''
+                        ide = ''
+                    })
+
                     $("body").on("click", "#btn-confirm", function() {
                         $.ajax({
                             url: "../delete_events.php",
@@ -863,20 +860,22 @@
                                 let warna = ""
 
                                 let jam = 60 * 60 * 1000
-                                let eventbenar = new Date(time_start - jam)
-                                console.log(eventbenar)
-                                console.log(new Date('2021-12-01T09:00:00') === eventbenar)
+                                let selisih = new Date(time_start - jam)
+                                console.log(selisih)
+                                console.log(new Date('2021-12-01T09:00:00') === selisih)
                                 let current_time = new Date('2021-12-01T11:00:00')
+                                // let current_time = new Date()
+
                                 // jika waktu mulai masih blm lewat : beda sejam
                                 // 25/10/2021 16:11 <= 01/12/2021 09:00
-                                // if( new Date('2021-12-01T09:00:00') === eventbenar ){
+                                // if( new Date('2021-12-01T09:00:00') === selisih ){
                                 //     button_chat += "Segera dalam 1 Jam"
                                 //     warna += "primary"
                                 // }
                                 // else {
                                 // jika waktu mulai sudah lewat tapi waktu finish belum
                                 if (current_time < time_start && current_time < time_finish) {
-                                    if (current_time >= eventbenar) {
+                                    if (current_time >= selisih) {
                                         button_chat += "Sesaat lagi"
                                         warna += "warning"
                                     } else {
@@ -890,8 +889,6 @@
                                     button_chat += "Selesai"
                                     warna += "secondary disabled"
                                 }
-                                // button_chat += "Beda"
-                                // }
 
                                 html_data += `
                                 <div class="mb-4 col-lg-3 col-md-6 col-sm-12 card-group">

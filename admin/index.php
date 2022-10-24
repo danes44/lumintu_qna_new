@@ -1,3 +1,10 @@
+<?php
+    $status_code = 0;
+    if(isset($_GET["status"])){
+        $status_code = $_GET['status'];
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -84,7 +91,7 @@
             </div>
 
             <!-- Toast -->
-            <div id="container-toast" class="toast-container bottom-0 end-0 p-3">
+            <div id="container-toast" class="toast-container top-0 end-0 p-3">
                 <!--toast berhasil login-->
                 <div id="toast-success-register" class="toast align-items-center text-success border-1 border-success" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #e8f3ee">
                     <div class="d-flex">
@@ -135,60 +142,82 @@
                         <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
                     </div>
                 </div>
+                <!--toast gagal salah username password-->
+                <div id="toast-failed-wrong" class="toast align-items-center text-danger border-1 border-danger" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #fbeaec">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="bi bi-exclamation-circle me-3"></i>
+                            Username / password salah.
+                        </div>
+                        <button type="button" class="btn-close btn-close-toast me-2 m-auto" aria-label="Close"></button>
+                    </div>
+                </div>
             </div>
 
 <!--        </div>-->
 
+            <?php
+            echo "<input type='hidden' name='status_code' id='status_code' value='".$status_code."'/>";
+            ?>
         <script>
-        // if ($("#"))
-        $("body").on("click", '#btn-buat-akun', function() {
-            $('#form-login').addClass('d-none')
-            $('#container-form-register').removeClass('d-none')
-        })
-
-        $("body").on("click", '#btn-masuk-akun', function() {
-            $('#form-login').removeClass('d-none')
-            $('#container-form-register').addClass('d-none')
-        })
-
-        $("#input-username").on('keyup', function(e) {
-            if($('#input-username').val()!='' && $('#input-email').val()!='' && $('#input-password').val()!=''){
-                $('#btn-register').removeAttr('disabled')
+            if ($("#status_code").val() != 0)
+            {
+                $('#toast-failed-wrong').show()
+                setTimeout(function () {
+                    $('#toast-failed-wrong').hide()
+                    // window.location.reload();
+                }, 6500)
             }
-        });
-        $("#input-email").on('keyup', function(e) {
-            if($('#input-username').val()!='' && $('#input-email').val()!='' && $('#input-password').val()!=''){
-                $('#btn-register').removeAttr('disabled')
-            }
-        });
-        $("#input-password").on('keyup', function(e) {
-            if($('#input-username').val()!='' && $('#input-email').val()!='' && $('#input-password').val()!=''){
-                $('#btn-register').removeAttr('disabled')
-            }
-        });
 
 
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        $(function () {
-          'use strict'
-          // Fetch all the forms we want to apply custom Bootstrap validation styles to
-          var forms = document.querySelectorAll('.needs-validation')
-          // Loop over them and prevent submission
-          Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-              form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
-                  event.preventDefault()
-                  event.stopPropagation()
-                }
-                form.classList.add('was-validated')
-              }, false)
+            $("body").on("click", '#btn-buat-akun', function() {
+                $('#form-login').addClass('d-none')
+                $('#container-form-register').removeClass('d-none')
             })
-        })
+
+            $("body").on("click", '#btn-masuk-akun', function() {
+                $('#form-login').removeClass('d-none')
+                $('#container-form-register').addClass('d-none')
+            })
+
+            $("#input-username").on('keyup', function(e) {
+                if($('#input-username').val()!='' && $('#input-email').val()!='' && $('#input-password').val()!=''){
+                    $('#btn-register').removeAttr('disabled')
+                }
+            });
+            $("#input-email").on('keyup', function(e) {
+                if($('#input-username').val()!='' && $('#input-email').val()!='' && $('#input-password').val()!=''){
+                    $('#btn-register').removeAttr('disabled')
+                }
+            });
+            $("#input-password").on('keyup', function(e) {
+                if($('#input-username').val()!='' && $('#input-email').val()!='' && $('#input-password').val()!=''){
+                    $('#btn-register').removeAttr('disabled')
+                }
+            });
 
 
-        // button submit event
-        $("form#form-register").on('submit', function (e) {
+            // Example starter JavaScript for disabling form submissions if there are invalid fields
+            $(function () {
+              'use strict'
+              // Fetch all the forms we want to apply custom Bootstrap validation styles to
+              var forms = document.querySelectorAll('.needs-validation')
+              // Loop over them and prevent submission
+              Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                  form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                      event.preventDefault()
+                      event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                  }, false)
+                })
+            })
+
+
+            // button submit event
+            $("form#form-register").on('submit', function (e) {
             e.preventDefault();
 
             let regexEmail = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
