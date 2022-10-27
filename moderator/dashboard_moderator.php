@@ -1256,7 +1256,7 @@
             // Koneksi Websocket
             var port = '8082'
             // var conn = new WebSocket('ws://localhost:'+port);
-            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19145');
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:12834');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };

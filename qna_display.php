@@ -14,7 +14,6 @@
     $arrayHasil = explode("&", $hasilHash);
     $arr_sesi_id = explode("=",$arrayHasil[0]);
     $sesi_id = $arr_sesi_id[1];
-    var_dump($sesi_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -168,7 +167,7 @@
                 width: 2500,
                 height: 2500,
                 // text: "http://localhost:8081/lumintu_qna/index_user.php?"+encrypted_url,
-                text: "http://70d5-2001-448a-404f-5e3e-945b-f785-eddc-46ed.ap.ngrok.io/lumintu_qna_new/index_user.php?"+encrypted_url,
+                text: "http://2a42-202-169-232-98.ap.ngrok.io/lumintu_qna_new/index_user.php?"+encrypted_url,
                 colorDark : "#000000",
                 colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.H
@@ -284,7 +283,7 @@
             $(document).ready(function(){
                 var port = '8082'
                 // var conn = new WebSocket('ws://localhost:'+port);
-                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19145');
+                var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:12834');
                 conn.onopen = function(e) {
                     console.log("Connection established!");
                 };
@@ -349,13 +348,13 @@
                             $('#carousel-pertanyaan').carousel($("#carousel-item-" + data1.mId).index())
                             counter()
                         } else if (data1.asal === 'admin-navigasi') {
-                            console.log(data1.msg + ' ' + data1.sesiId)
+                            console.log(data1.msg + ' ' + data1.msg == 'off')
                             if(data1.msg == 'off') {
                                 $('.carousel-control-prev, .carousel-control-next').hide()
                             }
                             else if(data1.msg == 'on') {
+                                $('.carousel-control-prev, .carousel-control-next').show()
                             }
-                            $('.carousel-control-prev, .carousel-control-next').show()
                         }
                     }
 

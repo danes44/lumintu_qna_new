@@ -366,24 +366,7 @@
                                             <div class="d-flex">
                                                 <p id="pesan-'.$chat["id_message"].'" class="mb-0 small isi-pesan flex-grow-1">
                                                     '.$chat["pesan"].'
-                                                    ';
-                                                    if($chat["is_edited"]==1){
-                                                        echo '<span class="badge-edited small mb-0 text-muted"> (edited)</span>';
-                                                    }
-                                                    echo '
                                                 </p>
-                                                <div class="dropdown">
-                                                    <button id="btn-options" class="bg-transparent border-0" data-bs-toggle="dropdown" style="height: fit-content">
-                                                            <i class="bi bi-three-dots text-muted"></i>
-                                                    </button>    
-                                                    <ul class="dropdown-menu shadow">
-                                                        <li>
-                                                            <button id="btn-edit-'.$chat["id_message"].'" class="dropdown-item small btn-edit" type="button">
-                                                                <i class="bi bi-pencil me-3 text-primary"></i>Edit
-                                                            </button>
-                                                        </li>
-                                                    </ul> 
-                                                </div>
                                             </div>
                         
                                             <div class="card-footer bg-transparent">
@@ -422,7 +405,7 @@
                     </div>
 
                     <!-- Modal Edit-->
-                    <div class="modal fade" id="modal-edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-edit-label" aria-hidden="true">
+                    <!--<div class="modal fade" id="modal-edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-edit-label" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header border-0">
@@ -444,7 +427,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
 
                     <!-- Pertanyaan terjawab dan ditolak-->
                     <div class="border border-1 rounded-3 sortable list-pertanyaan d-none" id="container-pesan-ditolak-terjawab" style="height: calc(100vh - 210px); overflow-y: overlay;">
@@ -469,11 +452,6 @@
                                             <div class="d-flex">
                                                 <p id="pesan-ditolak-terjawab-'.$chat["id_message"].'" class="mb-0 small isi-pesan flex-grow-1">
                                                     '.$chat["pesan"].'
-                                                    ';
-                                                    if($chat["is_edited"]==1){
-                                                        echo '<span class="badge-edited small mb-0 text-muted"> (edited)</span>';
-                                                    }
-                                                    echo '
                                                 </p>
                                             </div>
                         
@@ -603,11 +581,6 @@
                                     echo '>
                                         <div class="d-flex">
                                             <p id="pesan-'.$chat["id_message"].'" class="mb-0 small isi-pesan flex-grow-1">'.$chat["pesan"].'
-                                            ';
-                                                if($chat["is_edited"]==1){
-                                                    echo '<span class="badge-edited small mb-0 text-muted"> (edited)</span>';
-                                                }
-                                            echo '
                                             </p>
                                         </div>
                                         ';
@@ -693,11 +666,6 @@
                                     echo ' " style="background-color:rgba(255,65,123,0.1)"> 
                                         <div class="d-flex">
                                             <p id="pesan-'.$chat["id_message"].'" class="mb-0 small isi-pesan flex-grow-1">'.$chat["pesan"].'
-                                            ';
-                                            if($chat["is_edited"]==1){
-                                                echo '<span class="badge-edited small mb-0 text-muted"> (edited)</span>';
-                                            }
-                                            echo '
                                             </p>
                                         </div>
                         
@@ -1476,7 +1444,7 @@
             // Koneksi Websocket
             var port = '8082'
             // var conn = new WebSocket('ws://localhost:'+port);
-            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:19145');
+            var conn = new WebSocket('ws://0.tcp.ap.ngrok.io:12834');
             conn.onopen = function(e) {
                 console.log("Connection established!");
             };
@@ -1514,18 +1482,6 @@
                                     `<div id="container-pesan-${data1.mId}" class="p-3 pesan border-top border-bottom">
                                         <div class="d-flex">
                                             <p id="pesan-${data1.mId}" class="mb-0 small isi-pesan flex-grow-1">${escapeHtml(data1.msg)}</p>
-                                            <div class="dropdown">
-                                                <button id="btn-options" class="bg-transparent border-0" data-bs-toggle="dropdown" style="height: fit-content">
-                                                    <i class="bi bi-three-dots text-muted"></i>
-                                                </button>
-                                                <ul class="dropdown-menu shadow">
-                                                    <li>
-                                                        <button id="btn-edit-${data1.mId}" class="dropdown-item small btn-edit" type="button">
-                                                            <i class="bi bi-pencil me-3 text-primary"></i>Edit
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </div>
                                         </div>
 
                                         <div class="card-footer bg-transparent">
@@ -1865,24 +1821,24 @@
                     $('#pesan-'+idm).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
 
                     // nambah badge edited
-                    $.ajax({
-                        url: "../get_is_edited_messages.php",
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'json',
-                        data:{
-                            id_message: idm,
-                        },
-                        success: function(data, textStatus, xhr) {
-                            console.log(typeof data[0].is_edited)
-                            if( data[0].is_edited === '1' ){
-                                console.log(data[0].is_edited)
-                                if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
-                                    $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
-                                }
-                            }
-                        }
-                    })
+                    // $.ajax({
+                    //     url: "../get_is_edited_messages.php",
+                    //     type: 'POST',
+                    //     cache: false,
+                    //     dataType: 'json',
+                    //     data:{
+                    //         id_message: idm,
+                    //     },
+                    //     success: function(data, textStatus, xhr) {
+                    //         console.log(typeof data[0].is_edited)
+                    //         if( data[0].is_edited === '1' ){
+                    //             console.log(data[0].is_edited)
+                    //             if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
+                    //                 $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
+                    //             }
+                    //         }
+                    //     }
+                    // })
                 },500)
 
                 setTimeout(function () {
@@ -2020,24 +1976,24 @@
                     $('#pesan-ditolak-terjawab-'+idm).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
 
                     // nambah badge edited
-                    $.ajax({
-                        url: "../get_is_edited_messages.php",
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'json',
-                        data:{
-                            id_message: idm,
-                        },
-                        success: function(data, textStatus, xhr) {
-                            console.log(typeof data[0].is_edited)
-                            if( data[0].is_edited === '1' ){
-                                console.log(data[0].is_edited)
-                                if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
-                                    $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
-                                }
-                            }
-                        }
-                    })
+                    // $.ajax({
+                    //     url: "../get_is_edited_messages.php",
+                    //     type: 'POST',
+                    //     cache: false,
+                    //     dataType: 'json',
+                    //     data:{
+                    //         id_message: idm,
+                    //     },
+                    //     success: function(data, textStatus, xhr) {
+                    //         console.log(typeof data[0].is_edited)
+                    //         if( data[0].is_edited === '1' ){
+                    //             console.log(data[0].is_edited)
+                    //             if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
+                    //                 $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
+                    //             }
+                    //         }
+                    //     }
+                    // })
                 },500)
 
                 setTimeout(function () {
@@ -2162,24 +2118,24 @@
                     $('#pesan-ditolak-terjawab-'+idm).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
 
                     // nambah badge edited
-                    $.ajax({
-                        url: "../get_is_edited_messages.php",
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'json',
-                        data:{
-                            id_message: idm,
-                        },
-                        success: function(data, textStatus, xhr) {
-                            console.log(typeof data[0].is_edited)
-                            if( data[0].is_edited === '1' ){
-                                console.log(data[0].is_edited)
-                                if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
-                                    $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
-                                }
-                            }
-                        }
-                    })
+                    // $.ajax({
+                    //     url: "../get_is_edited_messages.php",
+                    //     type: 'POST',
+                    //     cache: false,
+                    //     dataType: 'json',
+                    //     data:{
+                    //         id_message: idm,
+                    //     },
+                    //     success: function(data, textStatus, xhr) {
+                    //         console.log(typeof data[0].is_edited)
+                    //         if( data[0].is_edited === '1' ){
+                    //             console.log(data[0].is_edited)
+                    //             if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
+                    //                 $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
+                    //             }
+                    //         }
+                    //     }
+                    // })
                 },500)
 
                 setTimeout(function () {
@@ -2258,18 +2214,6 @@
                     `<div id="container-pesan-${idm}" class="p-3 pesan border-top border-bottom">
                         <div class="d-flex">
                             <p id="pesan-${idm}" class="mb-0 small isi-pesan flex-grow-1">${cust_message}</p>
-                            <div class="dropdown">
-                                <button id="btn-options" class="bg-transparent border-0" data-bs-toggle="dropdown" style="height: fit-content">
-                                    <i class="bi bi-three-dots text-muted"></i>
-                                </button>
-                                <ul class="dropdown-menu shadow">
-                                    <li>
-                                        <button id="btn-edit-${idm}" class="dropdown-item small btn-edit" type="button">
-                                            <i class="bi bi-pencil me-3 text-primary"></i>Edit
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
                         </div>
 
                         <div class="card-footer bg-transparent">
@@ -2323,24 +2267,24 @@
                     $('#pesan-'+idm).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
 
                     // nambah badge edited
-                    $.ajax({
-                        url: "../get_is_edited_messages.php",
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'json',
-                        data:{
-                            id_message: idm,
-                        },
-                        success: function(data, textStatus, xhr) {
-                            console.log(typeof data[0].is_edited)
-                            if( data[0].is_edited === '1' ){
-                                console.log(data[0].is_edited)
-                                if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
-                                    $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
-                                }
-                            }
-                        }
-                    })
+                    // $.ajax({
+                    //     url: "../get_is_edited_messages.php",
+                    //     type: 'POST',
+                    //     cache: false,
+                    //     dataType: 'json',
+                    //     data:{
+                    //         id_message: idm,
+                    //     },
+                    //     success: function(data, textStatus, xhr) {
+                    //         console.log(typeof data[0].is_edited)
+                    //         if( data[0].is_edited === '1' ){
+                    //             console.log(data[0].is_edited)
+                    //             if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
+                    //                 $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
+                    //             }
+                    //         }
+                    //     }
+                    // })
                 },500)
 
                 setTimeout(function () {
@@ -2403,18 +2347,6 @@
                     `<div id="container-pesan-${idm}" class="p-3 pesan border-top border-bottom">
                         <div class="d-flex">
                             <p id="pesan-${idm}" class="mb-0 small isi-pesan flex-grow-1">${cust_message}</p>
-                            <div class="dropdown">
-                                <button id="btn-options" class="bg-transparent border-0" data-bs-toggle="dropdown" style="height: fit-content">
-                                    <i class="bi bi-three-dots text-muted"></i>
-                                </button>
-                                <ul class="dropdown-menu shadow">
-                                    <li>
-                                        <button id="btn-edit-${idm}" class="dropdown-item small btn-edit" type="button">
-                                            <i class="bi bi-pencil me-3 text-primary"></i>Edit
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
                         </div>
 
                         <div class="card-footer bg-transparent">
@@ -2573,24 +2505,24 @@
                     $('#pesan-'+idm).parent().append(`<span id="badge-baru" class="badge bg-primary text-primary bg-opacity-10" style="height: fit-content;">Baru</span>`)
 
                     // nambah badge edited
-                    $.ajax({
-                        url: "../get_is_edited_messages.php",
-                        type: 'POST',
-                        cache: false,
-                        dataType: 'json',
-                        data:{
-                            id_message: idm,
-                        },
-                        success: function(data, textStatus, xhr) {
-                            console.log(typeof data[0].is_edited)
-                            if( data[0].is_edited === '1' ){
-                                console.log(data[0].is_edited)
-                                if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
-                                    $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
-                                }
-                            }
-                        }
-                    })
+                    // $.ajax({
+                    //     url: "../get_is_edited_messages.php",
+                    //     type: 'POST',
+                    //     cache: false,
+                    //     dataType: 'json',
+                    //     data:{
+                    //         id_message: idm,
+                    //     },
+                    //     success: function(data, textStatus, xhr) {
+                    //         console.log(typeof data[0].is_edited)
+                    //         if( data[0].is_edited === '1' ){
+                    //             console.log(data[0].is_edited)
+                    //             if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
+                    //                 $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
+                    //             }
+                    //         }
+                    //     }
+                    // })
                 },500)
 
                 setTimeout(function () {
@@ -2747,27 +2679,28 @@
                 });
 
                 // nambah badge edited
-                $.ajax({
-                    url: "../get_is_edited_messages.php",
-                    type: 'POST',
-                    cache: false,
-                    dataType: 'json',
-                    data:{
-                        id_message: idm,
-                    },
-                    success: function(data, textStatus, xhr) {
-                        console.log(typeof data[0].is_edited)
-                        if( data[0].is_edited === '1' ){
-                            console.log(data[0].is_edited)
-                            if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
-                                $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
-                            }
-                            else if($('#container-pesan-favorit-'+ idm).find('#pesan-' + idm).children().hasClass('badge-edited') === false){
-                                $('#container-pesan-favorit-'+ idm).find('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
-                            }
-                        }
-                    }
-                })
+                // $.ajax({
+                //     url: "../get_is_edited_messages.php",
+                //     type: 'POST',
+                //     cache: false,
+                //     dataType: 'json',
+                //     data:{
+                //         id_message: idm,
+                //     },
+                //     success: function(data, textStatus, xhr) {
+                //         console.log(typeof data[0].is_edited)
+                //         if( data[0].is_edited === '1' ){
+                //             console.log(data[0].is_edited)
+                //             if($('#pesan-'+idm).children().hasClass('badge-edited') === false) {
+                //                 $('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
+                //             }
+                //             else if($('#container-pesan-favorit-'+ idm).find('#pesan-' + idm).children().hasClass('badge-edited') === false){
+                //                 $('#container-pesan-favorit-'+ idm).find('#pesan-' + idm).append(`<span class="badge-edited small mb-0 text-muted"> (edited)</span>`)
+                //             }
+                //         }
+                //     }
+                // })
+
                 // jam_i[jam_i.length] = jam_pesan_hidden
                 // parent_element.remove()
                 // i=i+1;
@@ -3023,7 +2956,7 @@
 
 
             // fungsi edit
-            let edit_idm = 0
+            /*let edit_idm = 0
             $("body").on("click", ".btn-edit", function() {
                 $('#modal-edit').modal('show');
 
@@ -3127,7 +3060,7 @@
             $("body").on("click", ".btn-cancel", function() {
                 $('#input-edit').val('')
                 $('#modal-edit').modal('hide');
-            })
+            })*/
         </script>
 
         <!--    function sortable-->
